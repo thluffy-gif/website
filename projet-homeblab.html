@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infrastructure Homelab & Cloud | Cédric Prohet</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* === THEME GRIS PRO & ÉLÉGANT === */
+        :root {
+            --bg-main: #f8fafc; 
+            --bg-white: #ffffff;
+            --text-main: #1e293b; 
+            --text-muted: #64748b;
+            --accent: #0f172a; 
+            --accent-light: #e2e8f0;
+            --border: #e2e8f0;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --iot-blue: #3b82f6;
+            --tech-dark: #111827;
+            --tech-green: #10b981;
+            --shadow-sm: 0 4px 6px -1px rgba(0,0,0,0.05);
+            --shadow-md: 0 10px 15px -3px rgba(0,0,0,0.05);
+            --transition: all 0.3s ease;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; scroll-behavior: smooth; }
+        body { background-color: var(--bg-main); color: var(--text-main); line-height: 1.8; overflow-x: hidden; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 20px; }
+        .section { padding: 60px 0; }
+        .bg-white { background-color: var(--bg-white); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+
+        /* --- NAVBAR & DISCLAIMER --- */
+        .navbar { position: fixed; top: 0; width: 100%; background: rgba(255,255,255,0.95); backdrop-filter: blur(5px); border-bottom: 1px solid var(--border); z-index: 1000; padding: 15px 0; box-shadow: var(--shadow-sm); }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+        .logo { font-size: 1.2rem; font-weight: 700; letter-spacing: 1px; color: var(--accent); text-decoration: none; }
+        .nav-group { display: flex; align-items: center; gap: 20px; }
+        .back-btn { color: var(--text-muted); text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 8px; transition: var(--transition); }
+        .back-btn:hover { color: var(--accent); }
+        .btn-lang { background: transparent; border: 1px solid var(--text-muted); color: var(--text-muted); padding: 4px 10px; border-radius: 4px; cursor: pointer; font-weight: bold; transition: var(--transition); }
+        .btn-lang:hover { border-color: var(--accent); color: var(--accent); }
+
+        .disclaimer-banner { margin-top: 65px; background: #fffbeb; color: #b45309; padding: 12px 20px; text-align: center; font-size: 0.85rem; font-weight: 600; border-bottom: 1px solid #fde68a; display: flex; justify-content: center; align-items: center; gap: 10px; }
+        .disclaimer-banner i { font-size: 1rem; }
+
+        /* --- HERO PROJECT --- */
+        .project-hero { padding-top: 60px; padding-bottom: 50px; text-align: center; }
+        .project-company { display: inline-block; background: var(--tech-dark); color: var(--tech-green); padding: 6px 15px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; margin-bottom: 20px; letter-spacing: 1px; border: 1px solid #374151; }
+        .project-title { font-size: 3.2rem; font-weight: 800; color: var(--accent); line-height: 1.1; margin-bottom: 20px; }
+        .project-subtitle { font-size: 1.15rem; color: var(--text-muted); max-width: 850px; margin: 0 auto 30px; }
+        
+        .project-meta { display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; margin-top: 40px; padding-top: 40px; border-top: 1px solid var(--border); }
+        .meta-item { text-align: left; }
+        .meta-label { display: block; font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600; margin-bottom: 5px; }
+        .meta-value { font-size: 1.1rem; font-weight: 700; color: var(--text-main); }
+
+        /* --- CONTENU TYPOGRAPHIE --- */
+        .content-block { margin-bottom: 60px; }
+        .content-block h2 { font-size: 1.8rem; color: var(--accent); margin-bottom: 25px; border-left: 4px solid var(--tech-dark); padding-left: 15px; }
+        .content-block p { margin-bottom: 18px; color: var(--text-muted); font-size: 1.05rem; text-align: justify; }
+        .content-block ul { margin-bottom: 20px; padding-left: 20px; color: var(--text-muted); }
+        .content-block li { margin-bottom: 10px; font-size: 1.05rem; }
+
+        .highlight-box { background: var(--bg-main); border: 1px solid var(--border); border-left: 4px solid var(--iot-blue); padding: 25px; border-radius: 0 8px 8px 0; margin: 30px 0; }
+        .highlight-box h4 { margin-top: 0; margin-bottom: 10px; color: var(--accent); font-size: 1.1rem; }
+
+        /* --- SERVER SPECS TERMINAL --- */
+        .terminal-box { background: var(--tech-dark); border-radius: 10px; padding: 25px; color: #a1a1aa; font-family: 'Courier New', Courier, monospace; box-shadow: var(--shadow-md); margin: 30px 0; border: 1px solid #374151; position: relative; }
+        .terminal-header { display: flex; gap: 8px; margin-bottom: 20px; border-bottom: 1px solid #374151; padding-bottom: 15px; align-items: center; }
+        .term-dot { width: 12px; height: 12px; border-radius: 50%; }
+        .term-dot.red { background: #ef4444; } .term-dot.yellow { background: #f59e0b; } .term-dot.green { background: #10b981; }
+        .term-title { margin-left: 15px; font-size: 0.85rem; color: #6b7280; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
+        
+        .term-line { display: flex; margin-bottom: 10px; font-size: 0.95rem; line-height: 1.5; }
+        .term-key { color: #38bdf8; width: 200px; font-weight: bold; flex-shrink: 0; }
+        .term-val { color: #e2e8f0; }
+        .term-val.highlight { color: var(--tech-green); font-weight: bold; }
+        .term-val.redact { color: #9ca3af; background: #374151; padding: 0 5px; border-radius: 3px; font-size: 0.9em; }
+
+        /* --- MERMAID CONTAINER & FULLSCREEN --- */
+        .mermaid-container { background: white; border: 1px solid var(--border); border-radius: 12px; padding: 20px; overflow-x: auto; box-shadow: var(--shadow-sm); margin: 40px 0; display: flex; justify-content: center; position: relative; cursor: zoom-in; transition: var(--transition); }
+        .mermaid-container:hover { border-color: var(--accent); box-shadow: var(--shadow-md); }
+        .zoom-hint { position: absolute; top: 15px; right: 15px; background: rgba(15, 23, 42, 0.8); color: white; padding: 5px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; pointer-events: none; opacity: 0; transition: opacity 0.3s; }
+        .mermaid-container:hover .zoom-hint { opacity: 1; }
+
+        /* Fullscreen Modal for Mermaid */
+        .mermaid-fullscreen { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(248, 250, 252, 0.95); backdrop-filter: blur(5px); z-index: 9999; display: flex; justify-content: center; align-items: center; padding: 40px; overflow: auto; cursor: zoom-out; display: none; }
+        .mermaid-fullscreen.active { display: flex; }
+        /* The container inside the modal */
+        #modal-content { width: 90vw; max-height: 90vh; display: flex; justify-content: center; align-items: center; }
+        /* Forcing the SVG to scale up inside the modal */
+        #modal-content svg { width: 100% !important; height: auto !important; max-width: 100% !important; max-height: 85vh !important; }
+        .close-hint { position: fixed; top: 20px; right: 30px; background: var(--danger); color: white; padding: 8px 15px; border-radius: 20px; font-weight: bold; font-size: 0.9rem; pointer-events: none; z-index: 10000; }
+
+        /* --- DOCKER SERVICES GRID --- */
+        .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; margin-top: 30px; }
+        .service-card { background: var(--bg-white); border: 1px solid var(--border); border-radius: 10px; padding: 25px; box-shadow: var(--shadow-sm); transition: var(--transition); display: flex; flex-direction: column; gap: 15px; }
+        .service-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); border-color: var(--accent); }
+        .service-header { display: flex; align-items: center; gap: 15px; }
+        .service-icon { width: 50px; height: 50px; background: var(--bg-main); border-radius: 10px; display: flex; justify-content: center; align-items: center; font-size: 1.5rem; color: var(--accent); flex-shrink: 0; border: 1px solid var(--border); }
+        .service-info h4 { margin: 0; font-size: 1.15rem; color: var(--accent); }
+        .service-tag { display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: bold; margin-top: 5px; text-transform: uppercase; }
+        .service-card p { margin: 0; font-size: 0.95rem; color: var(--text-muted); line-height: 1.5; }
+        
+        .tag-sec { background: #fee2e2; color: #b91c1c; }
+        .tag-app { background: #e0f2fe; color: #0369a1; }
+        .tag-mon { background: #f3e8ff; color: #6d28d9; }
+        .tag-db { background: #fef3c7; color: #b45309; }
+
+        /* --- SECURITY POLICIES --- */
+        .auth-table-wrapper { overflow-x: auto; margin-top: 20px; box-shadow: var(--shadow-sm); border-radius: 8px; border: 1px solid var(--border); }
+        .auth-table { width: 100%; border-collapse: collapse; font-size: 0.95rem; background: white; min-width: 600px; }
+        .auth-table th, .auth-table td { padding: 15px; text-align: left; border-bottom: 1px solid var(--border); }
+        .auth-table th { background: var(--bg-main); color: var(--text-muted); font-weight: 600; text-transform: uppercase; font-size: 0.85rem; }
+        .auth-table tr:last-child td { border-bottom: none; }
+        .badge { padding: 5px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: 600; display: inline-block; }
+        .badge.deny { background: #fee2e2; color: #b91c1c; }
+        .badge.mfa { background: #dcfce7; color: #15803d; }
+        .badge.bypass { background: #f1f5f9; color: #475569; }
+
+        .footer { text-align: center; padding: 30px; border-top: 1px solid var(--border); color: var(--text-muted); margin-top: 40px; }
+        .reveal { opacity: 1; transform: translateY(0); transition: all 0.6s ease-out; }
+        .js-hidden { opacity: 0; transform: translateY(20px); }
+
+        @media (max-width: 768px) {
+            .project-title { font-size: 2.5rem; }
+            .term-line { flex-direction: column; }
+            .term-key { width: 100%; margin-bottom: 4px; }
+            .content-block p { text-align: left; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-group">
+                <a href="index.html" class="back-btn" data-fr="<i class='fa-solid fa-arrow-left'></i> Retour" data-en="<i class='fa-solid fa-arrow-left'></i> Back"><i class="fa-solid fa-arrow-left"></i> Retour</a>
+            </div>
+            <div class="nav-group">
+                <a href="index.html" class="logo">C. PROHET</a>
+                <button id="lang-toggle" class="btn-lang">EN</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="disclaimer-banner">
+        <i class="fa-solid fa-shield-halved"></i> 
+        <span data-fr="Pour des raisons évidentes de cybersécurité (OSINT), les noms de domaine réels et les adresses IP publiques/privées de cette infrastructure ont été anonymisés." data-en="For obvious cybersecurity reasons (OSINT), the real domain names and public/private IP addresses of this infrastructure have been anonymized.">Pour des raisons évidentes de cybersécurité (OSINT), les noms de domaine réels et les adresses IP publiques/privées de cette infrastructure ont été anonymisés.</span>
+    </div>
+
+    <div id="mermaid-modal" class="mermaid-fullscreen" onclick="closeModal()">
+        <div class="close-hint"><i class="fa-solid fa-xmark"></i> Fermer</div>
+        <div id="modal-content"></div>
+    </div>
+
+    <main>
+        <section class="project-hero">
+            <div class="container reveal">
+                <span class="project-company"><i class="fa-solid fa-server"></i> Projet Personnel</span>
+                <h1 class="project-title" data-fr="Architecture Homelab & Systèmes" data-en="Homelab & Systems Architecture">Architecture Homelab & Systèmes</h1>
+                <p class="project-subtitle" data-fr="Déploiement, sécurisation et administration d'un serveur Linux de production. Une démarche d'ingénierie personnelle pour maîtriser les écosystèmes IT (Docker, API, Plan de Reprise d'Activité, Zero Trust) et créer la passerelle indispensable entre la Logistique Opérationnelle et la DSI." data-en="Deployment, securing, and administration of a production Linux server. A personal engineering approach to master IT ecosystems (Docker, APIs, Disaster Recovery Plans, Zero Trust) and create the essential bridge between Operational Logistics and the IT Department.">Déploiement, sécurisation et administration d'un serveur Linux de production. Une démarche d'ingénierie personnelle pour maîtriser les écosystèmes IT (Docker, API, Plan de Reprise d'Activité, Zero Trust) et créer la passerelle indispensable entre la Logistique Opérationnelle et la DSI.</p>
+                
+                <div class="project-meta">
+                    <div class="meta-item">
+                        <span class="meta-label" data-fr="Rôle" data-en="Role">Rôle</span>
+                        <span class="meta-value">Architecte Système & Réseau</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label" data-fr="Infrastructure" data-en="Infrastructure">Infrastructure</span>
+                        <span class="meta-value">Debian 12, Docker, S3 Wasabi</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label" data-fr="Sécurité & Data" data-en="Security & Data">Sécurité & Data</span>
+                        <span class="meta-value">Wazuh, CrowdSec, Directus</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section bg-white">
+            <div class="container">
+                
+                <div class="content-block reveal">
+                    <h2 data-fr="1. Le Rôle du Logisticien : Créer la passerelle avec l'IT" data-en="1. The Logistician's Role: Creating the bridge with IT">1. Le Rôle du Logisticien : Créer la passerelle avec l'IT</h2>
+                    <p data-fr="Aujourd'hui, la Logistique et la Supply Chain ne consistent plus seulement à déplacer des palettes, mais à faire transiter de la donnée en temps réel. Lors des grands déploiements logiciels (WMS, ERP, Trackers IoT), j'ai constaté que le taux d'échec ou de retard des projets n'est presque jamais dû à la logistique pure, mais à un <strong>profond fossé de communication entre le terrain et la Direction des Systèmes d'Information (DSI)</strong>." data-en="Today, Logistics and Supply Chain are no longer just about moving pallets, but about transmitting data in real-time. During major software deployments (WMS, ERP, IoT Trackers), I have noticed that the failure or delay rate of projects is almost never due to pure logistics, but to a <strong>deep communication gap between the field and the Information Systems Department (IT)</strong>.">Aujourd'hui, la Logistique et la Supply Chain ne consistent plus seulement à déplacer des palettes, mais à faire transiter de la donnée en temps réel. Lors des grands déploiements logiciels (WMS, ERP, Trackers IoT), j'ai constaté que le taux d'échec ou de retard des projets n'est presque jamais dû à la logistique pure, mais à un <strong>profond fossé de communication entre le terrain et la Direction des Systèmes d'Information (DSI)</strong>.</p>
+                    
+                    <p data-fr="Les opérationnels demandent des flux métiers complexes sans comprendre les contraintes techniques, et l'IT impose des restrictions de cybersécurité souvent incomprises par le terrain. <strong>Mon objectif avec ce Homelab n'est pas de devenir développeur ou SysAdmin de métier, mais de maîtriser parfaitement cette complexité &quot;sous le capot&quot;.</strong>" data-en="Operational staff request complex business flows without understanding technical constraints, and IT imposes cybersecurity restrictions often misunderstood by the field. <strong>My goal with this Homelab is not to become a developer or a professional SysAdmin, but to perfectly master this complexity &quot;under the hood&quot;.</strong>">Les opérationnels demandent des flux métiers complexes sans comprendre les contraintes techniques, et l'IT impose des restrictions de cybersécurité souvent incomprises par le terrain. <strong>Mon objectif avec ce Homelab n'est pas de devenir développeur ou SysAdmin de métier, mais de maîtriser parfaitement cette complexité "sous le capot".</strong></p>
+                    
+                    <p data-fr="En construisant, sécurisant et maintenant ma propre infrastructure serveur de A à Z (Réseaux virtuels, Reverse Proxy, Bases de données relationnelles, API), je suis en mesure, en tant que Chef de Projet, d'anticiper les verrous d'infrastructure, de challenger techniquement les prestataires, et de concevoir des architectures de flux réalistes dès la phase de cahier des charges." data-en="By building, securing, and maintaining my own server infrastructure from A to Z (Virtual Networks, Reverse Proxy, Relational Databases, APIs), I am able, as a Project Manager, to anticipate infrastructure bottlenecks, technically challenge service providers, and design realistic flow architectures from the specification phase.">En construisant, sécurisant et maintenant ma propre infrastructure serveur de A à Z (Réseaux virtuels, Reverse Proxy, Bases de données relationnelles, API), je suis en mesure, en tant que Chef de Projet, d'anticiper les verrous d'infrastructure, de challenger techniquement les prestataires, et de concevoir des architectures de flux réalistes dès la phase de cahier des charges.</p>
+                    
+                    <div class="terminal-box">
+                        <div class="terminal-header">
+                            <div class="term-dot red"></div><div class="term-dot yellow"></div><div class="term-dot green"></div>
+                            <span class="term-title">System Specs // Hub Infrastructure</span>
+                        </div>
+                        <div class="term-line"><span class="term-key">OS / Kernel</span><span class="term-val">Debian GNU/Linux 12 (bookworm) / 6.1.0-41-cloud-amd64</span></div>
+                        <div class="term-line"><span class="term-key">Hostname</span><span class="term-val redact">[vps-infra-prod]</span></div>
+                        <div class="term-line"><span class="term-key">IP Publique (OVH)</span><span class="term-val redact">XXX.XXX.XX.XX</span></div>
+                        <div class="term-line"><span class="term-key">IP VPN (Tailscale)</span><span class="term-val highlight">100.XXX.XXX.XX (Management SSH Restricted)</span></div>
+                        <div class="term-line"><span class="term-key">Domaine Principal</span><span class="term-val redact">[homelab-system.net]</span></div>
+                        <div class="term-line"><span class="term-key">Environnement</span><span class="term-val">100% Docker / Docker Compose (/opt structure)</span></div>
+                    </div>
+                </div>
+
+                <div class="content-block reveal">
+                    <h2 data-fr="2. Topologie Réseau et Architecture IT" data-en="2. Network Topology and IT Architecture">2. Topologie Réseau et Architecture IT</h2>
+                    <p data-fr="La robustesse d'un système d'information repose sur son cloisonnement. L'intégralité du serveur est déployée via une architecture conteneurisée (Docker). Cela permet d'isoler les bases de données des applications web (Front-end) via des réseaux virtuels stricts." data-en="The robustness of an information system relies on its compartmentalization. The entire server is deployed via a containerized architecture (Docker). This isolates databases from web applications (Front-end) via strict virtual networks.">La robustesse d'un système d'information repose sur son cloisonnement. L'intégralité du serveur est déployée via une architecture conteneurisée (Docker). Cela permet d'isoler les bases de données des applications web (Front-end) via des réseaux virtuels stricts.</p>
+                    <p data-fr="J'ai modélisé ci-dessous la cartographie exacte des flux de mon infrastructure." data-en="I have modeled below the exact mapping of my infrastructure's flows.">J'ai modélisé ci-dessous la cartographie exacte des flux de mon infrastructure.</p>
+                    
+                    <div class="mermaid-container" onclick="openModal(this)">
+                        <div class="zoom-hint"><i class="fa-solid fa-magnifying-glass"></i> Cliquez pour zoomer</div>
+                        <pre class="mermaid">
+%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#f8fafc', 'edgeLabelBackground':'#ffffff', 'tertiaryColor': '#fff'}}}%%
+graph TD
+    %% --- Styles ---
+    classDef public fill:#e1f5fe,stroke:#01579b,stroke-width:2px;
+    classDef vpn fill:#e0f2f1,stroke:#00695c,stroke-width:2px,stroke-dasharray: 5 5;
+    classDef firewall fill:#ffccbc,stroke:#bf360c,stroke-width:3px;
+    classDef traefik fill:#fff9c4,stroke:#fbc02d,stroke-width:2px;
+    classDef service fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px;
+    classDef monitor fill:#dcedc8,stroke:#33691e,stroke-width:2px;
+    classDef infra fill:#cfd8dc,stroke:#455a64,stroke-width:2px;
+
+    %% --- Acteurs ---
+    PublicUser((Utilisateur Public)):::public
+    Admin((Admin via VPN)):::vpn
+
+    %% --- Pare-Feu & Host ---
+    subgraph SecHost [Sécurité Host]
+        FW_Public[Firewall Ports 80 443 Mail]:::firewall
+        FW_VPN[Interface Tailscale]:::firewall
+        CS_Agent[CrowdSec Agent]:::service
+    end
+
+    %% --- Infra & Réseau ---
+    subgraph InfraRes [Infrastructure Réseau]
+        Traefik[Traefik Proxy]:::traefik
+        AdGuard[AdGuard Home DNS]:::infra
+    end
+
+    %% --- Apps Publiques ---
+    subgraph AppPub [Docker Apps Publiques]
+        NC[Nextcloud AIO]:::service
+        Web[Site Web]:::service
+        MC_UI[Mailcow UI]:::service
+    end
+
+    %% --- Apps Privées ---
+    subgraph AppPriv [Docker Apps Privées]
+        VW[Vaultwarden]:::service
+    end
+
+    %% --- Monitoring ---
+    subgraph MonStack [Monitoring Stack]
+        cAd[cAdvisor]:::monitor
+        NodeExp[Node Exporter]:::monitor
+        PromVM[Prometheus VictoriaMetrics]:::monitor
+        Grafana[Grafana Tailscale Only]:::monitor
+    end
+
+    %% --- Flux Public ---
+    PublicUser --> FW_Public
+    FW_Public --> Traefik
+    Traefik --> NC
+    Traefik --> Web
+    Traefik --> MC_UI
+
+    %% --- Flux Admin (Tailscale) ---
+    Admin -.-> FW_VPN
+    FW_VPN -.->|HTTP:3000| Grafana
+    FW_VPN -.->|HTTP:Port| VW
+    FW_VPN -.->|HTTP:80/3000| AdGuard
+    FW_VPN -.->|SSH| CS_Agent
+
+    %% --- Flux Interne / Monitoring ---
+    cAd --> PromVM
+    NodeExp --> PromVM
+    PromVM --> Grafana
+    
+    %% --- Flux DNS (Logique) ---
+    AdGuard -.->|DNS 53 UDP| Traefik
+    AdGuard -.->|DNS 53 UDP| NC
+    
+    %% --- Logs Security ---
+    Traefik -.-> CS_Agent
+    NC -.-> CS_Agent
+                        </pre>
+                    </div>
+                </div>
+
+                <div class="content-block reveal">
+                    <h2 data-fr="3. Gestion de la Donnée : De la DB SQL à l'API REST" data-en="3. Data Management: From SQL DB to REST API">3. Gestion de la Donnée : De la DB SQL à l'API REST</h2>
+                    <p data-fr="Comprendre l'interaction entre une base de données et une interface métier est crucial. Dans la logistique de demain, les systèmes monolithiques disparaissent au profit d'architectures &quot;Headless&quot; ou micro-services communiquant par API." data-en="Understanding the interaction between a database and a business interface is crucial. In tomorrow's logistics, monolithic systems are disappearing in favor of &quot;Headless&quot; architectures or micro-services communicating via API.">Comprendre l'interaction entre une base de données et une interface métier est crucial. Dans la logistique de demain, les systèmes monolithiques disparaissent au profit d'architectures "Headless" ou micro-services communiquant par API.</p>
+                    
+                    <div class="highlight-box">
+                        <h4>La Maîtrise des API avec Directus</h4>
+                        <p data-fr="Pour manipuler la donnée de façon moderne, j'ai déployé <strong>Directus</strong>, une plateforme Data (BaaS - Backend as a Service). Directus vient se brancher au-dessus de mes bases de données relationnelles SQL brutes (PostgreSQL, MariaDB) et les transforme instantanément en <strong>API REST et GraphQL</strong> hautement sécurisées." data-en="To manipulate data in a modern way, I deployed <strong>Directus</strong>, a Data platform (BaaS - Backend as a Service). Directus plugs on top of my raw SQL relational databases (PostgreSQL, MariaDB) and instantly transforms them into highly secure <strong>REST and GraphQL APIs</strong>.">Pour manipuler la donnée de façon moderne, j'ai déployé <strong>Directus</strong>, une plateforme Data (BaaS - Backend as a Service). Directus vient se brancher au-dessus de mes bases de données relationnelles SQL brutes (PostgreSQL, MariaDB) et les transforme instantanément en <strong>API REST et GraphQL</strong> hautement sécurisées.</p>
+                        <p data-fr="Cela me permet de simuler de véritables flux ERP/WMS : l'application n'accède jamais directement à la table SQL, elle interroge une URL (API) avec un jeton d'authentification (Token). C'est exactement l'architecture utilisée aujourd'hui par les solutions SaaS logistiques de pointe." data-en="This allows me to simulate real ERP/WMS flows: the application never accesses the SQL table directly, it queries a URL (API) with an authentication token. This is exactly the architecture used today by cutting-edge logistics SaaS solutions.">Cela me permet de simuler de véritables flux ERP/WMS : l'application n'accède jamais directement à la table SQL, elle interroge une URL (API) avec un jeton d'authentification (Token). C'est exactement l'architecture utilisée aujourd'hui par les solutions SaaS logistiques de pointe.</p>
+                    </div>
+                </div>
+
+                <div class="content-block reveal">
+                    <h2 data-fr="4. Cybersécurité : &quot;Zero Trust&quot; et Surveillance Active (SIEM)" data-en="4. Cybersecurity: &quot;Zero Trust&quot; and Active Monitoring (SIEM)">4. Cybersécurité : "Zero Trust" et Surveillance Active (SIEM)</h2>
+                    <p data-fr="L'approche &quot;Zero Trust&quot; part du principe qu'aucun trafic, pas même interne, ne doit être approuvé par défaut. Face à l'augmentation des cyberattaques (qui ciblent de plus en plus la Supply Chain pour paralyser les flux physiques), la sécurité de ce serveur est draconienne :" data-en="The &quot;Zero Trust&quot; approach assumes that no traffic, not even internal, should be trusted by default. Faced with the increase in cyberattacks (which increasingly target the Supply Chain to paralyze physical flows), the security of this server is draconian:">L'approche "Zero Trust" part du principe qu'aucun trafic, pas même interne, ne doit être approuvé par défaut. Face à l'augmentation des cyberattaques (qui ciblent de plus en plus la Supply Chain pour paralyser les flux physiques), la sécurité de ce serveur est draconienne :</p>
+                    
+                    <ul>
+                        <li data-fr="<strong>VPN Management (Tailscale) :</strong> Le pare-feu (UFW) ferme purement et simplement le port 22 (SSH) au public. L'administration profonde du serveur ne peut se faire qu'au travers d'un tunnel WireGuard via l'IP virtuelle Tailscale." data-en="<strong>VPN Management (Tailscale):</strong> The firewall (UFW) purely and simply closes port 22 (SSH) to the public. Deep server administration can only be done through a WireGuard tunnel via the virtual Tailscale IP."><strong>VPN Management (Tailscale) :</strong> Le pare-feu (UFW) ferme purement et simplement le port 22 (SSH) au public. L'administration profonde du serveur ne peut se faire qu'au travers d'un tunnel WireGuard via l'IP virtuelle Tailscale.</li>
+                        <li data-fr="<strong>Intrusion Prevention System (CrowdSec) :</strong> Outil de défense collaborative remplaçant l'historique Fail2Ban. CrowdSec analyse les logs du Reverse Proxy (Traefik) en temps réel. S'il détecte des comportements malveillants (scans de ports, bruteforce), il communique avec le pare-feu Linux pour bannir l'IP au niveau réseau (L3)." data-en="<strong>Intrusion Prevention System (CrowdSec):</strong> Collaborative defense tool replacing the historical Fail2Ban. CrowdSec analyzes Reverse Proxy (Traefik) logs in real-time. If it detects malicious behavior (port scans, bruteforce), it communicates with the Linux firewall to ban the IP at the network level (L3)."><strong>Intrusion Prevention System (CrowdSec) :</strong> Outil de défense collaborative remplaçant l'historique Fail2Ban. CrowdSec analyse les logs du Reverse Proxy (Traefik) en temps réel. S'il détecte des comportements malveillants (scans de ports, bruteforce), il communique avec le pare-feu Linux pour bannir l'IP au niveau réseau (L3).</li>
+                        <li data-fr="<strong>Surveillance Active et SIEM (Wazuh) :</strong> Pour la détection de menaces complexes, l'intégrité des fichiers (FIM) et la conformité réglementaire, j'ai déployé l'agent <strong>Wazuh</strong>. Il surveille les anomalies comportementales au niveau de l'OS (rootkits, escalades de privilèges) et consolide les données de sécurité, me donnant une vision digne d'un SOC (Security Operations Center)." data-en="<strong>Active Monitoring and SIEM (Wazuh):</strong> For complex threat detection, File Integrity Monitoring (FIM), and regulatory compliance, I deployed the <strong>Wazuh</strong> agent. It monitors behavioral anomalies at the OS level (rootkits, privilege escalations) and consolidates security data, giving me a vision worthy of a SOC (Security Operations Center)."><strong>Surveillance Active et SIEM (Wazuh) :</strong> Pour la détection de menaces complexes, l'intégrité des fichiers (FIM) et la conformité réglementaire, j'ai déployé l'agent <strong>Wazuh</strong>. Il surveille les anomalies comportementales au niveau de l'OS (rootkits, escalades de privilèges) et consolide les données de sécurité, me donnant une vision digne d'un SOC (Security Operations Center).</li>
+                    </ul>
+
+                    <div class="auth-table-wrapper">
+                        <table class="auth-table">
+                            <tr>
+                                <th data-fr="Domaine / Service (Anonymisé)" data-en="Domain / Service (Anonymized)">Domaine / Service (Anonymisé)</th>
+                                <th data-fr="Réseau Interne Docker" data-en="Internal Docker Network">Réseau Interne Docker</th>
+                                <th data-fr="Politique SSO (Authelia)" data-en="SSO Policy (Authelia)">Politique SSO (Authelia)</th>
+                            </tr>
+                            <tr>
+                                <td><strong>vault.[domaine].net</strong> (Vaultwarden)</td>
+                                <td>proxy / database</td>
+                                <td><span class="badge mfa" data-fr="Restricted (MFA + VPN Only)" data-en="Restricted (MFA + VPN Only)">Restricted (MFA + VPN Only)</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>api.[domaine].net</strong> (Directus Admin)</td>
+                                <td>proxy / pg-data</td>
+                                <td><span class="badge mfa" data-fr="Two-Factor (2FA)" data-en="Two-Factor (2FA)">Two-Factor (2FA)</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>cloud.[domaine].net</strong> (Nextcloud)</td>
+                                <td>nextcloud-aio</td>
+                                <td><span class="badge bypass">Bypass (MFA Géré en natif)</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Trafic Inconnu / Root</strong></td>
+                                <td>-</td>
+                                <td><span class="badge deny">Deny (Bloqué par défaut)</span></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="content-block reveal">
+                    <h2 data-fr="5. Plan de Reprise d'Activité (PRA) & Règle du 3-2-1" data-en="5. Disaster Recovery Plan (DRP) & 3-2-1 Rule">5. Plan de Reprise d'Activité (PRA) & Règle du 3-2-1</h2>
+                    <p data-fr="Dans le monde de la Supply Chain, perdre la base de données d'un WMS pendant 2 heures signifie paralyser un entrepôt entier, bloquer les camions à quai et subir des pertes financières colossales. La conception d'un <strong>Plan de Reprise d'Activité (PRA)</strong> robuste est donc primordiale." data-en="In the Supply Chain world, losing a WMS database for 2 hours means paralyzing an entire warehouse, blocking trucks at the dock, and suffering colossal financial losses. Designing a robust <strong>Disaster Recovery Plan (DRP)</strong> is therefore paramount.">Dans le monde de la Supply Chain, perdre la base de données d'un WMS pendant 2 heures signifie paralyser un entrepôt entier, bloquer les camions à quai et subir des pertes financières colossales. La conception d'un <strong>Plan de Reprise d'Activité (PRA)</strong> robuste est donc primordiale.</p>
+                    <p data-fr="Sur mon infrastructure, j'applique la norme industrielle de la <strong>Règle du 3-2-1</strong> (3 copies des données, sur 2 supports différents, dont 1 hors site/hors ligne). Les sauvegardes sont automatisées la nuit via des tâches CRON, chiffrées, dédupliquées via <strong>BorgBackup</strong>, puis externalisées." data-en="On my infrastructure, I apply the industry standard <strong>3-2-1 Rule</strong> (3 copies of data, on 2 different media, with 1 off-site/offline). Backups are automated overnight via CRON jobs, encrypted, deduplicated via <strong>BorgBackup</strong>, and then outsourced.">Sur mon infrastructure, j'applique la norme industrielle de la <strong>Règle du 3-2-1</strong> (3 copies des données, sur 2 supports différents, dont 1 hors site/hors ligne). Les sauvegardes sont automatisées la nuit via des tâches CRON, chiffrées, dédupliquées via <strong>BorgBackup</strong>, puis externalisées.</p>
+
+                    <div class="mermaid-container" onclick="openModal(this)">
+                        <div class="zoom-hint"><i class="fa-solid fa-magnifying-glass"></i> Cliquez pour zoomer</div>
+                        <pre class="mermaid">
+%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#f8fafc', 'edgeLabelBackground':'#ffffff', 'tertiaryColor': '#fff'}}}%%
+graph TD
+    %% --- SOURCES ---
+    S3[("Nuage Wasabi S3<br/>")]
+    VPS_APP["Serveur VPS<br/>(Nextcloud + Mails)"]
+
+    %% --- SCRIPTS ET TIMING ---
+    subgraph Ordonnanceur_CRON
+        T1["02h00 : Nextcloud AIO<br/>(DB & Config)"]
+        T2["02h15 : Script S3<br/>(Les 800 Go)"]
+        T3["05h00 : Script Borg<br/>(Mailcow & /opt)"]
+        T4["06h00 : Sync USB<br/>(3-2-1 Offline)"]
+    end
+
+    %% --- FLUX DE DONNEES ---
+    T1 -->|Interne AIO| NAS_AIO
+    
+    T2 -->|Rclone Sync| NAS_TEMP
+    NAS_TEMP -->|Archivage Borg| NAS_S3
+    S3 -.-> T2
+
+    T3 -->|Dump Natif| NAS_MAIL
+    T3 -->|Borg Create| NAS_OPT
+    VPS_APP -.-> T3
+
+    %% Sauvegarde finale vers USB
+    NAS_11_TO ==>|HyperBackup| USB
+    T4 -.-> USB
+
+    %% --- DESTINATIONS ---
+    subgraph NAS_11_TO [NAS SYNOLOGY - 11 To]
+        direction TB
+        NAS_AIO[("📦 Repo Borg : AIO")]
+        NAS_S3[("📦 Repo Borg : S3")]
+        NAS_OPT[("📦 Repo Borg : /opt")]
+        NAS_MAIL["📂 Dossier : Mails Bruts"]
+        NAS_TEMP["📂 Dossier : Miroir S3"]
+    end
+
+    USB[("💾 Disque USB Externe<br/>(Copie Locale)")]
+
+    %% --- STYLES ---
+    style S3 fill:#bbdefb,stroke:#1976d2
+    style NAS_11_TO fill:#f5f5f5,stroke:#333
+    style Ordonnanceur_CRON fill:#fff9c4,stroke:#fbc02d
+    style NAS_AIO fill:#c8e6c9,stroke:#2e7d32
+    style NAS_S3 fill:#c8e6c9,stroke:#2e7d32
+    style NAS_OPT fill:#c8e6c9,stroke:#2e7d32
+    style USB fill:#ffccbc,stroke:#e64a19,stroke-width:2px
+                        </pre>
+                    </div>
+                </div>
+
+                <div class="content-block reveal">
+                    <h2 data-fr="6. Écosystème Logiciel (Self-Hosting)" data-en="6. Software Ecosystem (Self-Hosting)">6. Écosystème Logiciel (Self-Hosting)</h2>
+                    <p data-fr="L'hébergement de mes propres services (Self-Hosting) via des fichiers <code>docker-compose.yml</code> m'assure une souveraineté totale sur mes données. L'approche &quot;Infrastructure as Code&quot; (IaC) me permet de recréer ce serveur sur n'importe quel hyperviseur en quelques minutes." data-en="Hosting my own services (Self-Hosting) via <code>docker-compose.yml</code> files ensures total sovereignty over my data. The &quot;Infrastructure as Code&quot; (IaC) approach allows me to recreate this server on any hypervisor in a few minutes.">L'hébergement de mes propres services (Self-Hosting) via des fichiers <code>docker-compose.yml</code> m'assure une souveraineté totale sur mes données. L'approche "Infrastructure as Code" (IaC) me permet de recréer ce serveur sur n'importe quel hyperviseur en quelques minutes.</p>
+                    
+                    <div class="services-grid">
+                        <div class="service-card">
+                            <div class="service-header">
+                                <div class="service-icon"><i class="fa-solid fa-database"></i></div>
+                                <div class="service-info">
+                                    <h4>Directus & BDDs</h4>
+                                    <span class="service-tag tag-db">Data / API</span>
+                                </div>
+                            </div>
+                            <p data-fr="Transformation de bases SQL (Postgres, MariaDB) en API REST dynamiques. Gestion des relations et webhooks complexes." data-en="Transformation of SQL databases (Postgres, MariaDB) into dynamic REST APIs. Management of relationships and complex webhooks.">Transformation de bases SQL (Postgres, MariaDB) en API REST dynamiques. Gestion des relations et webhooks complexes.</p>
+                        </div>
+
+                        <div class="service-card">
+                            <div class="service-header">
+                                <div class="service-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                                <div class="service-info">
+                                    <h4>Wazuh & CrowdSec</h4>
+                                    <span class="service-tag tag-sec">SecOps / SIEM</span>
+                                </div>
+                            </div>
+                            <p data-fr="Plateforme unifiée de détection des menaces (XDR), analyse d'intégrité des fichiers système et bannissement dynamique (IPS)." data-en="Unified threat detection platform (XDR), system file integrity analysis, and dynamic banning (IPS).">Plateforme unifiée de détection des menaces (XDR), analyse d'intégrité des fichiers système et bannissement dynamique (IPS).</p>
+                        </div>
+
+                        <div class="service-card">
+                            <div class="service-header">
+                                <div class="service-icon"><i class="fa-solid fa-cloud"></i></div>
+                                <div class="service-info">
+                                    <h4>Nextcloud AIO</h4>
+                                    <span class="service-tag tag-app">Productivité</span>
+                                </div>
+                            </div>
+                            <p data-fr="Suite collaborative souveraine, partage de fichiers volumineux. Sauvegardes chiffrées quotidiennes vers un <strong>Object Storage (Wasabi S3)</strong>." data-en="Sovereign collaborative suite, large file sharing. Daily encrypted backups to an <strong>Object Storage (Wasabi S3)</strong>.">Suite collaborative souveraine, partage de fichiers volumineux. Sauvegardes chiffrées quotidiennes vers un <strong>Object Storage (Wasabi S3)</strong>.</p>
+                        </div>
+
+                        <div class="service-card">
+                            <div class="service-header">
+                                <div class="service-icon"><i class="fa-solid fa-key"></i></div>
+                                <div class="service-info">
+                                    <h4>Vaultwarden</h4>
+                                    <span class="service-tag tag-sec">Sécurité Critique</span>
+                                </div>
+                            </div>
+                            <p data-fr="Gestionnaire de mots de passe chiffré de bout en bout, hébergé derrière le réseau virtuel Tailscale." data-en="End-to-end encrypted password manager, hosted behind the Tailscale virtual network.">Gestionnaire de mots de passe chiffré de bout en bout, hébergé derrière le réseau virtuel Tailscale.</p>
+                        </div>
+
+                        <div class="service-card">
+                            <div class="service-header">
+                                <div class="service-icon"><i class="fa-solid fa-chart-line"></i></div>
+                                <div class="service-info">
+                                    <h4>Stack Observabilité</h4>
+                                    <span class="service-tag tag-mon">Monitoring</span>
+                                </div>
+                            </div>
+                            <p data-fr="Surveillance des ressources avec Uptime-Kuma, Prometheus, VictoriaMetrics et tableaux de bord Grafana temps réel." data-en="Resource monitoring with Uptime-Kuma, Prometheus, VictoriaMetrics, and real-time Grafana dashboards.">Surveillance des ressources avec Uptime-Kuma, Prometheus, VictoriaMetrics et tableaux de bord Grafana temps réel.</p>
+                        </div>
+
+                        <div class="service-card">
+                            <div class="service-header">
+                                <div class="service-icon"><i class="fa-solid fa-diagram-project"></i></div>
+                                <div class="service-info">
+                                    <h4>N8N</h4>
+                                    <span class="service-tag tag-app">Automatisation</span>
+                                </div>
+                            </div>
+                            <p data-fr="Outil d'automatisation de workflows (équivalent Zapier). Connexion d'APIs et routage d'alertes vers des messageries (NTFY, Slack)." data-en="Workflow automation tool (Zapier equivalent). Connecting APIs and routing alerts to messaging platforms (NTFY, Slack).">Outil d'automatisation de workflows (équivalent Zapier). Connexion d'APIs et routage d'alertes vers des messageries (NTFY, Slack).</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p data-fr="© 2026 Cédric Prohet. Portfolio professionnel." data-en="© 2026 Cédric Prohet. Professional portfolio.">© 2026 Cédric Prohet. Portfolio professionnel.</p>
+        </div>
+    </footer>
+
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({ startOnLoad: true, theme: 'base', themeVariables: { primaryColor: '#f8fafc', primaryBorderColor: '#cbd5e1', primaryTextColor: '#1e293b', fontSize: '14px' } });
+    </script>
+
+    <script>
+        // Fonction pour ouvrir la modale et cloner le contenu SVG en désactivant le max-width
+        window.openModal = function(element) {
+            const modal = document.getElementById('mermaid-modal');
+            const modalContent = document.getElementById('modal-content');
+            
+            const svgElement = element.querySelector('svg');
+            if(svgElement) {
+                const clone = svgElement.cloneNode(true);
+                
+                // IMPORTANT : On supprime la limite de largeur imposée par Mermaid
+                clone.style.maxWidth = "none";
+                clone.style.width = "100%";
+                clone.style.height = "auto";
+                
+                modalContent.innerHTML = '';
+                modalContent.appendChild(clone);
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden'; 
+            }
+        };
+
+        // Fonction pour fermer la modale
+        window.closeModal = function() {
+            const modal = document.getElementById('mermaid-modal');
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto'; 
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // Traduction FR/EN
+            const langBtn = document.getElementById('lang-toggle');
+            let currentLang = 'fr';
+
+            langBtn.addEventListener('click', () => {
+                currentLang = currentLang === 'fr' ? 'en' : 'fr';
+                langBtn.innerText = currentLang === 'fr' ? 'EN' : 'FR';
+
+                const elements = document.querySelectorAll('[data-fr][data-en]');
+                elements.forEach(el => {
+                    el.style.opacity = 0;
+                    setTimeout(() => {
+                        el.innerHTML = currentLang === 'fr' ? el.getAttribute('data-fr') : el.getAttribute('data-en');
+                        el.style.opacity = 1;
+                    }, 200);
+                });
+            });
+
+            // Animation au scroll
+            const reveals = document.querySelectorAll('.reveal');
+            reveals.forEach(el => el.classList.add('js-hidden'));
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.remove('js-hidden');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1, rootMargin: "0px 0px -20px 0px" });
+
+            reveals.forEach(reveal => observer.observe(reveal));
+            
+            // Fermeture de la modale avec la touche Echap
+            document.addEventListener('keydown', function(event) {
+                if (event.key === "Escape") {
+                    closeModal();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

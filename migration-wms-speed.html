@@ -1,0 +1,370 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Migration WMS : SPEED vers Reflex Web | Cédric Prohet</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* === THEME GRIS PRO & ÉLÉGANT === */
+        :root {
+            --bg-main: #f8fafc; 
+            --bg-white: #ffffff;
+            --text-main: #1e293b; 
+            --text-muted: #64748b;
+            --accent: #0f172a; 
+            --accent-light: #e2e8f0;
+            --border: #e2e8f0;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --reflex-blue: #0284c7;
+            --speed-gray: #94a3b8;
+            --shadow-sm: 0 4px 6px -1px rgba(0,0,0,0.05);
+            --shadow-md: 0 10px 15px -3px rgba(0,0,0,0.05);
+            --transition: all 0.3s ease;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; scroll-behavior: smooth; }
+        body { background-color: var(--bg-main); color: var(--text-main); line-height: 1.7; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 20px; }
+        .section { padding: 60px 0; }
+        .bg-white { background-color: var(--bg-white); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+
+        /* --- NAVBAR --- */
+        .navbar { position: fixed; top: 0; width: 100%; background: rgba(255,255,255,0.95); backdrop-filter: blur(5px); border-bottom: 1px solid var(--border); z-index: 1000; padding: 15px 0; box-shadow: var(--shadow-sm); }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+        .logo { font-size: 1.2rem; font-weight: 700; letter-spacing: 1px; color: var(--accent); text-decoration: none; }
+        .nav-group { display: flex; align-items: center; gap: 20px; }
+        .back-btn { color: var(--text-muted); text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 8px; transition: var(--transition); }
+        .back-btn:hover { color: var(--accent); }
+        .btn-lang { background: transparent; border: 1px solid var(--text-muted); color: var(--text-muted); padding: 4px 10px; border-radius: 4px; cursor: pointer; font-weight: bold; transition: var(--transition); }
+        .btn-lang:hover { border-color: var(--accent); color: var(--accent); }
+
+        /* --- HERO PROJECT --- */
+        .project-hero { padding-top: 140px; padding-bottom: 50px; text-align: center; }
+        .project-company { display: inline-block; background: var(--accent-light); color: var(--accent); padding: 6px 15px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; margin-bottom: 20px; letter-spacing: 1px; }
+        .project-title { font-size: 3.5rem; font-weight: 800; color: var(--accent); line-height: 1.1; margin-bottom: 20px; }
+        .project-subtitle { font-size: 1.2rem; color: var(--text-muted); max-width: 700px; margin: 0 auto 30px; }
+        
+        .project-meta { display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; margin-top: 40px; padding-top: 40px; border-top: 1px solid var(--border); }
+        .meta-item { text-align: left; }
+        .meta-label { display: block; font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600; margin-bottom: 5px; }
+        .meta-value { font-size: 1.1rem; font-weight: 700; color: var(--text-main); }
+
+        /* --- CONTENU TYPOGRAPHIE --- */
+        .content-block { margin-bottom: 50px; }
+        .content-block h2 { font-size: 1.8rem; color: var(--accent); margin-bottom: 20px; border-left: 4px solid var(--accent); padding-left: 15px; }
+        .content-block p { margin-bottom: 15px; color: var(--text-muted); font-size: 1.05rem; }
+        .content-block ul { margin-bottom: 20px; padding-left: 20px; color: var(--text-muted); }
+        .content-block li { margin-bottom: 8px; }
+
+        /* --- GRAPHIQUES & SCHEMAS CSS --- */
+        .visual-box { background: var(--bg-main); border: 1px solid var(--border); border-radius: 12px; padding: 30px; margin: 30px 0; box-shadow: inset 0 2px 4px rgba(0,0,0,0.02); }
+        
+        /* Comparatif AS400 vs Reflex */
+        .comparison-grid { display: flex; gap: 20px; flex-wrap: wrap; }
+        .comp-card { flex: 1; min-width: 280px; background: var(--bg-white); border: 1px solid var(--border); border-radius: 8px; padding: 25px; box-shadow: var(--shadow-sm); position: relative; overflow: hidden; }
+        .comp-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; }
+        .comp-card.legacy::before { background: var(--speed-gray); }
+        .comp-card.modern::before { background: var(--reflex-blue); }
+        
+        .comp-card h4 { font-size: 1.2rem; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
+        .comp-card.legacy h4 { color: var(--text-main); }
+        .comp-card.modern h4 { color: var(--reflex-blue); }
+        .comp-card ul { list-style: none; padding: 0; margin: 0; }
+        .comp-card li { font-size: 0.95rem; margin-bottom: 12px; padding-left: 25px; position: relative; color: var(--text-muted); }
+        .comp-card.legacy li::before { content: '\f00d'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; left: 0; color: var(--speed-gray); }
+        .comp-card.modern li::before { content: '\f00c'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; left: 0; color: var(--success); }
+
+        /* Graphique en barres CSS */
+        .chart-container { padding: 20px; background: transparent; }
+        .bar-group { margin-bottom: 25px; }
+        .bar-label { display: flex; justify-content: space-between; margin-bottom: 5px; font-weight: 600; font-size: 0.9rem; color: var(--text-main); }
+        .bar-track { width: 100%; height: 28px; background: var(--border); border-radius: 14px; overflow: hidden; position: relative; }
+        .bar-fill { height: 100%; border-radius: 14px; display: flex; align-items: center; justify-content: flex-end; padding-right: 12px; color: white; font-size: 0.85rem; font-weight: bold; transition: width 1.5s cubic-bezier(0.16, 1, 0.3, 1); width: 0; }
+        
+        .bar-fill.legacy-bar { background: var(--speed-gray); }
+        .bar-fill.reflex-bar { background: var(--reflex-blue); }
+
+        /* Process Timeline */
+        .process-steps { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 15px; margin-top: 30px; }
+        .step-box { flex: 1; min-width: 150px; text-align: center; background: var(--bg-white); padding: 20px; border-radius: 8px; border: 1px solid var(--border); box-shadow: var(--shadow-sm); }
+        .step-box i { font-size: 2rem; color: var(--reflex-blue); margin-bottom: 10px; }
+        .step-box h5 { font-size: 0.95rem; margin-bottom: 5px; color: var(--accent); }
+        .step-box p { font-size: 0.8rem; color: var(--text-muted); margin: 0; }
+
+        /* KPI Dashboard */
+        .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 30px; }
+        .kpi-card { background: var(--bg-white); padding: 25px; border-radius: 10px; border: 1px solid var(--border); box-shadow: var(--shadow-sm); text-align: center; transition: var(--transition); }
+        .kpi-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); border-color: var(--accent); }
+        .kpi-icon { font-size: 2rem; margin-bottom: 15px; }
+        .kpi-number { font-size: 2.5rem; font-weight: 800; color: var(--accent); line-height: 1; margin-bottom: 5px; }
+        .kpi-label { font-size: 0.9rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; }
+
+        /* Footer */
+        .footer { text-align: center; padding: 30px; border-top: 1px solid var(--border); color: var(--text-muted); margin-top: 40px; }
+
+        .reveal { opacity: 1; transform: translateY(0); transition: all 0.6s ease-out; }
+        .js-hidden { opacity: 0; transform: translateY(20px); }
+
+        @media (max-width: 768px) {
+            .project-title { font-size: 2.5rem; }
+            .comparison-grid { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-group">
+                <a href="index.html" class="back-btn" data-fr="<i class='fa-solid fa-arrow-left'></i> Retour" data-en="<i class='fa-solid fa-arrow-left'></i> Back"><i class="fa-solid fa-arrow-left"></i> Retour</a>
+            </div>
+            <div class="nav-group">
+                <a href="index.html" class="logo">C. PROHET</a>
+                <button id="lang-toggle" class="btn-lang">EN</button>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <section class="project-hero">
+            <div class="container reveal">
+                <span class="project-company">Dimotrans Group</span>
+                <h1 class="project-title" data-fr="Migration WMS : De SPEED à Reflex Web" data-en="WMS Migration: From SPEED to Reflex Web">Migration WMS : De SPEED à Reflex Web</h1>
+                <p class="project-subtitle" data-fr="Pilotage de la transition du système d'information logistique (AS400 vers Reflex Web) et numérisation des procédures opérationnelles." data-en="Piloting the transition of the logistics information system (AS400 to Reflex Web) and digitizing operational procedures.">Pilotage de la transition du système d'information logistique (AS400 vers Reflex Web) et numérisation des procédures opérationnelles.</p>
+                
+                <div class="project-meta">
+                    <div class="meta-item">
+                        <span class="meta-label" data-fr="Rôle" data-en="Role">Rôle</span>
+                        <span class="meta-value" data-fr="Chef de Projet" data-en="Project Manager">Chef de Projet </span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label" data-fr="Systèmes" data-en="Systems">Systèmes</span>
+                        <span class="meta-value">SPEED (AS400) ➔ Reflex Web </span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label" data-fr="Flux Impacté" data-en="Impacted Flow">Flux Impacté</span>
+                        <span class="meta-value" data-fr="5 000 commandes / sem" data-en="5,000 orders / week">5 000 commandes / sem </span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label" data-fr="Management" data-en="Management">Management</span>
+                        <span class="meta-value" data-fr="20 collaborateurs formés" data-en="20 trained employees">20 collaborateurs formés </span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section bg-white">
+            <div class="container">
+                
+                <div class="content-block reveal">
+                    <h2 data-fr="1. Le Défi : S'affranchir d'un Système Obsolète" data-en="1. The Challenge: Breaking Free from an Obsolete System">1. Le Défi : S'affranchir d'un Système Obsolète</h2>
+                    <p data-fr="Pour soutenir sa croissance sur le marché exigeant du e-commerce BtoC (avec l'intégration d'un flux textile générant 5 000 commandes par semaine), l'entrepôt Dimotrans de Pusignan devait impérativement faire évoluer son infrastructure IT." data-en="To support its growth in the demanding BtoC e-commerce market (with the integration of a textile flow generating 5,000 orders per week), the Dimotrans warehouse in Pusignan absolutely had to evolve its IT infrastructure.">Pour soutenir sa croissance sur le marché exigeant du e-commerce BtoC (avec l'intégration d'un flux textile générant 5 000 commandes par semaine), l'entrepôt Dimotrans de Pusignan devait impérativement faire évoluer son infrastructure IT.</p>
+                    <p data-fr="Le système historique, SPEED (basé sur une architecture AS400), montrait de sérieuses limites opérationnelles : interfaces textuelles complexes, rigidité des adressages (imposant un Picking Fixe générateur de vide) et une lourdeur dans le traitement des réapprovisionnements." data-en="The legacy system, SPEED (based on an AS400 architecture), showed serious operational limits: complex text interfaces, rigid addressing (imposing space-wasting Fixed Picking), and cumbersome replenishment processing.">Le système historique, SPEED (basé sur une architecture AS400), montrait de sérieuses limites opérationnelles : interfaces textuelles complexes, rigidité des adressages (imposant un Picking Fixe générateur de vide) et une lourdeur dans le traitement des réapprovisionnements.</p>
+                    <p data-fr="La décision stratégique a été actée : migrer l'ensemble de l'activité vers <strong>Reflex Web</strong>, un WMS moderne et adaptatif." data-en="The strategic decision was made: migrate the entire activity to <strong>Reflex Web</strong>, a modern and adaptive WMS.">La décision stratégique a été actée : migrer l'ensemble de l'activité vers <strong>Reflex Web</strong>, un WMS moderne et adaptatif.</p>
+                </div>
+
+                <div class="content-block reveal">
+                    <h2 data-fr="2. Changement de Paradigme Technologique" data-en="2. Technological Paradigm Shift">2. Changement de Paradigme Technologique</h2>
+                    <p data-fr="La migration ne se limitait pas à un simple changement d'interface ; elle impliquait une refonte totale de notre logique de stockage et de prélèvement." data-en="The migration was not limited to a simple interface change; it involved a total overhaul of our storage and picking logic.">La migration ne se limitait pas à un simple changement d'interface ; elle impliquait une refonte totale de notre logique de stockage et de prélèvement.</p>
+                    
+                    <div class="visual-box comparison-grid">
+                        <div class="comp-card legacy">
+                            <h4><i class="fa-solid fa-server"></i> Ancien WMS (SPEED / AS400)</h4>
+                            <ul>
+                                <li data-fr="Interface textuelle (écrans verts) : formation longue pour les intérimaires." data-en="Text interface (green screens): long training for temporary workers.">Interface textuelle (écrans verts) : formation longue pour les intérimaires.</li>
+                                <li data-fr="Picking Fixe : un emplacement lié à un code article, générant des emplacements vides non réutilisables." data-en="Fixed Picking: one location linked to an item code, generating unusable empty locations.">Picking Fixe : un emplacement lié à un code article, générant des emplacements vides non réutilisables.</li>
+                                <li data-fr="Réapprovisionnement manuel des zones de préparation, augmentant les risques de rupture." data-en="Manual replenishment of preparation zones, increasing the risk of shortages.">Réapprovisionnement manuel des zones de préparation, augmentant les risques de rupture.</li>
+                            </ul>
+                        </div>
+                        <div class="comp-card modern">
+                            <h4><i class="fa-solid fa-tablet-screen-button"></i> Nouveau WMS (Reflex Web)</h4>
+                            <ul>
+                                <li data-fr="Interface graphique intuitive via Pistolets de Travail Connectés (PTC)." data-en="Intuitive graphical interface via Connected Work Guns (PTC).">Interface graphique intuitive via Pistolets de Travail Connectés (PTC).</li>
+                                <li data-fr="Picking Dynamique : le système alloue le meilleur emplacement disponible en temps réel." data-en="Dynamic Picking: the system allocates the best available location in real time.">Picking Dynamique : le système alloue le meilleur emplacement disponible en temps réel.</li>
+                                <li data-fr="Déclenchement automatisé des missions de réapprovisionnement par le système." data-en="Automated triggering of replenishment missions by the system.">Déclenchement automatisé des missions de réapprovisionnement par le système.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-block reveal">
+                    <h2 data-fr="3. Méthodologie de Déploiement" data-en="3. Deployment Methodology">3. Méthodologie de Déploiement</h2>
+                    <p data-fr="En tant que Chef de Projet, mon rôle a été de sécuriser cette transition pour éviter toute interruption d'activité (zéro rupture de charge pour le client final)." data-en="As Project Manager, my role was to secure this transition to avoid any business interruption (zero disruption for the end client).">En tant que Chef de Projet, mon rôle a été de sécuriser cette transition pour éviter toute interruption d'activité (zéro rupture de charge pour le client final).</p>
+                    
+                    <div class="visual-box process-steps">
+                        <div class="step-box">
+                            <i class="fa-solid fa-code-branch"></i>
+                            <h5 data-fr="1. Analyse & Paramétrage" data-en="1. Analysis & Configuration">1. Analyse & Paramétrage</h5>
+                            <p data-fr="Définition des règles d'adressage dynamique et des schémas de préparation." data-en="Definition of dynamic addressing rules and preparation schemes.">Définition des règles d'adressage dynamique et des schémas de préparation.</p>
+                        </div>
+                        <div class="step-box">
+                            <i class="fa-solid fa-vial-circle-check"></i>
+                            <h5 data-fr="2. Tests UAT" data-en="2. UAT Tests">2. Tests UAT</h5>
+                            <p data-fr="Simulations de commandes (stress tests) pour valider la communication EDI et les flux physiques." data-en="Order simulations (stress tests) to validate EDI communication and physical flows.">Simulations de commandes (stress tests) pour valider la communication EDI et les flux physiques.</p>
+                        </div>
+                        <div class="step-box">
+                            <i class="fa-solid fa-users-gear"></i>
+                            <h5 data-fr="3. Procédures & Formation" data-en="3. Procedures & Training">3. Procédures & Formation</h5>
+                            <p data-fr="Numérisation des procédures opérationnelles et formation des équipes de terrain." data-en="Digitization of operational procedures and training of field teams.">Numérisation des procédures opérationnelles et formation des équipes de terrain.</p>
+                        </div>
+                        <div class="step-box">
+                            <i class="fa-solid fa-rocket"></i>
+                            <h5 data-fr="4. Go-Live & Hypercare" data-en="4. Go-Live & Hypercare">4. Go-Live & Hypercare</h5>
+                            <p data-fr="Bascule des flux vers Reflex Web avec un support managérial renforcé sur le terrain." data-en="Switching flows to Reflex Web with reinforced managerial support on the ground.">Bascule des flux vers Reflex Web avec un support managérial renforcé sur le terrain.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-block reveal">
+                    <h2 data-fr="4. Conduite du Changement : L'Humain au Cœur du Succès" data-en="4. Change Management: Humans at the Heart of Success">4. Conduite du Changement : L'Humain au Cœur du Succès</h2>
+                    <p data-fr="L'implémentation d'un nouveau logiciel crée inévitablement des réticences. Pour assurer l'adhésion des équipes, j'ai pris en charge la numérisation complète des procédures opérationnelles (SOP)." data-en="Implementing new software inevitably creates resistance. To ensure team buy-in, I took charge of the complete digitization of standard operating procedures (SOP).">L'implémentation d'un nouveau logiciel crée inévitablement des réticences. Pour assurer l'adhésion des équipes, j'ai pris en charge la numérisation complète des procédures opérationnelles (SOP).</p>
+                    <p data-fr="J'ai organisé et mené les sessions de formation pour la <strong>supervision de 20 collaborateurs</strong>. L'objectif n'était pas seulement de leur montrer sur quel bouton appuyer sur leur PTC, mais de leur faire comprendre la nouvelle logique du <em>Picking Dynamique</em>. J'ai également assuré le remplacement d'un responsable de secteur durant cette période critique pour garantir la stabilité de la productivité." data-en="I organized and led training sessions for the <strong>supervision of 20 employees</strong>. The goal was not just to show them which button to press on their PTC, but to make them understand the new logic of <em>Dynamic Picking</em>. I also replaced a sector manager during this critical period to ensure productivity stability.">J'ai organisé et mené les sessions de formation pour la <strong>supervision de 20 collaborateurs</strong>. L'objectif n'était pas seulement de leur montrer sur quel bouton appuyer sur leur PTC, mais de leur faire comprendre la nouvelle logique du <em>Picking Dynamique</em>. J'ai également assuré le remplacement d'un responsable de secteur durant cette période critique pour garantir la stabilité de la productivité.</p>
+                </div>
+
+                <div class="content-block reveal">
+                    <h2 data-fr="5. Résultats : Le Bond de Productivité" data-en="5. Results: The Productivity Leap">5. Résultats : Le Bond de Productivité</h2>
+                    <p data-fr="La migration vers Reflex Web a permis de moderniser durablement le site de Pusignan. La combinaison du nouveau logiciel, du réaménagement physique du stockage et de la formation des équipes a permis d'absorber avec succès la charge du nouveau client textile." data-en="The migration to Reflex Web durably modernized the Pusignan site. The combination of the new software, the physical reorganization of storage, and team training successfully absorbed the load of the new textile client.">La migration vers Reflex Web a permis de moderniser durablement le site de Pusignan. La combinaison du nouveau logiciel, du réaménagement physique du stockage et de la formation des équipes a permis d'absorber avec succès la charge du nouveau client textile.</p>
+
+                    <div class="visual-box chart-container">
+                        <div class="bar-label">
+                            <span data-fr="Productivité Prélèvement (Ancien WMS SPEED)" data-en="Picking Productivity (Old WMS SPEED)">Productivité Prélèvement (Ancien WMS SPEED)</span>
+                            <span>Base 100%</span>
+                        </div>
+                        <div class="bar-track" style="margin-bottom: 25px;">
+                            <div class="bar-fill legacy-bar js-bar" data-width="75%">100%</div>
+                        </div>
+
+                        <div class="bar-label">
+                            <span data-fr="Productivité Prélèvement (Nouveau WMS Reflex)" data-en="Picking Productivity (New WMS Reflex)">Productivité Prélèvement (Nouveau WMS Reflex)</span>
+                            <span style="color: var(--reflex-blue);">+33% de gain</span>
+                        </div>
+                        <div class="bar-track">
+                            <div class="bar-fill reflex-bar js-bar" data-width="100%">133%</div>
+                        </div>
+                    </div>
+
+                    <div class="kpi-grid">
+                        <div class="kpi-card">
+                            <i class="fa-solid fa-server kpi-icon" style="color: var(--reflex-blue);"></i>
+                            <div class="kpi-number"><span class="counter" data-target="100">0</span>%</div>
+                            <div class="kpi-label" data-fr="Déploiement WMS" data-en="WMS Deployment">Déploiement WMS</div>
+                            <p style="font-size: 0.8rem; margin-top: 10px; color: var(--text-muted);" data-fr="Migration logicielle réussie" data-en="Successful software migration">Migration logicielle réussie</p>
+                        </div>
+                        <div class="kpi-card">
+                            <i class="fa-solid fa-users-viewfinder kpi-icon" style="color: var(--accent);"></i>
+                            <div class="kpi-number counter" data-target="20">0</div>
+                            <div class="kpi-label" data-fr="Collaborateurs formés" data-en="Trained Employees">Collaborateurs formés</div>
+                            <p style="font-size: 0.8rem; margin-top: 10px; color: var(--text-muted);" data-fr="Montée en compétence" data-en="Skill upgrading">Montée en compétence</p>
+                        </div>
+                        <div class="kpi-card">
+                            <i class="fa-solid fa-file-signature kpi-icon" style="color: var(--success);"></i>
+                            <div class="kpi-number counter" data-target="100">0</div>
+                            <div class="kpi-label" data-fr="Procédures numérisées" data-en="Digitized procedures">Procédures numérisées</div>
+                            <p style="font-size: 0.8rem; margin-top: 10px; color: var(--text-muted);" data-fr="Création des nouveaux SOP" data-en="Creation of new SOPs">Création des nouveaux SOP</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p data-fr="© 2026 Cédric Prohet. Portfolio professionnel." data-en="© 2026 Cédric Prohet. Professional portfolio.">© 2026 Cédric Prohet. Portfolio professionnel.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // Traduction FR/EN
+            const langBtn = document.getElementById('lang-toggle');
+            let currentLang = 'fr';
+
+            langBtn.addEventListener('click', () => {
+                currentLang = currentLang === 'fr' ? 'en' : 'fr';
+                langBtn.innerText = currentLang === 'fr' ? 'EN' : 'FR';
+
+                const elements = document.querySelectorAll('[data-fr][data-en]');
+                elements.forEach(el => {
+                    el.style.opacity = 0;
+                    setTimeout(() => {
+                        el.innerHTML = currentLang === 'fr' ? el.getAttribute('data-fr') : el.getAttribute('data-en');
+                        el.style.opacity = 1;
+                    }, 200);
+                });
+            });
+
+            // Animation au scroll
+            const reveals = document.querySelectorAll('.reveal');
+            reveals.forEach(el => el.classList.add('js-hidden'));
+
+            // Animation des compteurs
+            const animateCounters = () => {
+                const counters = document.querySelectorAll('.counter');
+                const speed = 100;
+
+                counters.forEach(counter => {
+                    const updateCount = () => {
+                        const target = parseFloat(counter.getAttribute('data-target'));
+                        const count = parseFloat(counter.innerText);
+                        const inc = target / speed;
+
+                        if (count < target) {
+                            counter.innerText = Math.ceil(count + inc);
+                            setTimeout(updateCount, 20);
+                        } else {
+                            counter.innerText = target;
+                        }
+                    };
+                    updateCount();
+                });
+            };
+
+            // Animation des barres CSS
+            const animateBars = () => {
+                const bars = document.querySelectorAll('.js-bar');
+                bars.forEach(bar => {
+                    const targetWidth = bar.getAttribute('data-width');
+                    setTimeout(() => {
+                        bar.style.width = targetWidth;
+                    }, 300);
+                });
+            };
+
+            let countersAnimated = false;
+            let barsAnimated = false;
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.remove('js-hidden');
+                        
+                        // Déclencher les compteurs
+                        if(entry.target.querySelector('.kpi-grid') && !countersAnimated) {
+                            animateCounters();
+                            countersAnimated = true;
+                        }
+
+                        // Déclencher les barres CSS
+                        if(entry.target.querySelector('.chart-container') && !barsAnimated) {
+                            animateBars();
+                            barsAnimated = true;
+                        }
+                        
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1, rootMargin: "0px 0px -20px 0px" });
+
+            reveals.forEach(reveal => observer.observe(reveal));
+        });
+    </script>
+</body>
+</html>

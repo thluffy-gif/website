@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vision Stratégique : Data & IA Logistique | Cédric Prohet</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    
+    <style>
+        /* === THEME GRIS PRO & ÉLÉGANT === */
+        :root {
+            --bg-main: #f8fafc; 
+            --bg-white: #ffffff;
+            --text-main: #1e293b; 
+            --text-muted: #64748b;
+            --accent: #0f172a; 
+            --accent-light: #e2e8f0;
+            --border: #e2e8f0;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --ai-purple: #8b5cf6;
+            --ai-dark: #5b21b6;
+            --ai-light: #ede9fe;
+            --shadow-sm: 0 4px 6px -1px rgba(0,0,0,0.05);
+            --shadow-md: 0 10px 15px -3px rgba(0,0,0,0.05);
+            --transition: all 0.3s ease;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; scroll-behavior: smooth; }
+        body { background-color: var(--bg-main); color: var(--text-main); line-height: 1.7; overflow-x: hidden; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 20px; }
+        .section { padding: 60px 0; }
+        .bg-white { background-color: var(--bg-white); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+
+        /* --- NAVBAR --- */
+        .navbar { position: fixed; top: 0; width: 100%; background: rgba(255,255,255,0.95); backdrop-filter: blur(5px); border-bottom: 1px solid var(--border); z-index: 1000; padding: 15px 0; box-shadow: var(--shadow-sm); }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+        .logo { font-size: 1.2rem; font-weight: 700; letter-spacing: 1px; color: var(--accent); text-decoration: none; }
+        .nav-group { display: flex; align-items: center; gap: 20px; }
+        .back-btn { color: var(--text-muted); text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 8px; transition: var(--transition); }
+        .back-btn:hover { color: var(--accent); }
+        .btn-lang { background: transparent; border: 1px solid var(--text-muted); color: var(--text-muted); padding: 4px 10px; border-radius: 4px; cursor: pointer; font-weight: bold; transition: var(--transition); }
+        .btn-lang:hover { border-color: var(--accent); color: var(--accent); }
+
+        /* --- HERO PROJECT --- */
+        .project-hero { padding-top: 140px; padding-bottom: 50px; text-align: center; }
+        .project-company { display: inline-block; background: var(--ai-light); color: var(--ai-dark); padding: 6px 15px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; margin-bottom: 20px; letter-spacing: 1px; border: 1px solid var(--ai-purple); }
+        .project-title { font-size: 3.2rem; font-weight: 800; color: var(--accent); line-height: 1.1; margin-bottom: 20px; }
+        .project-subtitle { font-size: 1.15rem; color: var(--text-muted); max-width: 800px; margin: 0 auto 30px; }
+
+        /* --- CONTENU TYPOGRAPHIE --- */
+        .content-block { margin-bottom: 60px; }
+        .content-block h2 { font-size: 1.8rem; color: var(--accent); margin-bottom: 25px; border-left: 4px solid var(--ai-purple); padding-left: 15px; }
+        .content-block p { margin-bottom: 15px; color: var(--text-muted); font-size: 1.05rem; }
+        .content-block ul { margin-bottom: 20px; padding-left: 20px; color: var(--text-muted); }
+        .content-block li { margin-bottom: 8px; }
+
+        /* --- LESS IS MORE VISUALS --- */
+        .quote-block { background: linear-gradient(135deg, var(--accent), var(--ai-dark)); color: white; padding: 40px; border-radius: 12px; margin: 30px 0; position: relative; box-shadow: var(--shadow-md); text-align: center; }
+        .quote-block i { font-size: 3rem; color: rgba(255,255,255,0.1); position: absolute; top: 20px; left: 30px; }
+        .quote-block p { font-size: 1.4rem; font-weight: 600; margin: 0; line-height: 1.4; position: relative; z-index: 2; color: white; font-style: italic; }
+
+        .success-grid { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 20px; }
+        .success-card { flex: 1; min-width: 280px; background: var(--bg-main); border: 1px solid var(--border); border-radius: 10px; padding: 25px; position: relative; overflow: hidden; }
+        .success-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: var(--accent); }
+        .success-card.personal::before { background: var(--success); }
+        .success-card h4 { font-size: 1.1rem; margin-bottom: 10px; color: var(--accent); display: flex; align-items: center; gap: 10px; }
+        .success-card p { font-size: 0.9rem; margin: 0; color: var(--text-muted); }
+        .success-card .highlight { font-weight: bold; color: var(--text-main); }
+
+        /* --- ARCHITECTURE & SOVEREIGNTY --- */
+        .arch-diagram { background: var(--bg-white); border: 1px solid var(--border); border-radius: 12px; padding: 30px; margin: 30px 0; box-shadow: var(--shadow-sm); }
+        .arch-diagram h3 { text-align: center; margin-bottom: 25px; color: var(--accent); }
+        .arch-flow { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 15px; }
+        .arch-node { flex: 1; min-width: 180px; text-align: center; padding: 20px; background: var(--bg-main); border: 1px solid var(--border); border-radius: 8px; position: relative; }
+        .arch-node i { font-size: 2.5rem; color: var(--ai-purple); margin-bottom: 10px; }
+        .arch-node h5 { margin-bottom: 5px; font-size: 1rem; color: var(--text-main); }
+        .arch-node p { font-size: 0.8rem; margin: 0; line-height: 1.4; color: var(--text-muted); }
+        .arch-arrow { font-size: 1.5rem; color: var(--text-muted); }
+
+        /* --- AI TERMINAL SIMULATOR --- */
+        .ai-simulator { background: var(--bg-white); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow-md); margin-top: 40px; display: flex; height: 650px; }
+        
+        .ai-sidebar { width: 340px; background: #f8fafc; border-right: 1px solid var(--border); padding: 20px; display: flex; flex-direction: column; gap: 15px; overflow-y: auto; }
+        .ai-sidebar h3 { font-size: 1rem; color: var(--accent); margin: 0 0 10px 0; display: flex; align-items: center; gap: 8px; }
+        .prompt-btn { background: white; border: 1px solid var(--border); color: var(--text-main); padding: 15px; border-radius: 8px; font-size: 0.85rem; font-weight: 500; cursor: pointer; transition: var(--transition); text-align: left; display: flex; flex-direction: column; gap: 8px; box-shadow: var(--shadow-sm); }
+        .prompt-btn:hover { border-color: var(--ai-purple); transform: translateY(-2px); box-shadow: var(--shadow-md); }
+        .prompt-btn.active { border-color: var(--ai-purple); background: var(--ai-light); color: var(--ai-dark); }
+        .prompt-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; box-shadow: none; }
+        .prompt-tag { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--ai-purple); }
+
+        .ai-main { flex: 1; display: flex; flex-direction: column; background: white; position: relative; }
+        .ai-header { background: white; padding: 15px 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; font-weight: 600; color: var(--accent); }
+        .ai-header-status { font-size: 0.8rem; color: var(--success); display: flex; align-items: center; gap: 5px; }
+        .ai-header-status i { font-size: 0.5rem; }
+        
+        .ai-chat-area { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 20px; scroll-behavior: smooth; }
+        
+        .chat-bubble { max-width: 85%; padding: 15px 20px; border-radius: 12px; font-size: 0.95rem; line-height: 1.5; position: relative; clear: both; animation: fadeIn 0.3s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .chat-user { align-self: flex-end; background: var(--accent); color: white; border-bottom-right-radius: 2px; }
+        .chat-ai { align-self: flex-start; background: var(--bg-main); border: 1px solid var(--border); color: var(--text-main); border-top-left-radius: 2px; width: 100%; }
+        
+        .ai-content-wrapper { display: flex; flex-direction: column; width: 100%; }
+        .ai-text { margin: 0 0 15px 0; }
+        
+        /* Elements générés dans le chat */
+        .ai-visual-container { width: 100%; background: white; border-radius: 8px; border: 1px solid var(--border); overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+        .ai-chart { height: 220px; width: 100%; padding: 15px;}
+        
+        /* Menu interactif dans le chat */
+        .chat-inner-tabs { display: flex; border-bottom: 1px solid var(--border); background: #f8fafc; }
+        .chat-inner-btn { flex: 1; background: none; border: none; padding: 10px; font-weight: 600; font-size: 0.85rem; color: var(--text-muted); cursor: pointer; transition: all 0.2s; }
+        .chat-inner-btn:hover { color: var(--text-main); background: #f1f5f9; }
+        .chat-inner-btn.active { color: var(--ai-purple); border-bottom: 2px solid var(--ai-purple); background: white; }
+        
+        .ai-map { height: 260px; width: 100%; z-index: 1; }
+        .ai-table-wrapper { padding: 10px; overflow-x: auto; }
+        .ai-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+        .ai-table th, .ai-table td { padding: 8px 10px; border-bottom: 1px solid var(--border); text-align: left; }
+        .ai-table th { background: var(--bg-main); color: var(--text-muted); font-weight: 600; text-transform: uppercase; font-size: 0.7rem; }
+        .ai-table tr:last-child td { border-bottom: none; }
+        .ai-badge { padding: 4px 8px; border-radius: 12px; font-size: 0.7rem; font-weight: bold; }
+
+        .typing-indicator { display: none; align-self: flex-start; background: var(--bg-main); border: 1px solid var(--border); padding: 15px 20px; border-radius: 20px; border-top-left-radius: 2px; margin-bottom: 20px; }
+        .typing-indicator span { display: inline-block; width: 6px; height: 6px; background-color: var(--text-muted); border-radius: 50%; margin: 0 2px; animation: bounce 1.3s linear infinite; }
+        .typing-indicator span:nth-child(2) { animation-delay: -1.1s; }
+        .typing-indicator span:nth-child(3) { animation-delay: -0.9s; }
+
+        /* --- FINAL BENEFITS GRID --- */
+        .benefits-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 25px; }
+        .benefit-card { background: var(--bg-white); border: 1px solid var(--border); border-radius: 12px; padding: 25px; text-align: center; box-shadow: var(--shadow-sm); transition: var(--transition); }
+        .benefit-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); border-color: var(--ai-purple); }
+        .benefit-icon { font-size: 2.2rem; color: var(--ai-purple); margin-bottom: 15px; }
+        .benefit-value { font-size: 2.5rem; font-weight: 800; color: var(--accent); margin-bottom: 5px; line-height: 1; }
+        .benefit-label { font-size: 0.9rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+
+        /* --- FOOTER --- */
+        .footer { text-align: center; padding: 30px; border-top: 1px solid var(--border); color: var(--text-muted); margin-top: 40px; }
+        .reveal { opacity: 1; transform: translateY(0); transition: all 0.6s ease-out; }
+        .js-hidden { opacity: 0; transform: translateY(20px); }
+
+        @media (max-width: 850px) {
+            .ai-simulator { flex-direction: column; height: 900px; }
+            .ai-sidebar { width: 100%; height: 220px; border-right: none; border-bottom: 1px solid var(--border); flex-direction: row; overflow-x: auto; align-items: flex-start; }
+            .prompt-btn { min-width: 260px; height: 100%; }
+            .arch-arrow { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-group">
+                <a href="index.html" class="back-btn" data-fr="<i class='fa-solid fa-arrow-left'></i> Retour" data-en="<i class='fa-solid fa-arrow-left'></i> Back"><i class="fa-solid fa-arrow-left"></i> Retour</a>
+            </div>
+            <div class="nav-group">
+                <a href="index.html" class="logo">C. PROHET</a>
+                <button id="lang-toggle" class="btn-lang">EN</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="disclaimer-banner">
+        <i class="fa-solid fa-lightbulb"></i> 
+        <span data-fr="Cette page expose ma philosophie Data et démontre l'intégration technique d'un Agent IA via des données extrapolées." data-en="This page outlines my Data philosophy and demonstrates the technical integration of an AI Agent using extrapolated data.">Cette page expose ma philosophie Data et démontre l'intégration technique d'un Agent IA via des données extrapolées.</span>
+    </div>
+
+    <main>
+        <section class="project-hero">
+            <div class="container reveal">
+                <span class="project-company">Vision Stratégique & Data</span>
+                <h1 class="project-title" data-fr="Du Dashboard à l'Agent IA (NLP)" data-en="From Dashboard to AI Agent (NLP)">Du Dashboard à l'Agent IA (NLP)</h1>
+                <p class="project-subtitle" data-fr="Mettre fin au &quot;Cimetière des Dashboards&quot;. Comment structurer la donnée brute pour créer une Supply Chain prédictive, interrogeable en langage naturel, le tout dans un environnement souverain." data-en="Ending the &quot;Dashboard Graveyard&quot;. How to structure raw data to create a predictive Supply Chain queryable in natural language, all in a sovereign environment.">Mettre fin au "Cimetière des Dashboards". Comment structurer la donnée brute pour créer une Supply Chain prédictive, interrogeable en langage naturel, le tout dans un environnement souverain.</p>
+                
+                <div class="project-meta">
+                    <div class="meta-item">
+                        <span class="meta-label" data-fr="Philosophie" data-en="Philosophy">Philosophie</span>
+                        <span class="meta-value">"Less is More" & RAG</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label" data-fr="Technologies" data-en="Technologies">Technologies</span>
+                        <span class="meta-value">SQL, Power BI, LLM (Mistral)</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label" data-fr="Enjeu Business" data-en="Business Challenge">Enjeu Business</span>
+                        <span class="meta-value" data-fr="Démocratisation & Souveraineté" data-en="Democratization & Sovereignty">Démocratisation & Souveraineté</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section bg-white">
+            <div class="container">
+                
+                <div class="content-block reveal">
+                    <h2 data-fr="1. Le Constat : Le &quot;Cimetière des Dashboards&quot;" data-en="1. The Observation: The &quot;Dashboard Graveyard&quot;">1. Le Constat : Le "Cimetière des Dashboards"</h2>
+                    <p data-fr="En Supply Chain, la donnée est le nerf de la guerre. Pour la maîtriser, l'industrie a créé des monstres : des rapports Power BI tentaculaires avec 50 indicateurs et des dizaines de filtres croisés. Le résultat ? Une <strong>KPI Fatigue</strong> généralisée. Lors d'un changement de management, le savoir se perd, personne n'ose modifier l'outil par peur de casser une requête SQL, et l'entreprise se retrouve avec un &quot;cimetière de tableaux de bord&quot; que plus personne ne consulte." data-en="In Supply Chain, data is the sinews of war. To master it, the industry has created monsters: sprawling Power BI reports with 50 indicators and dozens of cross-filters. The result? Generalized <strong>KPI Fatigue</strong>. During a management change, knowledge is lost, no one dares modify the tool for fear of breaking a SQL query, and the company ends up with a &quot;dashboard graveyard&quot; that no one consults anymore.">En Supply Chain, la donnée est le nerf de la guerre. Pour la maîtriser, l'industrie a créé des monstres : des rapports Power BI tentaculaires avec 50 indicateurs et des dizaines de filtres croisés. Le résultat ? Une <strong>KPI Fatigue</strong> généralisée. Lors d'un changement de management, le savoir se perd, personne n'ose modifier l'outil par peur de casser une requête SQL, et l'entreprise se retrouve avec un "cimetière de tableaux de bord" que plus personne ne consulte.</p>
+                    
+                    <div class="quote-block">
+                        <i class="fa-solid fa-quote-left"></i>
+                        <p data-fr="&quot;Un tableau de bord complexe est l'aveu d'une donnée mal maîtrisée. L'avenir n'est plus à la création de vues statiques figées, mais à l'interrogation dynamique d'un Data Lake par le langage naturel.&quot;" data-en="&quot;A complex dashboard is the admission of poorly mastered data. The future is no longer about creating frozen static views, but about dynamically querying a Data Lake using natural language.&quot;">"Un tableau de bord complexe est l'aveu d'une donnée mal maîtrisée. L'avenir n'est plus à la création de vues statiques figées, mais à l'interrogation dynamique d'un Data Lake par le langage naturel."</p>
+                    </div>
+
+                    <h3 style="margin-top:30px; margin-bottom: 15px; color:var(--accent);" data-fr="De la Théorie à l'Application (Cas d'école & Succès Personnel) :" data-en="From Theory to Application (Textbook Cases & Personal Success):">De la Théorie à l'Application (Cas d'école & Succès Personnel) :</h3>
+                    <div class="success-grid">
+                        <div class="success-card">
+                            <h4><i class="fa-brands fa-amazon"></i> Amazon & Apple</h4>
+                            <p data-fr="Ces géants n'utilisent qu'une seule <em>North Star Metric</em> par département (ex: le <span class='highlight'>Order Defect Rate</span> chez Amazon ou le <span class='highlight'>NPS</span> chez Apple). Un KPI unique dicte l'action. 50 KPIs dictent la paralysie." data-en="These giants use only one <em>North Star Metric</em> per department (e.g., the <span class='highlight'>Order Defect Rate</span> at Amazon or the <span class='highlight'>NPS</span> at Apple). A single KPI dictates action. 50 KPIs dictate paralysis.">Ces géants n'utilisent qu'une seule <em>North Star Metric</em> par département (ex: le <span class='highlight'>Order Defect Rate</span> chez Amazon ou le <span class='highlight'>NPS</span> chez Apple). Un KPI unique dicte l'action. 50 KPIs dictent la paralysie.</p>
+                        </div>
+                        <div class="success-card personal">
+                            <h4><i class="fa-solid fa-user-check"></i> Mon Application Concrète</h4>
+                            <p data-fr="J'ai appliqué cette philosophie &quot;Less is More&quot; sur mes projets Power BI / Pivotal. En remplaçant des dizaines de pages de rapports par un unique cockpit décisionnel de 4 KPIs vitaux, j'ai <span class='highlight'>divisé par deux les temps de réunion</span> et rendu l'adhésion des managers immédiate." data-en="I applied this &quot;Less is More&quot; philosophy on my Power BI / Pivotal projects. By replacing dozens of report pages with a single decision cockpit of 4 vital KPIs, I <span class='highlight'>halved meeting times</span> and made manager buy-in immediate.">J'ai appliqué cette philosophie "Less is More" sur mes projets Power BI / Pivotal. En remplaçant des dizaines de pages de rapports par un unique cockpit décisionnel de 4 KPIs vitaux, j'ai <span class='highlight'>divisé par deux les temps de réunion</span> et rendu l'adhésion des managers immédiate.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-block reveal">
+                    <h2 data-fr="2. Architecture : IA Souveraine & Sécurité (RAG)" data-en="2. Architecture: Sovereign AI & Security (RAG)">2. Architecture : IA Souveraine & Sécurité (RAG)</h2>
+                    <p data-fr="Déléguer l'analyse de données à une IA est l'avenir. Mais dans des secteurs critiques (Défense, Aéronautique), il est impensable d'envoyer nos bases de données clients vers les serveurs cloud d'OpenAI (ChatGPT) à cause du <strong>Cloud Act américain</strong> et du secret industriel." data-en="Delegating data analysis to an AI is the future. But in critical sectors (Defense, Aeronautics), it is unthinkable to send our customer databases to OpenAI's cloud servers (ChatGPT) because of the <strong>US Cloud Act</strong> and industrial secrecy.">Déléguer l'analyse de données à une IA est l'avenir. Mais dans des secteurs critiques (Défense, Aéronautique), il est impensable d'envoyer nos bases de données clients vers les serveurs cloud d'OpenAI (ChatGPT) à cause du <strong>Cloud Act américain</strong> et du secret industriel.</p>
+                    
+                    <p data-fr="La solution technique que je préconise s'appuie sur une architecture <strong>On-Premise (Air-Gapped)</strong> utilisant la méthode <strong>RAG (Retrieval-Augmented Generation)</strong> :" data-en="The technical solution I recommend is based on an <strong>On-Premise (Air-Gapped)</strong> architecture using the <strong>RAG (Retrieval-Augmented Generation)</strong> method:">La solution technique que je préconise s'appuie sur une architecture <strong>On-Premise (Air-Gapped)</strong> utilisant la méthode <strong>RAG (Retrieval-Augmented Generation)</strong> :</p>
+                    
+                    <div class="arch-diagram">
+                        <h3 data-fr="Flux de traitement sécurisé (RAG local)" data-en="Secure processing flow (Local RAG)">Flux de traitement sécurisé (RAG local)</h3>
+                        <div class="arch-flow">
+                            <div class="arch-node">
+                                <i class="fa-solid fa-database" style="color: var(--text-main);"></i>
+                                <h5>1. Data Lake (ERP)</h5>
+                                <p data-fr="Données brutes SAP / Pivotal." data-en="Raw SAP / Pivotal data.">Données brutes SAP / Pivotal.</p>
+                            </div>
+                            <div class="arch-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+                            <div class="arch-node">
+                                <i class="fa-solid fa-cubes-stacked" style="color: var(--warning);"></i>
+                                <h5>2. Base Vectorielle</h5>
+                                <p data-fr="Indexation des données pour recherche sémantique." data-en="Data indexing for semantic search.">Indexation des données pour recherche sémantique.</p>
+                            </div>
+                            <div class="arch-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+                            <div class="arch-node" style="border-color: var(--success);">
+                                <i class="fa-solid fa-microchip" style="color: var(--success);"></i>
+                                <h5>3. LLM Souverain</h5>
+                                <p data-fr="Modèle open-source (ex: Mistral 8x7B) hébergé en interne." data-en="Open-source model (e.g., Mistral 8x7B) hosted internally.">Modèle open-source (ex: Mistral 8x7B) hébergé en interne.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <p data-fr="Cette méthode garantit que l'IA ne génère pas d'hallucinations (elle se base strictement sur la base vectorielle interne) et qu'aucune donnée ne fuite sur internet (100% Souverain)." data-en="This method guarantees that the AI does not generate hallucinations (it is strictly based on the internal vector database) and that no data leaks onto the internet (100% Sovereign).">Cette méthode garantit que l'IA ne génère pas d'hallucinations (elle se base strictement sur la base vectorielle interne) et qu'aucune donnée ne fuite sur internet (100% Souverain).</p>
+                </div>
+
+                <div class="content-block reveal">
+                    <h2 data-fr="3. Démonstrateur : L'Agent IA Logistique (Copilot)" data-en="3. Demonstrator: The Logistics AI Agent (Copilot)">3. Démonstrateur : L'Agent IA Logistique (Copilot)</h2>
+                    <p data-fr="Testez l'expérience utilisateur finale. Un manager pose sa question en langage naturel. L'IA génère la requête SQL, interroge la base, et offre le choix de la visualisation (Graphique, Carte, ou Tableau de données) de façon dynamique." data-en="Test the final user experience. A manager asks their question in natural language. The AI generates the SQL query, interrogates the database, and offers the choice of visualization (Chart, Map, or Data Table) dynamically.">Testez l'expérience utilisateur finale. Un manager pose sa question en langage naturel. L'IA génère la requête SQL, interroge la base, et offre le choix de la visualisation (Graphique, Carte, ou Tableau de données) de façon dynamique.</p>
+                    <p style="font-weight: 600; color: var(--ai-dark);" data-fr="👇 Cliquez sur les requêtes ci-dessous pour interagir avec le démonstrateur." data-en="👇 Click on the queries below to interact with the demonstrator.">👇 Cliquez sur les requêtes ci-dessous pour interagir avec le démonstrateur.</p>
+                    
+                    <div class="ai-simulator">
+                        
+                        <div class="ai-sidebar">
+                            <h3 data-fr="Requêtes Disponibles" data-en="Available Queries">Requêtes Disponibles</h3>
+                            
+                            <button class="prompt-btn" onclick="triggerAI(1, this)" id="btn-ai-1">
+                                <span class="prompt-tag" data-fr="Série Temporelle" data-en="Time Series">Série Temporelle</span>
+                                <span data-fr="« Génère l'évolution de nos performances (OTD) sur le Q3. »" data-en="« Generate the evolution of our performances (OTD) over Q3. »">« Génère l'évolution de nos performances (OTD) sur le Q3. »</span>
+                            </button>
+
+                            <button class="prompt-btn" onclick="triggerAI(2, this)" id="btn-ai-2">
+                                <span class="prompt-tag" data-fr="Comparatif Fournisseurs" data-en="Supplier Benchmark">Comparatif Fournisseurs</span>
+                                <span data-fr="« Compare DHL, FedEx et UPS (Coût, Délai, Carbone, Fiabilité). »" data-en="« Compare DHL, FedEx and UPS (Cost, Delay, Carbon, Reliability). »">« Compare DHL, FedEx et UPS (Coût, Délai, Carbone, Fiabilité). »</span>
+                            </button>
+
+                            <button class="prompt-btn" onclick="triggerAI(3, this)" id="btn-ai-3">
+                                <span class="prompt-tag" data-fr="Tracking & Anomalies" data-en="Tracking & Anomalies">Tracking & Anomalies</span>
+                                <span data-fr="« Identifie les conteneurs maritimes immobilisés (> 30 jours). »" data-en="« Identify maritime containers immobilized (> 30 days). »">« Identifie les conteneurs maritimes immobilisés (> 30 jours). »</span>
+                            </button>
+
+                            <button class="prompt-btn" onclick="triggerAI(4, this)" id="btn-ai-4">
+                                <span class="prompt-tag" data-fr="Analyse Financière" data-en="Financial Analysis">Analyse Financière</span>
+                                <span data-fr="« Affiche la répartition du CA de nos 5 plus gros clients Asie. »" data-en="« Show the revenue breakdown of our top 5 clients in Asia. »">« Affiche la répartition du CA de nos 5 plus gros clients Asie. »</span>
+                            </button>
+                        </div>
+
+                        <div class="ai-main">
+                            <div class="ai-header">
+                                <div><i class="fa-solid fa-sparkles" style="color: var(--ai-purple); margin-right: 8px;"></i> SC_Copilot_Mistral_Local</div>
+                                <div class="ai-header-status"><i class="fa-solid fa-circle"></i> <span data-fr="Data Lake Connecté" data-en="Data Lake Connected">Data Lake Connecté</span></div>
+                            </div>
+                            
+                            <div class="ai-chat-area" id="chat-area">
+                                <div class="chat-bubble chat-ai" data-fr="Bonjour Cédric. Je suis connecté au Data Lake via protocole RAG. Je peux modéliser vos données de manière sécurisée. Que souhaitez-vous analyser ?" data-en="Hello Cédric. I am connected to the Data Lake via RAG protocol. I can model your data securely. What would you like to analyze?">
+                                    Bonjour Cédric. Je suis connecté au Data Lake via protocole RAG. Je peux modéliser vos données de manière sécurisée. Que souhaitez-vous analyser ?
+                                </div>
+                            </div>
+                            
+                            <div class="typing-indicator" id="typing-indicator" style="position: absolute; bottom: 0; left: 20px; border-bottom-left-radius: 0; z-index: 10;">
+                                <span></span><span></span><span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-block reveal" style="margin-top: 50px;">
+                    <h2 data-fr="4. Conclusion : La Donnée est le Nerf de la Guerre" data-en="4. Conclusion: Data is the Sinews of War">4. Conclusion : La Donnée est le Nerf de la Guerre</h2>
+                    
+                    <div class="quote-block" style="background: linear-gradient(135deg, var(--ai-dark), var(--accent));">
+                        <i class="fa-solid fa-database"></i>
+                        <p data-fr="&quot;La donnée est le nerf de la guerre. Les entreprises qui survivront demain ne sont pas celles qui créent le plus de Dashboards, mais celles qui ont structuré un Data Lake lisible et interrogeable par l'IA.&quot;" data-en="&quot;Data is the sinews of war. The companies that will survive tomorrow are not those creating the most Dashboards, but those that have structured a readable Data Lake queryable by AI.&quot;">"La donnée est le nerf de la guerre. Les entreprises qui survivront demain ne sont pas celles qui créent le plus de Dashboards, mais celles qui ont structuré un Data Lake lisible et interrogeable par l'IA."</p>
+                    </div>
+
+                    <p data-fr="En passant d'une logique de &quot;Créateur de Dashboards&quot; à &quot;Architecte de Données&quot;, l'impact sur l'entreprise est immédiat :" data-en="By shifting from a &quot;Dashboard Creator&quot; logic to a &quot;Data Architect&quot;, the impact on the company is immediate:">En passant d'une logique de "Créateur de Dashboards" à "Architecte de Données", l'impact sur l'entreprise est immédiat :</p>
+                    
+                    <div class="benefits-grid">
+                        <div class="benefit-card">
+                            <i class="fa-solid fa-users benefit-icon"></i>
+                            <div class="benefit-value">+<span class="counter" data-target="300">0</span>%</div>
+                            <div class="benefit-label" data-fr="Adoption des Outils" data-en="Tool Adoption">Adoption des Outils</div>
+                            <p style="font-size: 0.8rem; margin-top: 10px; color: var(--text-muted);" data-fr="L'interface de tchat brise la barrière technique pour les opérationnels." data-en="The chat interface breaks the technical barrier for operational staff.">L'interface de tchat brise la barrière technique pour les opérationnels.</p>
+                        </div>
+                        <div class="benefit-card">
+                            <i class="fa-solid fa-clock-rotate-left benefit-icon"></i>
+                            <div class="benefit-value">-<span class="counter" data-target="90">0</span>%</div>
+                            <div class="benefit-label" data-fr="Temps d'Analyse" data-en="Analysis Time">Temps d'Analyse</div>
+                            <p style="font-size: 0.8rem; margin-top: 10px; color: var(--text-muted);" data-fr="Fini les réunions de 2 heures pour extraire et croiser un indicateur." data-en="No more 2-hour meetings to extract and cross-reference an indicator.">Fini les réunions de 2 heures pour extraire et croiser un indicateur.</p>
+                        </div>
+                        <div class="benefit-card">
+                            <i class="fa-solid fa-scale-balanced benefit-icon"></i>
+                            <div class="benefit-value">x<span class="counter" data-target="3">0</span></div>
+                            <div class="benefit-label" data-fr="ROI Décisionnel" data-en="Decision ROI">ROI Décisionnel</div>
+                            <p style="font-size: 0.8rem; margin-top: 10px; color: var(--text-muted);" data-fr="Arguments chiffrés instantanés pour les négociations de contrats transport (SLA)." data-en="Instant quantitative arguments for transport contract negotiations (SLA).">Arguments chiffrés instantanés pour les négociations de contrats transport (SLA).</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p data-fr="© 2026 Cédric Prohet. Portfolio professionnel." data-en="© 2026 Cédric Prohet. Professional portfolio.">© 2026 Cédric Prohet. Portfolio professionnel.</p>
+        </div>
+    </footer>
+
+    <script>
+        // --- TRADUCTION ---
+        const langBtn = document.getElementById('lang-toggle');
+        const getLang = () => langBtn.innerText === 'EN' ? 'fr' : 'en';
+
+        langBtn.addEventListener('click', () => {
+            const currentLang = langBtn.innerText === 'EN' ? 'en' : 'fr';
+            langBtn.innerText = currentLang === 'fr' ? 'EN' : 'FR';
+
+            const elements = document.querySelectorAll('[data-fr][data-en]');
+            elements.forEach(el => {
+                el.innerHTML = el.getAttribute(`data-${currentLang}`);
+            });
+        });
+
+        // --- COMPTEURS ANIMATION ---
+        const animateCounters = () => {
+            const counters = document.querySelectorAll('.counter');
+            const speed = 100;
+            counters.forEach(counter => {
+                const targetAttr = counter.getAttribute('data-target');
+                if(!targetAttr) return;
+                
+                const target = parseFloat(targetAttr);
+                const count = parseFloat(counter.innerText) || 0;
+                const inc = target / speed;
+                
+                if (count < target) {
+                    counter.innerText = Math.ceil(count + inc);
+                    setTimeout(() => animateCounters(), 20);
+                } else {
+                    counter.innerText = target;
+                }
+            });
+        };
+
+        // --- SIMULATEUR IA COMPLET ---
+        let isSimulating = false;
+        let interactionCount = 0;
+
+        // Fonction de bascule générique (Graphique/Carte vs Tableau)
+        window.toggleChatView = function(viewType, uniqueId) {
+            const chartView = document.getElementById(`${uniqueId}-chart-view`);
+            const tableView = document.getElementById(`${uniqueId}-table-view`);
+            const btnChart = document.getElementById(`btn-chart-${uniqueId}`);
+            const btnTable = document.getElementById(`btn-table-${uniqueId}`);
+
+            if(viewType === 'chart' || viewType === 'map') {
+                chartView.style.display = 'block';
+                tableView.style.display = 'none';
+                btnChart.classList.add('active');
+                btnTable.classList.remove('active');
+                
+                // Redessiner la map Leaflet pour éviter le bug de taille après un display:none
+                if(viewType === 'map' && window[`map_instance_${uniqueId}`]) {
+                    setTimeout(() => { window[`map_instance_${uniqueId}`].invalidateSize(); }, 100);
+                }
+            } else {
+                chartView.style.display = 'none';
+                tableView.style.display = 'block';
+                btnChart.classList.remove('active');
+                btnTable.classList.add('active');
+            }
+        };
+
+        function triggerAI(scenarioId, btnElement) {
+            if(isSimulating || btnElement.disabled) return;
+            
+            isSimulating = true;
+            btnElement.classList.add('active');
+            btnElement.disabled = true;
+            interactionCount++;
+
+            const chatArea = document.getElementById('chat-area');
+            const indicator = document.getElementById('typing-indicator');
+
+            // 1. Définir le texte utilisateur
+            let promptFR = "", promptEN = "";
+            switch(scenarioId) {
+                case 1: 
+                    promptFR = "Génère l'évolution de nos performances (OTD) sur le Q3."; 
+                    promptEN = "Generate the evolution of our performances (OTD) over Q3."; break;
+                case 2: 
+                    promptFR = "Compare DHL, FedEx et UPS (Coût, Délai, Carbone, Fiabilité)."; 
+                    promptEN = "Compare DHL, FedEx and UPS (Cost, Delay, Carbon, Reliability)."; break;
+                case 3: 
+                    promptFR = "Identifie les conteneurs maritimes immobilisés (> 30 jours)."; 
+                    promptEN = "Identify maritime containers immobilized (> 30 days)."; break;
+                case 4: 
+                    promptFR = "Affiche la répartition du CA de nos 5 plus gros clients Asie."; 
+                    promptEN = "Show the revenue breakdown of our top 5 clients in Asia."; break;
+            }
+
+            // 2. Ajouter la bulle Utilisateur
+            const userMsg = document.createElement('div');
+            userMsg.className = 'chat-bubble chat-user';
+            userMsg.setAttribute('data-fr', promptFR);
+            userMsg.setAttribute('data-en', promptEN);
+            userMsg.innerHTML = getLang() === 'fr' ? promptFR : promptEN;
+            chatArea.appendChild(userMsg);
+
+            // 3. Afficher l'indicateur
+            indicator.style.display = 'block';
+            chatArea.scrollTop = chatArea.scrollHeight;
+
+            // 4. Simuler l'attente de l'IA
+            setTimeout(() => {
+                indicator.style.display = 'none';
+
+                const aiMsg = document.createElement('div');
+                aiMsg.className = 'chat-bubble chat-ai';
+                
+                let aiTextFR = "", aiTextEN = "", visualHTML = "";
+                const uniqueId = `ai-visual-${interactionCount}`;
+
+                if (scenarioId === 1) { // LINE CHART + TABLE
+                    aiTextFR = "Voici la courbe extraite. 💡 <strong>Insight IA :</strong> La chute au mois d'Août est corrélée à une grève de manutention au port de Singapour.";
+                    aiTextEN = "Here is the extracted curve. 💡 <strong>AI Insight:</strong> The drop in August is correlated to a handling strike at the Port of Singapore.";
+                    
+                    visualHTML = `
+                        <div class="ai-visual-container" style="padding: 0;">
+                            <div class="chat-inner-tabs">
+                                <button id="btn-chart-${uniqueId}" class="chat-inner-btn active" onclick="toggleChatView('chart', '${uniqueId}')"><i class="fa-solid fa-chart-line"></i> Vue Graphique</button>
+                                <button id="btn-table-${uniqueId}" class="chat-inner-btn" onclick="toggleChatView('table', '${uniqueId}')"><i class="fa-solid fa-table-list"></i> Table de Données</button>
+                            </div>
+                            <div id="${uniqueId}-chart-view" style="display:block;">
+                                <div class="ai-chart"><canvas id="${uniqueId}"></canvas></div>
+                            </div>
+                            <div id="${uniqueId}-table-view" style="display:none; padding:15px;" class="ai-table-wrapper">
+                                <table class="ai-table">
+                                    <tr><th>Mois</th><th>OTD (%)</th><th>Volume (EVP)</th></tr>
+                                    <tr><td>Juin</td><td>96%</td><td>1 245</td></tr>
+                                    <tr><td>Juillet</td><td>95%</td><td>1 310</td></tr>
+                                    <tr><td>Août</td><td><span style="color:var(--danger); font-weight:bold;">82%</span></td><td>980</td></tr>
+                                    <tr><td>Septembre</td><td>94%</td><td>1 405</td></tr>
+                                    <tr><td>Octobre</td><td>97%</td><td>1 520</td></tr>
+                                </table>
+                            </div>
+                        </div>`;
+                
+                } else if (scenarioId === 2) { // RADAR CHART + TABLE
+                    aiTextFR = "Voici l'analyse multicritères. 📌 <strong>Recommandation :</strong> UPS offre le meilleur ratio Délai/Carbone, mais DHL reste 15% plus compétitif sur le Coût global.";
+                    aiTextEN = "Here is the multi-criteria analysis. 📌 <strong>Recommendation:</strong> UPS offers the best Delay/Carbon ratio, but DHL remains 15% more competitive on overall Cost.";
+                    
+                    visualHTML = `
+                        <div class="ai-visual-container" style="padding: 0;">
+                            <div class="chat-inner-tabs">
+                                <button id="btn-chart-${uniqueId}" class="chat-inner-btn active" onclick="toggleChatView('chart', '${uniqueId}')"><i class="fa-solid fa-chart-pie"></i> Vue Radar</button>
+                                <button id="btn-table-${uniqueId}" class="chat-inner-btn" onclick="toggleChatView('table', '${uniqueId}')"><i class="fa-solid fa-table-list"></i> Matrice de Scores</button>
+                            </div>
+                            <div id="${uniqueId}-chart-view" style="display:block;">
+                                <div class="ai-chart"><canvas id="${uniqueId}"></canvas></div>
+                            </div>
+                            <div id="${uniqueId}-table-view" style="display:none; padding:15px;" class="ai-table-wrapper">
+                                <table class="ai-table">
+                                    <tr><th>Fournisseur</th><th>Coût (/100)</th><th>Rapidité (/100)</th><th>Carbone (/100)</th></tr>
+                                    <tr><td><strong>DHL</strong></td><td>90</td><td>70</td><td>60</td></tr>
+                                    <tr><td><strong>FedEx</strong></td><td>70</td><td>95</td><td>50</td></tr>
+                                    <tr><td><strong>UPS</strong></td><td>75</td><td>80</td><td><span style="color:var(--success); font-weight:bold;">90</span></td></tr>
+                                </table>
+                            </div>
+                        </div>`;
+                
+                } else if (scenarioId === 3) { // MAP + TABLE
+                    aiTextFR = "J'ai identifié 3 expéditions maritimes critiques (Dwell Time > 30 jours). Vous pouvez basculer entre la vue géographique et les données tabulaires ci-dessous :";
+                    aiTextEN = "I identified 3 critical maritime shipments (Dwell Time > 30 days). You can toggle between the geographic view and the tabular data below:";
+                    
+                    visualHTML = `
+                        <div class="ai-visual-container" style="padding: 0;">
+                            <div class="chat-inner-tabs">
+                                <button id="btn-map-${uniqueId}" class="chat-inner-btn active" onclick="toggleChatView('map', '${uniqueId}')"><i class="fa-solid fa-map-location-dot"></i> Carte des Anomalies</button>
+                                <button id="btn-table-${uniqueId}" class="chat-inner-btn" onclick="toggleChatView('table', '${uniqueId}')"><i class="fa-solid fa-table-list"></i> Table de Données</button>
+                            </div>
+                            
+                            <div id="${uniqueId}-chart-view" style="display:block;">
+                                <div id="${uniqueId}-map" class="ai-map"></div>
+                            </div>
+                            
+                            <div id="${uniqueId}-table-view" style="display:none; padding:15px;" class="ai-table-wrapper">
+                                <table class="ai-table">
+                                    <tr><th>N° Conteneur</th><th>Localisation</th><th>Dwell Time</th><th>Statut</th></tr>
+                                    <tr><td><strong>CTN-4458</strong></td><td>Port de Shanghai</td><td>34 Jours</td><td><span class="ai-badge" style="background:#fef2f2; color:var(--danger);">Bloqué Douane</span></td></tr>
+                                    <tr><td><strong>CTN-1120</strong></td><td>Canal de Suez</td><td>31 Jours</td><td><span class="ai-badge" style="background:#fff7ed; color:var(--warning);">En attente (Congestion)</span></td></tr>
+                                    <tr><td><strong>CTN-9982</strong></td><td>Los Angeles (Port)</td><td>42 Jours</td><td><span class="ai-badge" style="background:#fef2f2; color:var(--danger);">Inspection</span></td></tr>
+                                </table>
+                            </div>
+                        </div>`;
+                
+                } else if (scenarioId === 4) { // DOUGHNUT CHART + TABLE
+                    aiTextFR = "Voici la répartition du CA (en M€) pour le Top 5 Asie, générée en temps réel depuis la table des ventes SQL :";
+                    aiTextEN = "Here is the revenue breakdown (in M€) for the Top 5 Asia, generated in real-time from the SQL sales table:";
+                    
+                    visualHTML = `
+                        <div class="ai-visual-container" style="padding: 0;">
+                            <div class="chat-inner-tabs">
+                                <button id="btn-chart-${uniqueId}" class="chat-inner-btn active" onclick="toggleChatView('chart', '${uniqueId}')"><i class="fa-solid fa-chart-pie"></i> Vue Graphique</button>
+                                <button id="btn-table-${uniqueId}" class="chat-inner-btn" onclick="toggleChatView('table', '${uniqueId}')"><i class="fa-solid fa-table-list"></i> Table de Données</button>
+                            </div>
+                            <div id="${uniqueId}-chart-view" style="display:block;">
+                                <div class="ai-chart"><canvas id="${uniqueId}"></canvas></div>
+                            </div>
+                            <div id="${uniqueId}-table-view" style="display:none; padding:15px;" class="ai-table-wrapper">
+                                <table class="ai-table">
+                                    <tr><th>Client / Marché</th><th>CA Généré (M€)</th><th>% du Total Asie</th></tr>
+                                    <tr><td><strong>Chine</strong></td><td>45 M€</td><td>45%</td></tr>
+                                    <tr><td><strong>Japon</strong></td><td>25 M€</td><td>25%</td></tr>
+                                    <tr><td><strong>Corée du Sud</strong></td><td>15 M€</td><td>15%</td></tr>
+                                    <tr><td><strong>Singapour</strong></td><td>10 M€</td><td>10%</td></tr>
+                                    <tr><td><strong>Inde</strong></td><td>5 M€</td><td>5%</td></tr>
+                                </table>
+                            </div>
+                        </div>`;
+                }
+
+                const displayText = getLang() === 'fr' ? aiTextFR : aiTextEN;
+                aiMsg.innerHTML = `<div class="ai-content-wrapper"><p class="ai-text" data-fr="${aiTextFR}" data-en="${aiTextEN}">${displayText}</p>${visualHTML}</div>`;
+                chatArea.appendChild(aiMsg);
+                
+                chatArea.scrollTop = chatArea.scrollHeight;
+
+                // 5. Instancier le JS (Chart ou Map)
+                setTimeout(() => {
+                    if(scenarioId === 1) {
+                        new Chart(document.getElementById(uniqueId).getContext('2d'), {
+                            type: 'line',
+                            data: {
+                                labels: ['Juin', 'Juil', 'Août', 'Sept', 'Oct'],
+                                datasets: [{
+                                    label: 'OTD (%)', data: [96, 95, 82, 94, 97],
+                                    borderColor: '#0f172a', backgroundColor: 'rgba(15, 23, 42, 0.1)', tension: 0.3, fill: true, borderWidth: 3
+                                }]
+                            },
+                            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: {display: false} }, scales: { y: { min: 70, max: 100 } } }
+                        });
+                    } 
+                    else if (scenarioId === 2) {
+                        new Chart(document.getElementById(uniqueId).getContext('2d'), {
+                            type: 'radar',
+                            data: {
+                                labels: ['Coût', 'Rapidité', 'Empreinte Carbone', 'Fiabilité', 'Couverture'],
+                                datasets: [
+                                    { label: 'DHL', data: [90, 70, 60, 85, 95], backgroundColor: 'rgba(245, 158, 11, 0.2)', borderColor: 'rgba(245, 158, 11, 1)', borderWidth: 2 },
+                                    { label: 'FedEx', data: [70, 95, 50, 90, 85], backgroundColor: 'rgba(59, 130, 246, 0.2)', borderColor: 'rgba(59, 130, 246, 1)', borderWidth: 2 },
+                                    { label: 'UPS', data: [75, 80, 90, 80, 80], backgroundColor: 'rgba(16, 185, 129, 0.2)', borderColor: 'rgba(16, 185, 129, 1)', borderWidth: 2 }
+                                ]
+                            },
+                            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } }, scales: { r: { ticks: {display: false} } } }
+                        });
+                    }
+                    else if (scenarioId === 3) {
+                        const mapId = `${uniqueId}-map`;
+                        const anomalyMap = L.map(mapId, {zoomControl: false}).setView([30.0, 0.0], 1);
+                        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png').addTo(anomalyMap);
+                        
+                        const alertIcon = L.divIcon({ className: 'custom-icon', html: '<div style="background:#ef4444; width:12px; height:12px; border-radius:50%; border:2px solid white; box-shadow: 0 0 10px rgba(239, 68, 68, 0.8); animation: pulse 1.5s infinite;"></div>', iconSize: [16,16] });
+                        
+                        L.marker([31.2, 121.5], {icon: alertIcon}).addTo(anomalyMap).bindTooltip("Shanghai (CTN-4458) - 34 Jours");
+                        L.marker([30.5, 32.3], {icon: alertIcon}).addTo(anomalyMap).bindTooltip("Suez (CTN-1120) - 31 Jours");
+                        L.marker([34.0, -118.2], {icon: alertIcon}).addTo(anomalyMap).bindTooltip("Los Angeles (CTN-9982) - 42 Jours");
+
+                        window[`map_instance_${uniqueId}`] = anomalyMap; 
+                    } 
+                    else if (scenarioId === 4) {
+                        new Chart(document.getElementById(uniqueId).getContext('2d'), {
+                            type: 'doughnut',
+                            data: {
+                                labels: ['Chine', 'Japon', 'Corée du Sud', 'Singapour', 'Inde'],
+                                datasets: [{ data: [45, 25, 15, 10, 5], backgroundColor: ['#5b21b6', '#8b5cf6', '#a78bfa', '#ddd6fe', '#f1f5f9'], borderWidth: 0 }]
+                            },
+                            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right' } } }
+                        });
+                    }
+
+                    chatArea.scrollTop = chatArea.scrollHeight;
+                    isSimulating = false;
+
+                }, 100);
+
+            }, 1800);
+        }
+
+        // --- ANIMATIONS REVEAL ET COMPTEURS ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const reveals = document.querySelectorAll('.reveal');
+            reveals.forEach(el => el.classList.add('js-hidden'));
+
+            let countersAnimated = false;
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.remove('js-hidden');
+                        
+                        // Déclenchement des compteurs pour la section des bénéfices
+                        if(entry.target.querySelector('.benefits-grid') && !countersAnimated) {
+                            animateCounters();
+                            countersAnimated = true;
+                        }
+
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1, rootMargin: "0px 0px -20px 0px" });
+
+            reveals.forEach(reveal => observer.observe(reveal));
+        });
+    </script>
+</body>
+</html>

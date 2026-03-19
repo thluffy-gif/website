@@ -1,0 +1,347 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tracking Dashboard - Dassault Aviation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        :root {
+            --primary-blue: #0033a0;
+            --light-blue: #e6eef7;
+            --bg-color: #f4f7f6;
+            --card-bg: #ffffff;
+            --text-main: #333333;
+            --text-muted: #777777;
+            --accent-green: #2e7d32;
+            --accent-red: #c62828;
+            --accent-orange: #f57c00;
+            --border-color: #e0e0e0;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* HEADER */
+        header {
+            background-color: var(--primary-blue);
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            z-index: 10;
+        }
+
+        .logo-title { display: flex; align-items: center; font-size: 1.2rem; font-weight: 500; }
+        .logo-title i { margin-right: 15px; font-size: 1.5rem; }
+        .header-user { font-size: 0.9rem; }
+
+        /* MAIN LAYOUT */
+        .main-container {
+            display: flex;
+            flex: 1;
+            padding: 20px;
+            gap: 20px;
+            overflow: hidden;
+        }
+
+        /* SIDEBAR - FILTERS */
+        .sidebar {
+            width: 250px;
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            overflow-y: auto;
+        }
+
+        .sidebar h3 { margin-top: 0; font-size: 1.1rem; color: var(--primary-blue); border-bottom: 2px solid var(--light-blue); padding-bottom: 10px; }
+        .filter-group { display: flex; flex-direction: column; gap: 5px; }
+        .filter-group label { font-size: 0.85rem; font-weight: 500; color: var(--text-muted); }
+        .filter-group input, .filter-group select {
+            padding: 8px; border: 1px solid var(--border-color); border-radius: 4px; font-family: 'Roboto', sans-serif; font-size: 0.9rem;
+        }
+        .btn-filter {
+            background-color: var(--primary-blue); color: white; border: none; padding: 10px; border-radius: 4px; cursor: pointer; font-weight: 500; margin-top: 10px; transition: background 0.3s;
+        }
+        .btn-filter:hover { background-color: #002277; }
+
+        /* CENTER CONTENT */
+        .content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            overflow-y: auto;
+        }
+
+        /* TABS NAVIGATION */
+        .tabs {
+            display: flex;
+            gap: 10px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 5px;
+        }
+        .tab-btn {
+            background: none; border: none; font-size: 1rem; font-weight: 600; color: var(--text-muted); padding: 10px 20px; cursor: pointer; border-radius: 4px 4px 0 0; transition: all 0.2s;
+        }
+        .tab-btn.active { color: var(--primary-blue); border-bottom: 3px solid var(--primary-blue); background-color: var(--light-blue); }
+        .tab-btn:hover:not(.active) { color: var(--text-main); background-color: #f0f0f0; }
+
+        /* TAB CONTENT AREAS */
+        .tab-content { display: none; flex-direction: column; gap: 15px; flex: 1; }
+        .tab-content.active { display: flex; }
+
+        /* KPIs GRID */
+        .kpi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+        .kpi-card { background-color: var(--card-bg); border-radius: 8px; padding: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); display: flex; align-items: center; gap: 15px; }
+        .kpi-icon { background-color: var(--light-blue); color: var(--primary-blue); min-width: 45px; height: 45px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 1.2rem; }
+        .kpi-icon.alert { background-color: #ffebee; color: var(--accent-red); }
+        .kpi-icon.success { background-color: #e8f5e9; color: var(--accent-green); }
+        .kpi-icon.warning { background-color: #fff3e0; color: var(--accent-orange); }
+        .kpi-data h4 { margin: 0; font-size: 0.75rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase;}
+        .kpi-data .value { margin: 2px 0 0 0; font-size: 1.4rem; font-weight: 700; color: var(--text-main); }
+        .kpi-data .trend { font-size: 0.75rem; color: var(--accent-green); margin-top: 2px; display: block; }
+
+        /* MAP AREA */
+        .map-container {
+            flex: 1; background-color: var(--card-bg); border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); display: flex; flex-direction: column; min-height: 250px; overflow: hidden;
+        }
+        .map-header { padding: 10px 20px; border-bottom: 1px solid var(--border-color); font-weight: 600; display: flex; justify-content: space-between; align-items: center; }
+        #map { flex: 1; width: 100%; background-color: #e5e3df; z-index: 1; }
+
+        /* TABLE AREA */
+        .table-container { height: 200px; background-color: var(--card-bg); border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); padding: 10px 20px; overflow-y: auto; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+        th { text-align: left; padding: 8px; border-bottom: 2px solid var(--border-color); color: var(--text-muted); position: sticky; top: 0; background: var(--card-bg); z-index: 2; }
+        td { padding: 8px; border-bottom: 1px solid var(--border-color); }
+        .status { padding: 4px 8px; border-radius: 12px; font-size: 0.75rem; font-weight: 600; }
+        .status.transit { background-color: #e3f2fd; color: #1565c0; }
+        .status.alert { background-color: #ffebee; color: #c62828; }
+        .status.delivered { background-color: #e8f5e9; color: #2e7d32; }
+        .batt-good { color: var(--accent-green); }
+        .batt-low { color: var(--accent-red); font-weight: bold; }
+
+        /* ANALYTICS CHARTS GRID */
+        .charts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; flex: 1; }
+        .chart-card { background-color: var(--card-bg); border-radius: 8px; padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); display: flex; flex-direction: column; }
+        .chart-card h3 { margin-top: 0; font-size: 1rem; color: var(--text-main); text-align: center; margin-bottom: 15px; }
+        .chart-wrapper { flex: 1; position: relative; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
+
+        /* Custom Map Marker classes */
+        .marker-transit { background-color: #1565c0; border: 2px solid white; border-radius: 50%; box-shadow: 0 0 5px rgba(0,0,0,0.5); width: 14px; height: 14px; }
+        .marker-alert { background-color: #c62828; border: 2px solid white; border-radius: 50%; box-shadow: 0 0 5px rgba(0,0,0,0.8); width: 16px; height: 16px; animation: pulse 1.5s infinite; }
+        .marker-delivered { background-color: #2e7d32; border: 2px solid white; border-radius: 50%; box-shadow: 0 0 5px rgba(0,0,0,0.5); width: 12px; height: 12px; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.3); } 100% { transform: scale(1); } }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-title">
+            <i class="fa-solid fa-plane-departure"></i>
+            DASSAULT AVIATION | Logistics Tracking Portal
+        </div>
+        <div class="header-user">
+            <i class="fa-solid fa-circle-user"></i> Central Logistics (DGAC Tremblay)
+        </div>
+    </header>
+
+    <div class="main-container">
+        <aside class="sidebar">
+            <h3><i class="fa-solid fa-filter"></i> Quick Filters</h3>
+            <div class="filter-group"><label>Parcel / AWB N°</label><input type="text" placeholder="Ex: AWB-789456..."></div>
+            <div class="filter-group"><label>PKL N°</label><input type="text" placeholder="Ex: PKL-2026-001"></div>
+            <div class="filter-group"><label>Tracker ID</label><input type="text" placeholder="Ex: TRK-9982"></div>
+            <div class="filter-group">
+                <label>Status</label>
+                <select><option>All Statuses</option><option>In Transit</option><option>Delivered</option><option>Alert</option></select>
+            </div>
+            <button class="btn-filter">Apply Filters</button>
+        </aside>
+
+        <div class="content">
+            
+            <div class="tabs">
+                <button class="tab-btn active" onclick="switchTab('live')"><i class="fa-solid fa-map-location-dot"></i> Live Tracking</button>
+                <button class="tab-btn" onclick="switchTab('analytics')"><i class="fa-solid fa-chart-pie"></i> Analytics & Reports</button>
+            </div>
+
+            <div id="tab-live" class="tab-content active">
+                <div class="kpi-grid">
+                    <div class="kpi-card"><div class="kpi-icon"><i class="fa-solid fa-satellite-dish"></i></div><div class="kpi-data"><h4>ACTIVE TRACKERS</h4><p class="value">247</p></div></div>
+                    <div class="kpi-card"><div class="kpi-icon alert"><i class="fa-solid fa-triangle-exclamation"></i></div><div class="kpi-data"><h4>ALERTS / DELAYS</h4><p class="value">5</p></div></div>
+                    <div class="kpi-card"><div class="kpi-icon success"><i class="fa-solid fa-bullseye"></i></div><div class="kpi-data"><h4>ON-TIME DELIVERY (OTD)</h4><p class="value">96.4 %</p><span class="trend"><i class="fa-solid fa-arrow-trend-up"></i> +1.2% this month</span></div></div>
+                    <div class="kpi-card"><div class="kpi-icon warning"><i class="fa-solid fa-battery-quarter"></i></div><div class="kpi-data"><h4>LOW BATTERY (< 20%)</h4><p class="value">12</p></div></div>
+                    <div class="kpi-card"><div class="kpi-icon"><i class="fa-solid fa-box-open"></i></div><div class="kpi-data"><h4>RETURN PENDING (DEST.)</h4><p class="value">48</p></div></div>
+                    <div class="kpi-card"><div class="kpi-icon"><i class="fa-solid fa-earth-europe"></i></div><div class="kpi-data"><h4>ACTIVE COUNTRIES</h4><p class="value">14</p></div></div>
+                </div>
+
+                <div class="map-container">
+                    <div class="map-header">
+                        <span><i class="fa-solid fa-globe"></i> Global Fleet Tracking</span>
+                        <span style="font-size: 0.8rem; color: var(--text-muted);"><i class="fa-solid fa-rotate"></i> Sync: Just now</span>
+                    </div>
+                    <div id="map"></div>
+                </div>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Tracker ID</th><th>PKL / AWB</th><th>Route (Origin <i class="fa-solid fa-arrow-right"></i> Dest)</th><th>Current Location</th><th>Battery</th><th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>TRK-8841</strong></td><td>PKL-2026-102</td><td>Paris (FR) <i class="fa-solid fa-arrow-right"></i> Little Rock (USA)</td><td>Over Atlantic Ocean</td><td><span class="batt-good">85%</span></td><td><span class="status transit">In Transit</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>TRK-8842</strong></td><td>AWB-77412589</td><td>Paris (FR) <i class="fa-solid fa-arrow-right"></i> Dubai (UAE)</td><td>DXB Customs</td><td><span class="batt-good">65%</span></td><td><span class="status alert">Alert: Immobile > 24h</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>TRK-8843</strong></td><td>PKL-2026-089</td><td>Merignac (FR) <i class="fa-solid fa-arrow-right"></i> Geneva (CH)</td><td>Geneva GVA</td><td><span class="batt-low">12%</span></td><td><span class="status delivered">Delivered</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>TRK-8844</strong></td><td>PKL-2026-110</td><td>Little Rock (USA) <i class="fa-solid fa-arrow-right"></i> Teterboro (USA)</td><td>Highway I-40 East</td><td><span class="batt-good">90%</span></td><td><span class="status transit">In Transit</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>TRK-8845</strong></td><td>AWB-55698741</td><td>Paris (FR) <i class="fa-solid fa-arrow-right"></i> Singapore (SG)</td><td>SIN Logistics Hub</td><td><span class="batt-low">8%</span></td><td><span class="status alert">Alert: Low Battery</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>TRK-8846</strong></td><td>PKL-2026-095</td><td>Merignac (FR) <i class="fa-solid fa-arrow-right"></i> London (UK)</td><td>Eurotunnel Terminal</td><td><span class="batt-good">72%</span></td><td><span class="status transit">In Transit</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="tab-analytics" class="tab-content">
+                <div class="charts-grid">
+                    <div class="chart-card">
+                        <h3>Tracker Status Distribution</h3>
+                        <div class="chart-wrapper"><canvas id="statusChart"></canvas></div>
+                    </div>
+                    <div class="chart-card">
+                        <h3>Shipments by Destination Region</h3>
+                        <div class="chart-wrapper"><canvas id="regionChart"></canvas></div>
+                    </div>
+                    <div class="chart-card" style="grid-column: span 2; height: 300px;">
+                        <h3>On-Time Delivery (OTD) Trend - Last 6 Months</h3>
+                        <div class="chart-wrapper"><canvas id="otdChart"></canvas></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // --- TAB SWITCHING LOGIC ---
+        function switchTab(tabId) {
+            // Update buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+            
+            // Update content
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.getElementById('tab-' + tabId).classList.add('active');
+
+            // Fix map rendering issue when unhidden
+            if(tabId === 'live') { setTimeout(() => { map.invalidateSize(); }, 100); }
+        }
+
+        // --- LEAFLET MAP LOGIC ---
+        var map = L.map('map', { zoomControl: true }).setView([30.0, 0.0], 2);
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { attribution: '&copy; CARTO' }).addTo(map);
+
+        // Define marker icons based on status
+        const iconTransit = L.divIcon({ className: 'custom-icon', html: '<div class="marker-transit"></div>', iconSize: [14, 14] });
+        const iconAlert = L.divIcon({ className: 'custom-icon', html: '<div class="marker-alert"></div>', iconSize: [16, 16] });
+        const iconDelivered = L.divIcon({ className: 'custom-icon', html: '<div class="marker-delivered"></div>', iconSize: [12, 12] });
+
+        // Add the 6 Trackers to the map
+        const trackers = [
+            { id: "TRK-8841", coords: [45.0, -30.0], status: "In Transit", icon: iconTransit }, // Atlantic Ocean
+            { id: "TRK-8842", coords: [25.2048, 55.2708], status: "Alert (Immobile)", icon: iconAlert }, // Dubai
+            { id: "TRK-8843", coords: [46.2044, 6.1432], status: "Delivered", icon: iconDelivered }, // Geneva
+            { id: "TRK-8844", coords: [35.8, -85.0], status: "In Transit", icon: iconTransit }, // USA (TN)
+            { id: "TRK-8845", coords: [1.3521, 103.8198], status: "Alert (Battery)", icon: iconAlert }, // Singapore
+            { id: "TRK-8846", coords: [50.9333, 1.8167], status: "In Transit", icon: iconTransit } // Calais/Eurotunnel
+        ];
+
+        trackers.forEach(t => {
+            L.marker(t.coords, {icon: t.icon}).addTo(map)
+             .bindTooltip(`<b>${t.id}</b><br>${t.status}`);
+        });
+
+        // --- CHART.JS LOGIC ---
+        // 1. Status Pie Chart
+        new Chart(document.getElementById('statusChart'), {
+            type: 'pie',
+            data: {
+                labels: ['In Transit (OK)', 'Delivered (Pending Return)', 'Alerts (Delays/Geo)', 'Low Battery'],
+                datasets: [{
+                    data: [180, 48, 7, 12],
+                    backgroundColor: ['#1565c0', '#2e7d32', '#c62828', '#f57c00'],
+                    borderWidth: 1
+                }]
+            },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: {font: {family: 'Roboto'}} } } }
+        });
+
+        // 2. Region Doughnut Chart
+        new Chart(document.getElementById('regionChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['North America', 'Europe', 'Middle East', 'Asia'],
+                datasets: [{
+                    data: [45, 35, 10, 10],
+                    backgroundColor: ['#0033a0', '#00b0ff', '#80d8ff', '#e1f5fe'],
+                    borderWidth: 1
+                }]
+            },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right' } } }
+        });
+
+        // 3. OTD Bar Chart
+        new Chart(document.getElementById('otdChart'), {
+            type: 'bar',
+            data: {
+                labels: ['Oct 2025', 'Nov 2025', 'Dec 2025', 'Jan 2026', 'Feb 2026', 'Mar 2026'],
+                datasets: [{
+                    label: 'OTD %',
+                    data: [92.1, 93.5, 91.8, 95.2, 95.8, 96.4],
+                    backgroundColor: '#0033a0',
+                    borderRadius: 4
+                }]
+            },
+            options: { 
+                responsive: true, maintainAspectRatio: false, 
+                scales: { y: { min: 85, max: 100 } },
+                plugins: { legend: { display: false } }
+            }
+        });
+    </script>
+</body>
+</html>

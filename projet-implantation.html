@@ -1,0 +1,327 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Implantation Client & Gestion de Crise - Dimotrans | Cédric Prohet</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* === THEME GRIS PRO & ÉLÉGANT === */
+        :root {
+            --bg-main: #f8fafc; 
+            --bg-white: #ffffff;
+            --text-main: #1e293b; 
+            --text-muted: #64748b;
+            --accent: #0f172a; 
+            --accent-light: #e2e8f0;
+            --border: #e2e8f0;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --shadow-sm: 0 4px 6px -1px rgba(0,0,0,0.05);
+            --shadow-md: 0 10px 15px -3px rgba(0,0,0,0.05);
+            --transition: all 0.3s ease;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; scroll-behavior: smooth; }
+        body { background-color: var(--bg-main); color: var(--text-main); line-height: 1.7; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 20px; }
+        .section { padding: 60px 0; }
+        .bg-white { background-color: var(--bg-white); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+
+        /* --- NAVBAR --- */
+        .navbar { position: fixed; top: 0; width: 100%; background: rgba(255,255,255,0.95); backdrop-filter: blur(5px); border-bottom: 1px solid var(--border); z-index: 1000; padding: 15px 0; box-shadow: var(--shadow-sm); }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+        .logo { font-size: 1.2rem; font-weight: 700; letter-spacing: 1px; color: var(--accent); text-decoration: none; }
+        .nav-group { display: flex; align-items: center; gap: 20px; }
+        .back-btn { color: var(--text-muted); text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 8px; transition: var(--transition); }
+        .back-btn:hover { color: var(--accent); }
+        .btn-lang { background: transparent; border: 1px solid var(--text-muted); color: var(--text-muted); padding: 4px 10px; border-radius: 4px; cursor: pointer; font-weight: bold; transition: var(--transition); }
+        .btn-lang:hover { border-color: var(--accent); color: var(--accent); }
+
+        /* --- HERO PROJECT --- */
+        .project-hero { padding-top: 140px; padding-bottom: 50px; text-align: center; }
+        .project-company { display: inline-block; background: var(--accent-light); color: var(--accent); padding: 6px 15px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; margin-bottom: 20px; letter-spacing: 1px; }
+        .project-title { font-size: 3.5rem; font-weight: 800; color: var(--accent); line-height: 1.1; margin-bottom: 20px; }
+        .project-subtitle { font-size: 1.2rem; color: var(--text-muted); max-width: 700px; margin: 0 auto 30px; }
+        
+        .project-meta { display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; margin-top: 40px; padding-top: 40px; border-top: 1px solid var(--border); }
+        .meta-item { text-align: left; }
+        .meta-label { display: block; font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600; margin-bottom: 5px; }
+        .meta-value { font-size: 1.1rem; font-weight: 700; color: var(--text-main); }
+
+        /* --- CONTENU TYPOGRAPHIE --- */
+        .content-block { margin-bottom: 40px; }
+        .content-block h2 { font-size: 1.8rem; color: var(--accent); margin-bottom: 20px; border-left: 4px solid var(--accent); padding-left: 15px; }
+        .content-block p { margin-bottom: 15px; color: var(--text-muted); font-size: 1.05rem; }
+        .content-block ul { margin-bottom: 20px; padding-left: 20px; color: var(--text-muted); }
+        .content-block li { margin-bottom: 8px; }
+
+        /* --- GRAPHIQUES & SCHEMAS CSS --- */
+        .visual-box { background: var(--bg-main); border: 1px solid var(--border); border-radius: 12px; padding: 30px; margin: 30px 0; box-shadow: inset 0 2px 4px rgba(0,0,0,0.02); }
+        
+        /* Stratégie de Stockage */
+        .storage-strategy { display: flex; gap: 20px; flex-wrap: wrap; }
+        .storage-tier { flex: 1; min-width: 250px; background: var(--bg-white); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; box-shadow: var(--shadow-sm); }
+        .storage-header { padding: 15px; font-weight: bold; text-align: center; color: white; }
+        .tier-a { background: var(--accent); }
+        .tier-b { background: var(--text-muted); }
+        .storage-body { padding: 20px; }
+        .storage-body ul { list-style: none; padding: 0; margin: 0; }
+        .storage-body li { font-size: 0.9rem; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+        .storage-body li:last-child { border: none; margin: 0; padding: 0; }
+        .storage-body i { color: var(--accent); margin-right: 8px; }
+
+        /* KPI Dashboard */
+        .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 30px; }
+        .kpi-card { background: var(--bg-white); padding: 25px; border-radius: 10px; border: 1px solid var(--border); box-shadow: var(--shadow-sm); text-align: center; transition: var(--transition); }
+        .kpi-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); border-color: var(--accent); }
+        .kpi-icon { font-size: 2rem; margin-bottom: 15px; }
+        .kpi-number { font-size: 2.5rem; font-weight: 800; color: var(--accent); line-height: 1; margin-bottom: 5px; }
+        .kpi-label { font-size: 0.9rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; }
+
+        /* Alert Box */
+        .alert-box { display: flex; gap: 15px; background: #fef2f2; border-left: 4px solid var(--danger); padding: 20px; border-radius: 0 8px 8px 0; margin: 20px 0; }
+        .alert-box i { color: var(--danger); font-size: 1.5rem; }
+        .alert-content p { color: #991b1b; margin: 0; font-size: 0.95rem; }
+
+        .success-box { display: flex; gap: 15px; background: #f0fdf4; border-left: 4px solid var(--success); padding: 20px; border-radius: 0 8px 8px 0; margin: 20px 0; }
+        .success-box i { color: var(--success); font-size: 1.5rem; }
+        .success-content p { color: #166534; margin: 0; font-size: 0.95rem; }
+
+        /* Footer */
+        .footer { text-align: center; padding: 30px; border-top: 1px solid var(--border); color: var(--text-muted); margin-top: 40px; }
+
+        .reveal { opacity: 1; transform: translateY(0); transition: all 0.6s ease-out; }
+        .js-hidden { opacity: 0; transform: translateY(20px); }
+
+        @media (max-width: 768px) {
+            .project-title { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-group">
+                <a href="index.html" class="back-btn" data-fr="<i class='fa-solid fa-arrow-left'></i> Retour" data-en="<i class='fa-solid fa-arrow-left'></i> Back"><i class="fa-solid fa-arrow-left"></i> Retour</a>
+            </div>
+            <div class="nav-group">
+                <a href="index.html" class="logo">C. PROHET</a>
+                <button id="lang-toggle" class="btn-lang">EN</button>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <section class="project-hero">
+            <div class="container reveal">
+                <span class="project-company">Dimotrans Group</span>
+                <h1 class="project-title" data-fr="Implantation Client & Transfert Express" data-en="Client Implementation & Express Transfer">Implantation Client & Transfert Express</h1>
+                <p class="project-subtitle" data-fr="Gestion de crise logistique : Démarrage d'un nouveau client (Sun Valley) dans un délai extrêmement court suite à la liquidation judiciaire de son prestataire." data-en="Logistics crisis management: Startup of a new client (Sun Valley) in an extremely short timeframe following the judicial liquidation of its provider.">Gestion de crise logistique : Démarrage d'un nouveau client (Sun Valley) dans un délai extrêmement court suite à la liquidation judiciaire de son prestataire.</p>
+                
+                <div class="project-meta">
+                    <div class="meta-item">
+                        <span class="meta-label" data-fr="Rôle" data-en="Role">Rôle</span>
+                        <span class="meta-value" data-fr="Chargé de Projets Logistiques" data-en="Logistics Project Manager">Chargé de Projets Logistiques</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label" data-fr="Méthode" data-en="Method">Méthode</span>
+                        <span class="meta-value">Gantt Hybride / Agilité</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label" data-fr="Volume Cible" data-en="Target Volume">Volume Cible</span>
+                        <span class="meta-value" data-fr="10 000 pièces / sem" data-en="10,000 pieces / week">10 000 pièces / sem</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label" data-fr="Enjeu" data-en="Challenge">Enjeu</span>
+                        <span class="meta-value" data-fr="Continuité BtoC" data-en="BtoC Continuity">Continuité BtoC</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section bg-white">
+            <div class="container">
+                
+                <div class="content-block reveal">
+                    <h2 data-fr="1. Le Contexte : L'Urgence Opérationnelle" data-en="1. Context: Operational Urgency">1. Le Contexte : L'Urgence Opérationnelle</h2>
+                    <p data-fr="L'entreprise Sun Valley (textile sportif) s'est retrouvée face à un risque majeur : la liquidation judiciaire de son prestataire logistique actuel (SNDR). Cette situation faisait peser une menace inacceptable de blocage total de son stock et l'incapacité d'honorer ses commandes clients." data-en="The company Sun Valley (sports textile) faced a major risk: the judicial liquidation of its current logistics provider (SNDR). This situation posed an unacceptable threat of a total blockage of its stock and the inability to fulfill its customer orders.">L'entreprise Sun Valley (textile sportif) s'est retrouvée face à un risque majeur : la liquidation judiciaire de son prestataire logistique actuel (SNDR). Cette situation faisait peser une menace inacceptable de blocage total de son stock et l'incapacité d'honorer ses commandes clients.</p>
+                    <p data-fr="Les objectifs du projet étaient immédiats :" data-en="The project objectives were immediate:">Les objectifs du projet étaient immédiats :</p>
+                    <ul>
+                        <li data-fr="Sortir et absorber l'intégralité du stock dans l'entrepôt Dimotrans de Pusignan (18 000 m²)." data-en="Extract and absorb the entire stock into the Dimotrans Pusignan warehouse (18,000 sqm).">Sortir et absorber l'intégralité du stock dans l'entrepôt Dimotrans de Pusignan (18 000 m²).</li>
+                        <li data-fr="Honorer sans délai les 474 commandes urgentes BtoC en attente." data-en="Fulfill without delay the 474 pending urgent BtoC orders.">Honorer sans délai les 474 commandes urgentes BtoC en attente.</li>
+                        <li data-fr="Atteindre une cadence de traitement de 6 000 à 10 000 pièces par semaine." data-en="Reach a processing rate of 6,000 to 10,000 pieces per week.">Atteindre une cadence de traitement de 6 000 à 10 000 pièces par semaine.</li>
+                    </ul>
+                </div>
+
+                <div class="content-block reveal">
+                    <h2 data-fr="2. Méthodologie : Le Choix du Gantt Hybride" data-en="2. Methodology: The Choice of Hybrid Gantt">2. Méthodologie : Le Choix du Gantt Hybride</h2>
+                    <p data-fr="Face à l'imprécision des données de l'ancien prestataire (incertitude sur le nombre réel de camions à recevoir), une méthode en cascade classique (Waterfall) s'avérait trop rigide. J'ai opté pour une approche par <strong>Gantt Hybride</strong>." data-en="Faced with the inaccuracy of the previous provider's data (uncertainty about the actual number of trucks to receive), a classic cascade method (Waterfall) proved too rigid. I opted for a <strong>Hybrid Gantt</strong> approach.">Face à l'imprécision des données de l'ancien prestataire (incertitude sur le nombre réel de camions à recevoir), une méthode en cascade classique (Waterfall) s'avérait trop rigide. J'ai opté pour une approche par <strong>Gantt Hybride</strong>.</p>
+                    <div class="success-box">
+                        <i class="fa-solid fa-code-branch"></i>
+                        <div class="success-content">
+                            <p data-fr="<strong>Agilité et Réactivité :</strong> Cette méthode a permis d'allier la structure visuelle d'un rétroplanning classique avec l'agilité nécessaire pour ajuster nos ressources. Par exemple, le plan de réception initial prévoyait 14 semi-remorques, mais a dû être ajusté à 18 camions en temps réel lors des réunions de coordination quotidiennes." data-en="<strong>Agility and Reactivity:</strong> This method combined the visual structure of a classic reverse schedule with the agility needed to adjust our resources. For example, the initial reception plan forecasted 14 semi-trailers, but had to be adjusted to 18 trucks in real-time during daily coordination meetings."><strong>Agilité et Réactivité :</strong> Cette méthode a permis d'allier la structure visuelle d'un rétroplanning classique avec l'agilité nécessaire pour ajuster nos ressources. Par exemple, le plan de réception initial prévoyait 14 semi-remorques, mais a dû être ajusté à 18 camions en temps réel lors des réunions de coordination quotidiennes.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-block reveal">
+                    <h2 data-fr="3. La Stratégie de Stockage : Surmonter les Données Corrompues" data-en="3. Storage Strategy: Overcoming Corrupted Data">3. La Stratégie de Stockage : Surmonter les Données Corrompues</h2>
+                    <div class="alert-box">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                        <div class="alert-content">
+                            <p data-fr="<strong>Problème :</strong> Une classification ABC classique était impossible en raison des données incohérentes fournies par l'ancien prestataire (manque d'historique de rotation et écarts de stock)." data-en="<strong>Problem:</strong> A classic ABC classification was impossible due to inconsistent data provided by the former provider (lack of rotation history and stock discrepancies)."><strong>Problème :</strong> Une classification ABC classique était impossible en raison des données incohérentes fournies par l'ancien prestataire (manque d'historique de rotation et écarts de stock).</p>
+                        </div>
+                    </div>
+                    <p data-fr="Pour pallier ce manque d'informations, j'ai défini une stratégie de rangement pragmatique basée sur les saisons des collections, concentrant les ressources sur les 81,3 % du volume total (les collections SUMMER 24 et WINTER 24) :" data-en="To overcome this lack of information, I defined a pragmatic storage strategy based on collection seasons, focusing resources on 81.3% of the total volume (SUMMER 24 and WINTER 24 collections):">Pour pallier ce manque d'informations, j'ai défini une stratégie de rangement pragmatique basée sur les saisons des collections, concentrant les ressources sur les 81,3 % du volume total (les collections SUMMER 24 et WINTER 24) :</p>
+                    
+                    <div class="visual-box storage-strategy">
+                        <div class="storage-tier">
+                            <div class="storage-header tier-a">Zone Mezzanine (Prélèvement Actif)</div>
+                            <div class="storage-body">
+                                <ul>
+                                    <li><i class="fa-solid fa-fire"></i> <strong>Cible :</strong> Nouvelles collections (Summer 24, Winter 24)</li>
+                                    <li><i class="fa-solid fa-box-open"></i> <strong>Règle :</strong> Limité à 2 cartons par référence (env. 50 unités)</li>
+                                    <li><i class="fa-solid fa-bolt"></i> <strong>Avantage :</strong> Disponibilité immédiate pour 75% des commandes BtoC</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="storage-tier">
+                            <div class="storage-header tier-b">Zone Racks (Hauteur & Sol)</div>
+                            <div class="storage-body">
+                                <ul>
+                                    <li><i class="fa-solid fa-layer-group"></i> <strong>Cible :</strong> Collections antérieures (2020-2023) et surplus</li>
+                                    <li><i class="fa-solid fa-arrow-up"></i> <strong>En hauteur :</strong> Palettes complètes de surplus</li>
+                                    <li><i class="fa-solid fa-arrow-down"></i> <strong>Au sol :</strong> Fins de séries (< 3 unités), accessible au transpalette</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-block reveal">
+                    <h2 data-fr="4. Exécution & Tests : Le Passage au Picking Dynamique" data-en="4. Execution & Tests: Transitioning to Dynamic Picking">4. Exécution & Tests : Le Passage au Picking Dynamique</h2>
+                    <p data-fr="L'entrepôt fonctionnait initialement en 'Picking Fixe' via l'ancien WMS Speed, ce qui figeait les emplacements et obligeait à des réapprovisionnements manuels chronophages. J'ai impulsé la transition de l'activité vers un fonctionnement en <strong>Picking Dynamique</strong>, permettant au système d'attribuer intelligemment les emplacements disponibles." data-en="The warehouse initially operated in 'Fixed Picking' via the old WMS Speed, which froze locations and required time-consuming manual replenishments. I drove the transition of the activity towards a <strong>Dynamic Picking</strong> operation, allowing the system to intelligently allocate available locations.">L'entrepôt fonctionnait initialement en 'Picking Fixe' via l'ancien WMS Speed, ce qui figeait les emplacements et obligeait à des réapprovisionnements manuels chronophages. J'ai impulsé la transition de l'activité vers un fonctionnement en <strong>Picking Dynamique</strong>, permettant au système d'attribuer intelligemment les emplacements disponibles.</p>
+                    <p data-fr="La validation des processus a été effectuée via une commande test en conditions réelles :" data-en="Process validation was carried out via a test order in real conditions:">La validation des processus a été effectuée via une commande test en conditions réelles :</p>
+                    <ul>
+                        <li data-fr="<strong>Problème identifié :</strong> Un manquant en cours de prélèvement bloquait les opérateurs et nécessitait l'intervention d'un manager (perte de 10 min/incident)." data-en="<strong>Problem identified:</strong> A shortage during picking blocked operators and required manager intervention (loss of 10 min/incident)."><strong>Problème identifié :</strong> Un manquant en cours de prélèvement bloquait les opérateurs et nécessitait l'intervention d'un manager (perte de 10 min/incident).</li>
+                        <li data-fr="<strong>Correction apportée :</strong> Obligation de simuler la commande dans le WMS avant lancement, empêchant ainsi l'édition des étiquettes si le stock n'est pas physiquement disponible." data-en="<strong>Correction applied:</strong> Obligation to simulate the order in the WMS before launch, thus preventing the printing of labels if the stock is not physically available."><strong>Correction apportée :</strong> Obligation de simuler la commande dans le WMS avant lancement, empêchant ainsi l'édition des étiquettes si le stock n'est pas physiquement disponible.</li>
+                    </ul>
+                </div>
+
+                <div class="content-block reveal">
+                    <h2 data-fr="5. Résultats et Chiffres Clés (KPIs)" data-en="5. Results and Key Figures (KPIs)">5. Résultats et Chiffres Clés (KPIs)</h2>
+                    <p data-fr="Grâce à une planification agile, une gestion rigoureuse des Pistolets de Travail Connectés (PTC) et le passage au picking dynamique, l'équipe (que j'ai supervisée) a réussi à stabiliser la Supply Chain de Sun Valley." data-en="Thanks to agile planning, rigorous management of Connected Work Pistols (PTC), and the switch to dynamic picking, the team (which I supervised) successfully stabilized Sun Valley's Supply Chain.">Grâce à une planification agile, une gestion rigoureuse des Pistolets de Travail Connectés (PTC) et le passage au picking dynamique, l'équipe (que j'ai supervisée) a réussi à stabiliser la Supply Chain de Sun Valley.</p>
+
+                    <div class="kpi-grid">
+                        <div class="kpi-card">
+                            <i class="fa-solid fa-arrow-trend-up kpi-icon" style="color: var(--success);"></i>
+                            <div class="kpi-number">+<span class="counter" data-target="33">0</span>%</div>
+                            <div class="kpi-label" data-fr="Gain de productivité" data-en="Productivity Gain">Gain de productivité</div>
+                            <p style="font-size: 0.8rem; margin-top: 10px; color: var(--text-muted);" data-fr="De 300 à 400 prélèvements par jour/opérateur" data-en="From 300 to 400 picks per day/operator">De 300 à 400 prélèvements par jour/opérateur</p>
+                        </div>
+                        <div class="kpi-card">
+                            <i class="fa-solid fa-truck kpi-icon" style="color: var(--accent);"></i>
+                            <div class="kpi-number counter" data-target="18">0</div>
+                            <div class="kpi-label" data-fr="Semi-remorques gérés" data-en="Managed semi-trailers">Semi-remorques gérés</div>
+                            <p style="font-size: 0.8rem; margin-top: 10px; color: var(--text-muted);" data-fr="Absorption du stock depuis SNDR" data-en="Stock absorption from SNDR">Absorption du stock depuis SNDR</p>
+                        </div>
+                        <div class="kpi-card">
+                            <i class="fa-solid fa-users kpi-icon" style="color: var(--warning);"></i>
+                            <div class="kpi-number counter" data-target="20">0</div>
+                            <div class="kpi-label" data-fr="Opérateurs supervisés" data-en="Supervised operators">Opérateurs supervisés</div>
+                            <p style="font-size: 0.8rem; margin-top: 10px; color: var(--text-muted);" data-fr="Gestion d'équipe et d'intérimaires" data-en="Team and temp workers management">Gestion d'équipe et d'intérimaires</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p data-fr="© 2026 Cédric Prohet. Portfolio professionnel." data-en="© 2026 Cédric Prohet. Professional portfolio.">© 2026 Cédric Prohet. Portfolio professionnel.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // Traduction FR/EN
+            const langBtn = document.getElementById('lang-toggle');
+            let currentLang = 'fr';
+
+            langBtn.addEventListener('click', () => {
+                currentLang = currentLang === 'fr' ? 'en' : 'fr';
+                langBtn.innerText = currentLang === 'fr' ? 'EN' : 'FR';
+
+                const elements = document.querySelectorAll('[data-fr][data-en]');
+                elements.forEach(el => {
+                    el.style.opacity = 0;
+                    setTimeout(() => {
+                        el.innerHTML = currentLang === 'fr' ? el.getAttribute('data-fr') : el.getAttribute('data-en');
+                        el.style.opacity = 1;
+                    }, 200);
+                });
+            });
+
+            // Animation au scroll
+            const reveals = document.querySelectorAll('.reveal');
+            reveals.forEach(el => el.classList.add('js-hidden'));
+
+            // Animation des compteurs
+            const animateCounters = () => {
+                const counters = document.querySelectorAll('.counter');
+                const speed = 100; // Vitesse d'animation
+
+                counters.forEach(counter => {
+                    const updateCount = () => {
+                        const target = parseFloat(counter.getAttribute('data-target'));
+                        const count = parseFloat(counter.innerText);
+                        const isFloat = counter.getAttribute('data-target').includes('.');
+                        const inc = target / speed;
+
+                        if (count < target) {
+                            if(isFloat) {
+                                counter.innerText = (count + inc).toFixed(1);
+                            } else {
+                                counter.innerText = Math.ceil(count + inc);
+                            }
+                            setTimeout(updateCount, 20);
+                        } else {
+                            counter.innerText = target;
+                        }
+                    };
+                    updateCount();
+                });
+            };
+
+            let countersAnimated = false;
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.remove('js-hidden');
+                        
+                        // Déclencher les compteurs si la grille KPI est visible
+                        if(entry.target.querySelector('.kpi-grid') && !countersAnimated) {
+                            animateCounters();
+                            countersAnimated = true;
+                        }
+                        
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1, rootMargin: "0px 0px -20px 0px" });
+
+            reveals.forEach(reveal => observer.observe(reveal));
+        });
+    </script>
+</body>
+</html>

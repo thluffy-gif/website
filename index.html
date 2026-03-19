@@ -1,0 +1,573 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cédric Prohet - Ingénieur Logistique & Supply Chain</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* === THEME GRIS PRO & ÉLÉGANT === */
+        :root {
+            --bg-main: #f8fafc; 
+            --bg-white: #ffffff;
+            --text-main: #1e293b; 
+            --text-muted: #64748b;
+            --accent: #0f172a; 
+            --accent-light: #e2e8f0;
+            --border: #e2e8f0;
+            --shadow-sm: 0 4px 6px -1px rgba(0,0,0,0.05);
+            --shadow-md: 0 10px 15px -3px rgba(0,0,0,0.05);
+            --transition: all 0.3s ease;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; scroll-behavior: smooth; }
+        body { background-color: var(--bg-main); color: var(--text-main); line-height: 1.6; }
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+        .section { padding: 80px 0; }
+        .bg-white { background-color: var(--bg-white); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+
+        /* --- TYPOGRAPHIE --- */
+        .section-title { font-size: 2rem; font-weight: 700; color: var(--accent); margin-bottom: 40px; border-left: 4px solid var(--accent); padding-left: 15px; }
+
+        /* --- NAVBAR --- */
+        .navbar { position: fixed; top: 0; width: 100%; background: rgba(255,255,255,0.95); backdrop-filter: blur(5px); border-bottom: 1px solid var(--border); z-index: 1000; padding: 15px 0; box-shadow: var(--shadow-sm); }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+        .logo { font-size: 1.2rem; font-weight: 700; letter-spacing: 1px; color: var(--accent); }
+        .nav-links { display: flex; gap: 20px; align-items: center; }
+        .nav-links a { color: var(--text-muted); text-decoration: none; font-weight: 500; transition: var(--transition); }
+        .nav-links a:hover { color: var(--accent); }
+        .btn-lang { background: transparent; border: 1px solid var(--text-muted); color: var(--text-muted); padding: 4px 10px; border-radius: 4px; cursor: pointer; font-weight: bold; transition: var(--transition); }
+        .btn-lang:hover { border-color: var(--accent); color: var(--accent); }
+
+        /* --- HERO & PHOTO --- */
+        .hero { padding-top: 130px; padding-bottom: 60px; }
+        .hero-grid { display: flex; justify-content: space-between; align-items: center; gap: 40px; }
+        .hero-text { flex: 1; }
+        .hero .title { font-size: 3rem; font-weight: 800; color: var(--accent); line-height: 1.1; margin-bottom: 10px; }
+        .hero .subtitle { font-size: 1.4rem; color: var(--text-muted); font-weight: 500; margin-bottom: 25px; }
+        .hero .description { font-size: 1.05rem; margin-bottom: 30px; max-width: 600px; }
+        .contact-info { display: flex; gap: 15px; flex-wrap: wrap; }
+        .contact-info span, .contact-info a { background: var(--bg-white); border: 1px solid var(--border); color: var(--text-main); padding: 8px 15px; border-radius: 20px; font-size: 0.9rem; font-weight: 500; text-decoration: none; box-shadow: var(--shadow-sm); display: flex; align-items: center; gap: 8px; transition: var(--transition); }
+        .contact-info a:hover { border-color: var(--accent); color: var(--bg-white); background-color: var(--accent); }
+
+        .hero-photo-container { flex-shrink: 0; width: 280px; height: 280px; border-radius: 20px; background: var(--border); overflow: hidden; border: 4px solid var(--bg-white); box-shadow: var(--shadow-md); display: flex; align-items: center; justify-content: center; }
+        .profile-photo { width: 100%; height: 100%; object-fit: cover; }
+
+        /* --- BANNIERE KPI --- */
+        .kpi-banner { background: var(--accent); color: var(--bg-white); padding: 40px 0; margin-top: 40px; }
+        .kpi-grid { display: flex; justify-content: space-around; text-align: center; flex-wrap: wrap; gap: 30px; }
+        .kpi-item { flex: 1; min-width: 200px; }
+        .kpi-value { font-size: 2.5rem; font-weight: 800; margin-bottom: 5px; color: #cbd5e1; }
+        .kpi-item p { font-size: 0.95rem; font-weight: 500; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; }
+
+        /* --- CARDS PROJETS --- */
+        .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
+        
+        .project-card { display: flex; flex-direction: column; text-decoration: none; color: inherit; background: var(--bg-main); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; transition: var(--transition); box-shadow: var(--shadow-sm); }
+        .project-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-md); background: var(--bg-white); border-color: #94a3b8; }
+        
+        .project-img { height: 180px; background-size: cover; background-position: center; border-bottom: 1px solid var(--border); position: relative; }
+        .project-img::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.1)); }
+        
+        .project-body { padding: 25px; display: flex; flex-direction: column; flex-grow: 1; }
+        
+        /* Tags Catégories Projets */
+        .project-company { align-self: flex-start; font-size: 0.75rem; font-weight: 700; padding: 4px 10px; border-radius: 4px; margin-bottom: 12px; text-transform: uppercase; }
+        .cat-dassault { background-color: #e0f2fe; color: #0369a1; }
+        .cat-dimotrans { background-color: #fee2e2; color: #b91c1c; }
+        .cat-transverse { background-color: #f3e8ff; color: #6d28d9; }
+        .cat-perso { background-color: #dcfce7; color: #15803d; }
+
+        .project-card h3 { font-size: 1.25rem; margin-bottom: 10px; color: var(--accent); }
+        .project-card p { font-size: 0.95rem; color: var(--text-muted); margin-bottom: 20px; flex-grow: 1; }
+        
+        .btn-link { align-self: flex-start; font-size: 0.9rem; font-weight: 700; color: var(--text-main); display: flex; align-items: center; gap: 8px; transition: var(--transition); }
+        .project-card:hover .btn-link { color: var(--accent); gap: 12px; }
+
+        /* Bouton "Voir Plus" */
+        .hidden-project { display: none !important; }
+        .btn-center { display: flex; justify-content: center; margin-top: 40px; }
+        .btn-outline { background: transparent; border: 2px solid var(--accent); color: var(--accent); padding: 10px 25px; border-radius: 6px; font-weight: bold; cursor: pointer; transition: var(--transition); font-size: 1rem; }
+        .btn-outline:hover { background: var(--accent); color: var(--bg-white); }
+
+        /* --- TIMELINE EXPERIENCES --- */
+        .timeline { border-left: 2px solid var(--border); padding-left: 30px; margin-left: 10px; }
+        .timeline-item { position: relative; margin-bottom: 40px; }
+        .timeline-item::before { content: ''; position: absolute; left: -37px; top: 6px; width: 12px; height: 12px; background: var(--accent); border-radius: 50%; box-shadow: 0 0 0 4px var(--bg-main); }
+        .timeline-date { font-weight: 700; color: var(--text-muted); margin-bottom: 5px; font-size: 0.9rem; }
+        .timeline-item h3 { font-size: 1.3rem; color: var(--accent); margin-bottom: 3px; }
+        .timeline-item .company { font-size: 1rem; color: var(--text-main); font-weight: 500; margin-bottom: 15px; }
+        .timeline-list { list-style: none; }
+        .timeline-list li { position: relative; padding-left: 20px; margin-bottom: 10px; font-size: 0.95rem; }
+        .timeline-list li::before { content: '•'; position: absolute; left: 0; color: var(--text-muted); font-size: 1.2rem; line-height: 1; }
+
+        /* --- EDUCATION & SKILLS GRID --- */
+        .grid-2-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; }
+        .education-card { margin-bottom: 25px; padding-bottom: 15px; border-bottom: 1px solid var(--border); }
+        .edu-date { font-weight: bold; color: var(--text-muted); font-size: 0.85rem; }
+        .education-card h4 { font-size: 1.1rem; color: var(--accent); margin: 5px 0; }
+        .sub-heading { font-size: 1.1rem; color: var(--accent); margin: 25px 0 10px; border-bottom: 2px solid var(--accent-light); padding-bottom: 5px; display: inline-block; }
+        .tags-container { display: flex; flex-wrap: wrap; gap: 8px; }
+        .tag { background: var(--bg-main); border: 1px solid var(--border); padding: 5px 12px; border-radius: 6px; font-size: 0.85rem; font-weight: 500; }
+        .simple-list { list-style-type: none; padding-left: 10px; }
+        .simple-list li { margin-bottom: 5px; position: relative; padding-left: 15px; font-size: 0.95rem; }
+        .simple-list li::before { content: '-'; position: absolute; left: 0; color: var(--text-muted); }
+
+        /* --- FORMULAIRE DE CONTACT --- */
+        .contact-wrapper { max-width: 600px; margin: 0 auto; background: var(--bg-white); padding: 40px; border-radius: 12px; border: 1px solid var(--border); box-shadow: var(--shadow-sm); }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-weight: 600; margin-bottom: 8px; font-size: 0.9rem; }
+        .form-group input, .form-group textarea { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 6px; font-size: 1rem; font-family: inherit; background: var(--bg-main); transition: var(--transition); }
+        .form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--text-muted); box-shadow: 0 0 0 3px var(--accent-light); }
+        .btn-submit { width: 100%; background: var(--accent); color: var(--bg-white); padding: 14px; border: none; border-radius: 6px; font-size: 1rem; font-weight: 700; cursor: pointer; transition: var(--transition); }
+        .btn-submit:hover { background: #1e293b; transform: translateY(-2px); box-shadow: var(--shadow-md); }
+
+        /* --- NOUVEAUX BLOCS (VISION & LEADERSHIP) --- */
+        .vision-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 30px; }
+        .vision-card { background: var(--bg-white); padding: 30px; border-radius: 12px; border: 1px solid var(--border); box-shadow: var(--shadow-sm); transition: var(--transition); }
+        .vision-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); border-color: var(--accent); }
+        .vision-icon { font-size: 2.2rem; color: var(--accent); margin-bottom: 15px; display: block; }
+        .vision-card h3 { font-size: 1.25rem; color: var(--accent); margin-bottom: 15px; }
+        .vision-card p { font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; }
+
+        .leadership-wrapper { background: var(--bg-white); padding: 40px; border-radius: 12px; border: 1px solid var(--border); box-shadow: var(--shadow-sm); display: block; text-decoration: none; color: inherit; transition: var(--transition); position: relative; }
+        .leadership-wrapper:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); border-color: var(--accent); }
+        .lead-link-icon { position: absolute; top: 30px; right: 30px; font-size: 1.5rem; color: var(--accent); transition: transform 0.3s; }
+        .leadership-wrapper:hover .lead-link-icon { transform: translate(5px, -5px); }
+        .leadership-wrapper h3 { font-size: 1.5rem; color: var(--accent); margin-bottom: 10px; }
+        .leadership-wrapper p { font-size: 1.05rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 20px; padding-right: 40px; }
+        .leadership-tags { display: flex; flex-wrap: wrap; gap: 10px; }
+        .lead-tag { background: var(--accent-light); color: var(--accent); padding: 6px 15px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+
+        /* --- FOOTER & MISC --- */
+        .footer { text-align: center; padding: 30px; background: var(--bg-white); color: var(--text-muted); border-top: 1px solid var(--border); }
+        .reveal { opacity: 1; transform: translateY(0); transition: all 0.6s ease-out; }
+        .js-hidden { opacity: 0; transform: translateY(20px); }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 850px) {
+            .hero-grid { flex-direction: column-reverse; text-align: center; }
+            .contact-info { justify-content: center; }
+            .grid-2-cols { grid-template-columns: 1fr; }
+            .nav-links a { display: none; } 
+            .lead-link-icon { display: none; }
+            .leadership-wrapper p { padding-right: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <span class="logo">C. PROHET</span>
+            <div class="nav-links">
+                <a href="#about" data-fr="Profil" data-en="Profile">Profil</a>
+                <a href="#projects" data-fr="Projets" data-en="Projects">Projets</a>
+                <a href="#experience" data-fr="Expérience" data-en="Experience">Expérience</a>
+                <a href="#education" data-fr="Formation" data-en="Education">Formation</a>
+                <a href="#contact" data-fr="Contact" data-en="Contact">Contact</a>
+                <button id="lang-toggle" class="btn-lang">EN</button>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <section id="about" class="hero">
+            <div class="container hero-grid reveal">
+                <div class="hero-text">
+                    <h1 class="title" data-fr="Cédric Prohet" data-en="Cédric Prohet">Cédric Prohet</h1>
+                    <h2 class="subtitle" data-fr="Ingénieur Logistique & Supply Chain" data-en="Logistics & Supply Chain Engineer">Ingénieur Logistique & Supply Chain</h2>
+                    <p class="description" data-fr="Actuellement en école d'ingénieur en logistique et supply chain, je recherche une alternance pour ma dernière année afin de développer mes compétences en coordination logistique, et de synthèse stratégique." data-en="Currently in a logistics and supply chain engineering school, looking for a final-year work-study program to develop skills in logistics coordination and strategic synthesis.">Actuellement en école d'ingénieur en logistique et supply chain, je recherche une alternance pour ma dernière année afin de développer mes compétences en coordination logistique, et de synthèse stratégique.</p>
+                    
+                    <div class="contact-info">
+                        <a href="#contact"><i class="fa-solid fa-paper-plane"></i> <span data-fr="Me contacter" data-en="Contact me">Me contacter</span></a>
+                        <a href="https://bit.ly/42gSw0G" target="_blank"><i class="fa-brands fa-linkedin"></i> LinkedIn</a>
+                        <span><i class="fa-solid fa-car"></i> Permis B</span>
+                    </div>
+                </div>
+                <div class="hero-photo-container">
+                    <img src="photo.jpg" alt="Cédric Prohet" class="profile-photo">
+                </div>
+            </div>
+        </section>
+
+        <section class="kpi-banner">
+            <div class="container kpi-grid">
+                <div class="kpi-item reveal">
+                    <div class="kpi-value"><span class="counter" data-target="5">0</span> M€</div>
+                    <p data-fr="Budget Projet Géré" data-en="Project Budget Managed">Budget Projet Géré</p>
+                </div>
+                <div class="kpi-item reveal" style="transition-delay: 0.1s;">
+                    <div class="kpi-value"><span class="counter" data-target="2500">0</span></div>
+                    <p data-fr="Heures de Productivité Gagnées" data-en="Productivity Hours Saved">Heures de Productivité Gagnées</p>
+                </div>
+                <div class="kpi-item reveal" style="transition-delay: 0.2s;">
+                    <div class="kpi-value"><span class="counter" data-target="20">0</span></div>
+                    <p data-fr="Collaborateurs Managés" data-en="Team Members Managed">Collaborateurs Managés</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="vision" class="section">
+            <div class="container">
+                <h2 class="section-title reveal" data-fr="Ma vision stratégique" data-en="My Strategic Vision">Ma vision stratégique</h2>
+                <p class="description reveal" style="font-size: 1.05rem; color: var(--text-muted); max-width: 800px;" data-fr="L'optimisation logistique ne se résume pas à réduire le coût du transport. C'est l'alignement systémique entre les processus, la donnée et l'humain." data-en="Logistics optimization is not just about reducing transport costs. It is the systemic alignment between processes, data, and people.">L'optimisation logistique ne se résume pas à réduire le coût du transport. C'est l'alignement systémique entre les processus, la donnée et l'humain.</p>
+                
+                <div class="vision-grid">
+                    <div class="vision-card reveal">
+                        <i class="fa-solid fa-chart-pie vision-icon"></i>
+                        <h3 data-fr="S&OP & Flux Tirés" data-en="S&OP & Pull Flows">S&OP & Flux Tirés</h3>
+                        <p data-fr="Passer d'une logistique de réaction à une logistique d'anticipation. Aligner les approvisionnements sur la demande réelle (DDMRP) pour protéger le BFR et garantir le taux de service client." data-en="Moving from reactive to anticipatory logistics. Aligning supply with actual demand (DDMRP) to protect working capital and ensure customer service levels.">Passer d'une logistique de réaction à une logistique d'anticipation. Aligner les approvisionnements sur la demande réelle (DDMRP) pour protéger le BFR et garantir le taux de service client.</p>
+                    </div>
+                    <div class="vision-card reveal" style="transition-delay: 0.1s;">
+                        <i class="fa-solid fa-network-wired vision-icon"></i>
+                        <h3 data-fr="Convergence IT/Métier" data-en="IT/Business Convergence">Convergence IT/Métier</h3>
+                        <p data-fr="Traduire les besoins métiers (Opérations) en architectures techniques (DSI). Déploiement de solutions souveraines, sécurisées (Zero Trust) et interopérables (API, Data Lake)." data-en="Translating business needs (Operations) into technical architectures (IT). Deploying sovereign, secure (Zero Trust), and interoperable solutions (API, Data Lake).">Traduire les besoins métiers (Opérations) en architectures techniques (DSI). Déploiement de solutions souveraines, sécurisées (Zero Trust) et interopérables (API, Data Lake).</p>
+                    </div>
+                    <div class="vision-card reveal" style="transition-delay: 0.2s;">
+                        <i class="fa-solid fa-users-gear vision-icon"></i>
+                        <h3 data-fr="Conduite du Changement" data-en="Change Management">Conduite du Changement</h3>
+                        <p data-fr="Le meilleur WMS a un ROI de zéro s'il n'est pas adopté. J'accompagne la conduite du changement par l'UX/UI, la formation terrain et la culture du 'Less is More' pour les KPIs." data-en="The best WMS has a zero ROI if it is not adopted. I support change management through UX/UI, field training, and the 'Less is More' KPI culture.">Le meilleur WMS a un ROI de zéro s'il n'est pas adopté. J'accompagne la conduite du changement par l'UX/UI, la formation terrain et la culture du 'Less is More' pour les KPIs.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects" class="section bg-white">
+            <div class="container">
+                <h2 class="section-title reveal" data-fr="Mes Projets Majeurs" data-en="My Major Projects">Mes Projets Majeurs</h2>
+                
+                <div class="projects-grid">
+                    <a href="projet-iot-tracker.html" class="project-card reveal">
+                        <div class="project-img" style="background-image: url('https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80');"></div>
+                        <div class="project-body">
+                            <span class="project-company cat-dassault">Dassault Aviation</span>
+                            <h3 data-fr="Déploiement Trackeurs IoT" data-en="IoT Trackers Deployment">Déploiement Trackeurs IoT</h3>
+                            <p data-fr="Mise en place et lancement d’un projet de suivi en temps réel utilisant les technologies Cellulaires et BLE pour la traçabilité mondiale." data-en="Setup and launch of a real-time tracking project using Cellular and BLE technologies for global traceability.">Mise en place et lancement d’un projet de suivi en temps réel utilisant les technologies Cellulaires et BLE pour la traçabilité mondiale.</p>
+                            <span class="btn-link" data-fr="Voir le projet <i class='fa-solid fa-arrow-right'></i>" data-en="View project <i class='fa-solid fa-arrow-right'></i>">Voir le projet <i class="fa-solid fa-arrow-right"></i></span>
+                        </div>
+                    </a>
+
+                    <a href="migration-wms-speed.html" class="project-card reveal" style="transition-delay: 0.1s;">
+                        <div class="project-img" style="background-image: url('https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&q=80');"></div>
+                        <div class="project-body">
+                            <span class="project-company cat-dimotrans">Dimotrans</span>
+                            <h3 data-fr="Migration WMS" data-en="WMS Migration">Migration WMS</h3>
+                            <p data-fr="Pilotage de la migration complète du système de gestion d'entrepôt : transition de l'environnement AS400 / SPEED vers la solution Reflex Web." data-en="Managed the complete migration of the Warehouse Management System: transitioning from AS400 / SPEED to Reflex Web.">Pilotage de la migration complète du système de gestion d'entrepôt : transition de l'environnement AS400 / SPEED vers la solution Reflex Web.</p>
+                            <span class="btn-link" data-fr="Voir le projet <i class='fa-solid fa-arrow-right'></i>" data-en="View project <i class='fa-solid fa-arrow-right'></i>">Voir le projet <i class="fa-solid fa-arrow-right"></i></span>
+                        </div>
+                    </a>
+
+                    <a href="projet-implantation.html" class="project-card reveal" style="transition-delay: 0.2s;">
+                        <div class="project-img" style="background-image: url('https://images.unsplash.com/photo-1553413077-190dd305871c?auto=format&fit=crop&q=80');"></div>
+                        <div class="project-body">
+                            <span class="project-company cat-dimotrans">Dimotrans Group</span>
+                            <h3 data-fr="Implantation Client" data-en="Client Implementation">Implantation Client</h3>
+                            <p data-fr="Gestion de crise logistique et transfert express d'un stock de 10 000 pièces/semaine via méthodologie Gantt Hybride." data-en="Logistics crisis management and express transfer of a 10,000 pieces/week stock via Hybrid Gantt methodology.">Gestion de crise logistique et transfert express d'un stock de 10 000 pièces/semaine via méthodologie Gantt Hybride.</p>
+                            <span class="btn-link" data-fr="Voir le projet <i class='fa-solid fa-arrow-right'></i>" data-en="View project <i class='fa-solid fa-arrow-right'></i>">Voir le projet <i class="fa-solid fa-arrow-right"></i></span>
+                        </div>
+                    </a>
+
+                    <a href="projet-legacy.html" class="project-card reveal" style="transition-delay: 0.1s;">
+                        <div class="project-img" style="background-image: url('https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?auto=format&fit=crop&q=80');"></div>
+                        <div class="project-body">
+                            <span class="project-company cat-dassault">Dassault Aviation</span>
+                            <h3 data-fr="Projet Data Legacy" data-en="Data Legacy Project">Projet Data Legacy</h3>
+                            <p data-fr="Création d'un script Python automatisé pour croiser 10 000 lignes de stock entre SAP et SPEED. Gestion d'un projet de ferraillage massif." data-en="Created an automated Python script to cross-reference 10,000 stock lines between SAP and SPEED. Managed a massive scrapping project.">Création d'un script Python automatisé pour croiser 10 000 lignes de stock entre SAP et SPEED. Gestion d'un projet de ferraillage massif.</p>
+                            <span class="btn-link" data-fr="Voir le projet <i class='fa-solid fa-arrow-right'></i>" data-en="View project <i class='fa-solid fa-arrow-right'></i>">Voir le projet <i class="fa-solid fa-arrow-right"></i></span>
+                        </div>
+                    </a>
+
+                    <a href="powerbi-kpi.html" class="project-card reveal" style="transition-delay: 0.2s;">
+                        <div class="project-img" style="background-image: url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80');"></div>
+                        <div class="project-body">
+                            <span class="project-company cat-transverse">Transverse</span>
+                            <h3 data-fr="Analyse KPI & Power BI" data-en="KPI Analysis & Power BI">Analyse KPI & Power BI</h3>
+                            <p data-fr="Création de tableaux de bord Power BI et outils d'analyses pour le suivi des performances. Utilisation de l'IA pour l'optimisation des décisions." data-en="Created Power BI dashboards and analysis tools for performance tracking. Use of AI for logistics decision optimization.">Création de tableaux de bord Power BI et outils d'analyses pour le suivi des performances. Utilisation de l'IA pour l'optimisation des décisions.</p>
+                            <span class="btn-link" data-fr="Voir le projet <i class='fa-solid fa-arrow-right'></i>" data-en="View project <i class='fa-solid fa-arrow-right'></i>">Voir le projet <i class="fa-solid fa-arrow-right"></i></span>
+                        </div>
+                    </a>
+
+                    <a href="projet-homelab.html" class="project-card reveal" style="transition-delay: 0.3s;">
+                        <div class="project-img" style="background-image: url('https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&q=80');"></div>
+                        <div class="project-body">
+                            <span class="project-company cat-perso">Projet Personnel</span>
+                            <h3 data-fr="Infrastructure Homelab" data-en="Homelab Infrastructure">Infrastructure Homelab</h3>
+                            <p data-fr="Administration d'un serveur VPS, gestion de multiples conteneurs Docker et déploiement de services web. Démonstration pratique d'une forte appétence IT." data-en="VPS server administration, management of multiple Docker containers, and web services deployment. Practical demonstration of a strong IT affinity.">Administration d'un serveur VPS, gestion de multiples conteneurs Docker et déploiement de services web. Démonstration pratique d'une forte appétence IT.</p>
+                            <span class="btn-link" data-fr="Voir le projet <i class='fa-solid fa-arrow-right'></i>" data-en="View project <i class='fa-solid fa-arrow-right'></i>">Voir le projet <i class="fa-solid fa-arrow-right"></i></span>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="btn-center">
+                    <button id="load-more-projects" class="btn-outline" style="display: none;" data-fr="Voir plus de projets" data-en="Show more projects">Voir plus de projets</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="leadership" class="section">
+            <div class="container">
+                <h2 class="section-title reveal" data-fr="Leadership & Capital Social" data-en="Leadership & Social Capital">Leadership & Capital Social</h2>
+                
+                <a href="projet-alumni.html" class="leadership-wrapper reveal">
+                    <i class="fa-solid fa-arrow-up-right-from-square lead-link-icon"></i>
+                    <h3 data-fr="Fondation du Réseau Alumni [Nom École]" data-en="Foundation of the [School Name] Alumni Network">Fondation du Réseau Alumni [Nom École]</h3>
+                    <p data-fr="Le management stratégique ne se limite pas à des tableaux de bord, c'est avant tout la création d'écosystèmes. J'ai fondé et présidé l'association des anciens élèves de mon école d'ingénieurs pour structurer un capital social durable. De la rédaction des statuts à l'organisation d'événements professionnels, cette expérience entrepreneuriale valide ma capacité à fédérer des parties prenantes complexes (étudiants, direction, entreprises)." data-en="Strategic management is not limited to dashboards; it is above all the creation of ecosystems. I founded and chaired the alumni association of my engineering school to structure sustainable social capital. From drafting the statutes to organizing professional events, this entrepreneurial experience validates my ability to unite complex stakeholders (students, management, companies).">Le management stratégique ne se limite pas à des tableaux de bord, c'est avant tout la création d'écosystèmes. J'ai fondé et présidé l'association des anciens élèves de mon école d'ingénieurs pour structurer un capital social durable. De la rédaction des statuts à l'organisation d'événements professionnels, cette expérience entrepreneuriale valide ma capacité à fédérer des parties prenantes complexes (étudiants, direction, entreprises).</p>
+                    <div class="leadership-tags">
+                        <span class="lead-tag"><i class="fa-solid fa-users"></i> <span data-fr="Fédérateur" data-en="Community Builder">Fédérateur</span></span>
+                        <span class="lead-tag"><i class="fa-solid fa-handshake"></i> <span data-fr="Négociation Partenariats" data-en="Partnership Negotiation">Négociation Partenariats</span></span>
+                        <span class="lead-tag"><i class="fa-solid fa-comments"></i> <span data-fr="Communication" data-en="Communication">Communication</span></span>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <section id="experience" class="section bg-white">
+            <div class="container">
+                <h2 class="section-title reveal" data-fr="Expérience Professionnelle" data-en="Professional Experience">Expérience Professionnelle</h2>
+                
+                <div class="timeline">
+                    <div class="timeline-item reveal">
+                        <div class="timeline-date" data-fr="Sept. 2024 – En cours" data-en="Sept. 2024 – Present">Sept. 2024 – En cours</div>
+                        <h3 data-fr="Analyste Logistique" data-en="Logistics Analyst">Analyste Logistique</h3>
+                        <h4 class="company">Dassault Aviation, Tremblay-en-France</h4>
+                        <ul class="timeline-list">
+                            <li data-fr="<strong>Projet de Ferraillage :</strong> Gestion d’un projet de ferraillage de 5 millions d’euros, traitant 10 000 lignes et 1,2 million d'unités, avec suivi des KPI." data-en="<strong>Scrapping Project:</strong> Managed a €5M scrapping project processing 10,000 lines and 1.2M units, with KPI tracking."><strong>Projet de Ferraillage :</strong> Gestion d’un projet de ferraillage de 5 millions d’euros, traitant 10 000 lignes et 1,2 million d'unités, avec suivi des KPI.</li>
+                            <li data-fr="<strong>Conception et Lancement d’un Projet :</strong> Mise en place d’un projet de suivi en temps réel utilisant le Satellite Tracker / LoRa / BLE." data-en="<strong>Project Design & Launch:</strong> Implemented a real-time tracking project using Satellite Tracker / LoRa / BLE."><strong>Conception et Lancement d’un Projet :</strong> Mise en place d’un projet de suivi en temps réel utilisant le Satellite Tracker / LoRa / BLE.</li>
+                            <li data-fr="<strong>Logistique & Douanes :</strong> Optimisation des flux entrants, garantissant la conformité, notamment pour les importations russes." data-en="<strong>Logistics & Customs:</strong> Inbound flow optimization ensuring compliance, notably for Russian imports."><strong>Logistique & Douanes :</strong> Optimisation des flux entrants, garantissant la conformité, notamment pour les importations russes.</li>
+                            <li data-fr="<strong>Pilotage de Contrat Prestataire :</strong> Pilotage de 3 contrats (Daher, DHL, DPD) assurant le respect des délais, de la qualité de service." data-en="<strong>Service Provider Management:</strong> Managed 3 contracts (Daher, DHL, DPD) ensuring adherence to deadlines and service quality."><strong>Pilotage de Contrat Prestataire :</strong> Pilotage de 3 contrats (Daher, DHL, DPD) assurant le respect des délais, de la qualité de service.</li>
+                        </ul>
+                    </div>
+
+                    <div class="timeline-item reveal">
+                        <div class="timeline-date" data-fr="Sept. 2023 – Sept. 2024" data-en="Sept. 2023 – Sept. 2024">Sept. 2023 – Sept. 2024</div>
+                        <h3 data-fr="Chef de Projet" data-en="Project Manager">Chef de Projet</h3>
+                        <h4 class="company">Dimotrans, Pusignan</h4>
+                        <ul class="timeline-list">
+                            <li data-fr="<strong>Gestion d’Équipe et Formation :</strong> Supervision de 20 collaborateurs, remplacement d'un responsable de secteur et formation des équipes pour optimiser la productivité." data-en="<strong>Team Management & Training:</strong> Supervised 20 employees, replaced a sector manager, and trained teams to optimize productivity."><strong>Gestion d’Équipe et Formation :</strong> Supervision de 20 collaborateurs, remplacement d'un responsable de secteur et formation des équipes pour optimiser la productivité.</li>
+                            <li data-fr="<strong>Optimisation des Systèmes et Processus :</strong> Migration du WMS (AS400/SPEED → Reflex Web) et numérisation des procédures opérationnelles." data-en="<strong>Systems & Process Optimization:</strong> WMS migration (AS400/SPEED → Reflex Web) and digitization of operational procedures."><strong>Optimisation des Systèmes et Processus :</strong> Migration du WMS (AS400/SPEED → Reflex Web) et numérisation des procédures opérationnelles.</li>
+                            <li data-fr="<strong>Logistique & Performance :</strong> Réaménagement du stockage, intégration d'un client textile (5 000 commandes/semaine), analyse des KPI et mise en place." data-en="<strong>Logistics & Performance:</strong> Storage reorganization, integration of a textile client (5,000 orders/week), KPI analysis and implementation."><strong>Logistique & Performance :</strong> Réaménagement du stockage, intégration d'un client textile (5 000 commandes/semaine), analyse des KPI et mise en place.</li>
+                        </ul>
+                    </div>
+
+                    <div class="timeline-item reveal">
+                        <div class="timeline-date" data-fr="Déc. 2019 – Juin 2021" data-en="Dec. 2019 – June 2021">Déc. 2019 – Juin 2021</div>
+                        <h3 data-fr="Assistant Logistique & Réglementaire" data-en="Logistics & Regulatory Assistant">Assistant Logistique & Réglementaire</h3>
+                        <h4 class="company">Philagro France, Saint-Didier-au-Mont-d’Or</h4>
+                        <ul class="timeline-list">
+                            <li data-fr="<strong>Supply Chain & Conformité :</strong> Coordination du relabeling des produits conformément aux réglementations ANSES." data-en="<strong>Supply Chain & Compliance:</strong> Coordinated product relabeling in accordance with ANSES regulations."><strong>Supply Chain & Conformité :</strong> Coordination du relabeling des produits conformément aux réglementations ANSES.</li>
+                            <li data-fr="<strong>Gestion Réglementaire :</strong> Supervision du rappel de 60 000 produits, garantissant la conformité des certificats d'analyse (COA) et des autorisations de mise sur le marché (AMM)." data-en="<strong>Regulatory Management:</strong> Supervised the recall of 60,000 products, ensuring compliance of certificates of analysis (COA) and marketing authorizations (AMM)."><strong>Gestion Réglementaire :</strong> Supervision du rappel de 60 000 produits, garantissant la conformité des certificats d'analyse (COA) et des autorisations de mise sur le marché (AMM).</li>
+                            <li data-fr="<strong>Communication Client & Autorités :</strong> Gestion du courrier réglementaire et conduite d’une campagne de conformité auprès de 1 000 clients." data-en="<strong>Client & Authority Communication:</strong> Managed regulatory correspondence and conducted a compliance campaign with 1,000 clients."><strong>Communication Client & Autorités :</strong> Gestion du courrier réglementaire et conduite d’une campagne de conformité auprès de 1 000 clients.</li>
+                        </ul>
+                    </div>
+
+                    <div class="timeline-item reveal">
+                        <div class="timeline-date" data-fr="Déc. 2018 – Déc. 2019" data-en="Dec. 2018 – Dec. 2019">Déc. 2018 – Déc. 2019</div>
+                        <h3 data-fr="Opérateur Logistique" data-en="Logistics Operator">Opérateur Logistique</h3>
+                        <h4 class="company">Gendarmerie, Sathonay-Camp</h4>
+                        <ul class="timeline-list">
+                            <li data-fr="Coordination des réceptions, préparation des commandes, mise à jour des inventaires et support aux audits internes." data-en="Coordination of receptions, order picking, inventory updates, and support for internal audits.">Coordination des réceptions, préparation des commandes, mise à jour des inventaires et support aux audits internes.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="education" class="section">
+            <div class="container grid-2-cols">
+                
+                <div class="reveal">
+                    <h2 class="section-title" data-fr="Éducation" data-en="Education">Éducation</h2>
+                    <div class="education-card">
+                        <span class="edu-date">Sept. 2024 – Juin 2026</span>
+                        <h4 data-fr="Cycle ingénieur en Logistique (CTI)" data-en="Logistics Engineering Degree (CTI)">Cycle ingénieur en Logistique (CTI)</h4>
+                        <p>EIJV / UPJV, Saint-Quentin</p>
+                    </div>
+                    <div class="education-card">
+                        <span class="edu-date">Sept. 2023 – Sept. 2024</span>
+                        <h4 data-fr="Licence Pro. en Logistique Globale – Parcours International" data-en="Bachelor in Global Logistics - International Track">Licence Pro. en Logistique Globale</h4>
+                        <p>IUT Lumière Lyon 2</p>
+                    </div>
+                    <div class="education-card">
+                        <span class="edu-date">Sept. 2021 – Sept. 2023</span>
+                        <h4 data-fr="BTS Gestion des Transports et Logistique Associée (GTLA)" data-en="BTS in Transport and Logistics (GTLA)">BTS GTLA</h4>
+                        <p>Lycée Camille Dugast</p>
+                    </div>
+                    <div class="education-card">
+                        <span class="edu-date">Sept. 2018 – Juin 2019</span>
+                        <h4 data-fr="Titre Pro. de Technicien Logistique – RNCP Niveau IV" data-en="Logistics Technician Certificate - RNCP Level 4">Titre Pro. de Technicien Logistique</h4>
+                        <p>IFOCOP (certification FFP)</p>
+                    </div>
+                </div>
+
+                <div class="reveal">
+                    <h2 class="section-title" data-fr="Outils & Soft Skills" data-en="Tools & Soft Skills">Outils & Soft Skills</h2>
+                    
+                    <h4 class="sub-heading" data-fr="Logiciels & IT" data-en="Software & IT">Logiciels & IT</h4>
+                    <div class="tags-container">
+                        <span class="tag">Pack Office</span><span class="tag">SAP</span><span class="tag">REFLEX</span>
+                        <span class="tag">SPEED</span><span class="tag">AS400</span><span class="tag">Power BI</span>
+                        <span class="tag">Pivotal</span><span class="tag">Python</span><span class="tag">IA</span>
+                    </div>
+
+                    <h4 class="sub-heading" data-fr="Compétences Clés" data-en="Key Skills">Compétences Clés</h4>
+                    <div class="tags-container">
+                        <span class="tag">Gestion de projet</span><span class="tag">Organisation</span>
+                        <span class="tag">Sens des responsabilités</span><span class="tag">Adaptabilité</span>
+                        <span class="tag">Analyse des KPI</span>
+                    </div>
+
+                    <h4 class="sub-heading" data-fr="Langues" data-en="Languages">Langues</h4>
+                    <ul class="simple-list">
+                        <li data-fr="Français : Langue maternelle" data-en="French: Native">Français : Langue maternelle</li>
+                        <li data-fr="Anglais : Intermédiaire (B2)" data-en="English: Intermediate (B2)">Anglais : Intermédiaire (B2)</li>
+                        <li data-fr="Chinois : Débutant (HSK2)" data-en="Chinese: Beginner (HSK2)">Chinois : Débutant (HSK2)</li>
+                        <li data-fr="Espagnol : Débutant (A2)" data-en="Spanish: Beginner (A2)">Espagnol : Débutant (A2)</li>
+                    </ul>
+
+                    <h4 class="sub-heading" data-fr="Centres d'intérêt" data-en="Interests">Centres d'intérêt</h4>
+                    <ul class="simple-list">
+                        <li data-fr="Gastronomie et OEnologie" data-en="Gastronomy and Oenology">Gastronomie et OEnologie</li>
+                        <li data-fr="Randonnée et Trekking" data-en="Hiking and Trekking">Randonnée et Trekking</li>
+                        <li data-fr="Organisation de voyages" data-en="Travel planning">Organisation de voyages</li>
+                    </ul>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="contact" class="section bg-white">
+            <div class="container">
+                <h2 class="section-title reveal" data-fr="Me Contacter" data-en="Contact Me">Me Contacter</h2>
+                
+                <div class="contact-wrapper reveal">
+                    <form action="https://formspree.io/f/VOTRE_ID_FORMSPREE" method="POST">
+                        <div class="form-group">
+                            <label for="name" data-fr="Votre Nom" data-en="Your Name">Votre Nom</label>
+                            <input type="text" id="name" name="name" required placeholder="Ex: Jean Dupont">
+                        </div>
+                        <div class="form-group">
+                            <label for="email" data-fr="Votre Email" data-en="Your Email">Votre Email</label>
+                            <input type="email" id="email" name="email" required placeholder="Ex: jean.dupont@entreprise.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="message" data-fr="Votre Message" data-en="Your Message">Votre Message</label>
+                            <textarea id="message" name="message" rows="5" required placeholder="Bonjour Cédric, nous sommes intéressés par votre profil..."></textarea>
+                        </div>
+                        <button type="submit" class="btn-submit" data-fr="Envoyer le message" data-en="Send message">Envoyer le message</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>© 2026 Cédric Prohet. Portfolio professionnel.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // 1. Traduction FR/EN
+            const langBtn = document.getElementById('lang-toggle');
+            let currentLang = 'fr';
+
+            langBtn.addEventListener('click', () => {
+                currentLang = currentLang === 'fr' ? 'en' : 'fr';
+                langBtn.innerText = currentLang === 'fr' ? 'EN' : 'FR';
+
+                const elements = document.querySelectorAll('[data-fr][data-en]');
+                elements.forEach(el => {
+                    el.style.opacity = 0;
+                    setTimeout(() => {
+                        el.innerHTML = currentLang === 'fr' ? el.getAttribute('data-fr') : el.getAttribute('data-en');
+                        el.style.opacity = 1;
+                    }, 200);
+                });
+            });
+
+            // 2. Gestion de l'affichage des projets ("Voir plus")
+            const projects = document.querySelectorAll('.project-card');
+            const loadMoreBtn = document.getElementById('load-more-projects');
+            const maxVisibleProjects = 6;
+
+            if (projects.length > maxVisibleProjects) {
+                for (let i = maxVisibleProjects; i < projects.length; i++) {
+                    projects[i].classList.add('hidden-project');
+                }
+                if (loadMoreBtn) loadMoreBtn.style.display = 'block';
+            }
+
+            if (loadMoreBtn) {
+                loadMoreBtn.addEventListener('click', () => {
+                    const hiddenProjects = document.querySelectorAll('.hidden-project');
+                    hiddenProjects.forEach(p => {
+                        p.classList.remove('hidden-project');
+                        setTimeout(() => p.classList.remove('js-hidden'), 50); // Anime l'apparition
+                    });
+                    loadMoreBtn.style.display = 'none'; // Cache le bouton après le clic
+                });
+            }
+
+            // 3. Préparation des animations
+            const reveals = document.querySelectorAll('.reveal');
+            reveals.forEach(el => el.classList.add('js-hidden'));
+
+            // Animation des compteurs basés sur le temps (pour synchroniser l'arrivée)
+            const animateCounters = () => {
+                const counters = document.querySelectorAll('.counter');
+                const animationDuration = 2000; // 2 secondes pour tous les compteurs
+
+                counters.forEach(counter => {
+                    const target = +counter.getAttribute('data-target');
+                    const startTime = performance.now();
+                    
+                    const updateCount = (currentTime) => {
+                        const elapsed = currentTime - startTime;
+                        const progress = Math.min(elapsed / animationDuration, 1);
+                        
+                        // Easing out cube (ralentit vers la fin)
+                        const easeOut = 1 - Math.pow(1 - progress, 3);
+                        const currentVal = Math.ceil(easeOut * target);
+                        
+                        counter.innerText = currentVal;
+                        
+                        if (progress < 1) {
+                            requestAnimationFrame(updateCount);
+                        } else {
+                            counter.innerText = target;
+                        }
+                    };
+                    requestAnimationFrame(updateCount);
+                });
+            };
+
+            // 4. Animation au scroll
+            let countersAnimated = false; 
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.remove('js-hidden');
+                        
+                        if(entry.target.classList.contains('kpi-banner') && !countersAnimated) {
+                            animateCounters();
+                            countersAnimated = true;
+                        }
+                        
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1, rootMargin: "0px 0px -20px 0px" });
+
+            reveals.forEach(reveal => observer.observe(reveal));
+            
+            const kpiBanner = document.querySelector('.kpi-banner');
+            if(kpiBanner) observer.observe(kpiBanner);
+        });
+    </script>
+</body>
+</html>

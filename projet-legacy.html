@@ -1,0 +1,331 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projet Legacy - Dassault Aviation | Cédric Prohet</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* === THEME GRIS PRO & ÉLÉGANT === */
+        :root {
+            --bg-main: #f8fafc; 
+            --bg-white: #ffffff;
+            --text-main: #1e293b; 
+            --text-muted: #64748b;
+            --accent: #0f172a; 
+            --accent-light: #e2e8f0;
+            --border: #e2e8f0;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --shadow-sm: 0 4px 6px -1px rgba(0,0,0,0.05);
+            --shadow-md: 0 10px 15px -3px rgba(0,0,0,0.05);
+            --transition: all 0.3s ease;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; scroll-behavior: smooth; }
+        body { background-color: var(--bg-main); color: var(--text-main); line-height: 1.7; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 20px; }
+        .section { padding: 60px 0; }
+        .bg-white { background-color: var(--bg-white); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+
+        /* --- NAVBAR --- */
+        .navbar { position: fixed; top: 0; width: 100%; background: rgba(255,255,255,0.95); backdrop-filter: blur(5px); border-bottom: 1px solid var(--border); z-index: 1000; padding: 15px 0; box-shadow: var(--shadow-sm); }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+        .logo { font-size: 1.2rem; font-weight: 700; letter-spacing: 1px; color: var(--accent); text-decoration: none; }
+        .nav-group { display: flex; align-items: center; gap: 20px; }
+        .back-btn { color: var(--text-muted); text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 8px; transition: var(--transition); }
+        .back-btn:hover { color: var(--accent); }
+        .btn-lang { background: transparent; border: 1px solid var(--text-muted); color: var(--text-muted); padding: 4px 10px; border-radius: 4px; cursor: pointer; font-weight: bold; transition: var(--transition); }
+        .btn-lang:hover { border-color: var(--accent); color: var(--accent); }
+
+        /* --- HERO PROJECT --- */
+        .project-hero { padding-top: 140px; padding-bottom: 50px; text-align: center; }
+        .project-company { display: inline-block; background: var(--accent-light); color: var(--accent); padding: 6px 15px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; margin-bottom: 20px; letter-spacing: 1px; }
+        .project-title { font-size: 3.5rem; font-weight: 800; color: var(--accent); line-height: 1.1; margin-bottom: 20px; }
+        .project-subtitle { font-size: 1.2rem; color: var(--text-muted); max-width: 700px; margin: 0 auto 30px; }
+        
+        .project-meta { display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; margin-top: 40px; padding-top: 40px; border-top: 1px solid var(--border); }
+        .meta-item { text-align: left; }
+        .meta-label { display: block; font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600; margin-bottom: 5px; }
+        .meta-value { font-size: 1.1rem; font-weight: 700; color: var(--text-main); }
+
+        /* --- CONTENU TYPOGRAPHIE --- */
+        .content-block { margin-bottom: 40px; }
+        .content-block h2 { font-size: 1.8rem; color: var(--accent); margin-bottom: 20px; border-left: 4px solid var(--accent); padding-left: 15px; }
+        .content-block p { margin-bottom: 15px; color: var(--text-muted); font-size: 1.05rem; }
+        .content-block ul { margin-bottom: 20px; padding-left: 20px; color: var(--text-muted); }
+        .content-block li { margin-bottom: 8px; }
+
+        /* --- GRAPHIQUES & SCHEMAS CSS --- */
+        .visual-box { background: var(--bg-main); border: 1px solid var(--border); border-radius: 12px; padding: 30px; margin: 30px 0; box-shadow: inset 0 2px 4px rgba(0,0,0,0.02); }
+        
+        /* Architecture IT */
+        .it-arch { display: flex; justify-content: space-around; align-items: center; flex-wrap: wrap; gap: 20px; text-align: center; }
+        .sys-node { background: var(--bg-white); padding: 20px; border-radius: 8px; border: 2px solid var(--accent-light); width: 200px; box-shadow: var(--shadow-sm); }
+        .sys-node i { font-size: 2.5rem; color: var(--accent); margin-bottom: 10px; }
+        .sys-node h4 { margin-bottom: 5px; }
+        .sys-node p { font-size: 0.85rem; color: var(--text-muted); margin: 0; }
+        .sys-link { font-size: 1.5rem; color: var(--warning); display: flex; flex-direction: column; align-items: center; }
+        .sys-link span { font-size: 0.8rem; font-weight: bold; margin-top: 5px; }
+
+        /* KPI Dashboard */
+        .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 30px; }
+        .kpi-card { background: var(--bg-white); padding: 25px; border-radius: 10px; border: 1px solid var(--border); box-shadow: var(--shadow-sm); text-align: center; transition: var(--transition); }
+        .kpi-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); border-color: var(--accent); }
+        .kpi-icon { font-size: 2rem; margin-bottom: 15px; }
+        .kpi-number { font-size: 2.5rem; font-weight: 800; color: var(--accent); line-height: 1; margin-bottom: 5px; }
+        .kpi-label { font-size: 0.9rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; }
+
+        /* Alert Box */
+        .alert-box { display: flex; gap: 15px; background: #fef2f2; border-left: 4px solid var(--danger); padding: 20px; border-radius: 0 8px 8px 0; margin: 20px 0; }
+        .alert-box i { color: var(--danger); font-size: 1.5rem; }
+        .alert-content p { color: #991b1b; margin: 0; font-size: 0.95rem; }
+
+        .success-box { display: flex; gap: 15px; background: #f0fdf4; border-left: 4px solid var(--success); padding: 20px; border-radius: 0 8px 8px 0; margin: 20px 0; }
+        .success-box i { color: var(--success); font-size: 1.5rem; }
+        .success-content p { color: #166534; margin: 0; font-size: 0.95rem; }
+
+        /* Footer */
+        .footer { text-align: center; padding: 30px; border-top: 1px solid var(--border); color: var(--text-muted); margin-top: 40px; }
+
+        .reveal { opacity: 1; transform: translateY(0); transition: all 0.6s ease-out; }
+        .js-hidden { opacity: 0; transform: translateY(20px); }
+
+        @media (max-width: 768px) {
+            .project-title { font-size: 2.5rem; }
+            .it-arch { flex-direction: column; }
+            .sys-link i { transform: rotate(90deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-group">
+                <a href="index.html" class="back-btn" data-fr="<i class='fa-solid fa-arrow-left'></i> Retour" data-en="<i class='fa-solid fa-arrow-left'></i> Back"><i class="fa-solid fa-arrow-left"></i> Retour</a>
+            </div>
+            <div class="nav-group">
+                <a href="index.html" class="logo">C. PROHET</a>
+                <button id="lang-toggle" class="btn-lang">EN</button>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <section class="project-hero">
+            <div class="container reveal">
+                <span class="project-company">Dassault Aviation</span>
+                <h1 class="project-title" data-fr="Projet Data Legacy" data-en="Data Legacy Project">Projet Data Legacy</h1>
+                <p class="project-subtitle" data-fr="Automatisation, croisement de données massives (SAP/SPEED) et désaturation logistique pour préparer l'arrivée du Falcon 10X." data-en="Automation, massive data cross-referencing (SAP/SPEED) and logistics desaturation to prepare for the arrival of the Falcon 10X.">Automatisation, croisement de données massives (SAP/SPEED) et désaturation logistique pour préparer l'arrivée du Falcon 10X.</p>
+                
+                <div class="project-meta">
+                    <div class="meta-item">
+                        <span class="meta-label" data-fr="Rôle" data-en="Role">Rôle</span>
+                        <span class="meta-value" data-fr="Chef de Projet / Analyste" data-en="Project Manager / Analyst">Chef de Projet / Analyste</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label" data-fr="Outils" data-en="Tools">Outils</span>
+                        <span class="meta-value">Python, SAP (ERP), SPEED (WMS)</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label" data-fr="Budget Impacté" data-en="Impacted Budget">Budget Impacté</span>
+                        <span class="meta-value" data-fr="5 Millions d'Euros" data-en="5 Million Euros">5 Millions d'Euros</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label" data-fr="Durée" data-en="Duration">Durée</span>
+                        <span class="meta-value" data-fr="6 mois" data-en="6 months">6 mois</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section bg-white">
+            <div class="container">
+                
+                <div class="content-block reveal">
+                    <h2 data-fr="1. Le Contexte et l'Urgence Opérationnelle" data-en="1. Context and Operational Urgency">1. Le Contexte et l'Urgence Opérationnelle</h2>
+                    <p data-fr="Le projet &quot;Legacy&quot; a été initié par la Direction du Support Avions Falcon (DAFS) face à une urgence physique et comptable : la saturation critique de nos espaces logistiques. Les sites de Montrichard (MTRS) et de Tremblay-en-France (CDGS) manquaient cruellement de place." data-en="The &quot;Legacy&quot; project was initiated by the Falcon Aircraft Support Directorate (DAFS) facing a physical and accounting urgency: the critical saturation of our logistics spaces. The Montrichard (MTRS) and Tremblay-en-France (CDGS) sites were severely lacking space.">Le projet "Legacy" a été initié par la Direction du Support Avions Falcon (DAFS) face à une urgence physique et comptable : la saturation critique de nos espaces logistiques. Les sites de Montrichard (MTRS) et de Tremblay-en-France (CDGS) manquaient cruellement de place.</p>
+                    <p data-fr="L'objectif stratégique était double :" data-en="The strategic objective was twofold:">L'objectif stratégique était double :</p>
+                    <ul>
+                        <li data-fr="Libérer des surfaces logistiques indispensables pour accueillir les pièces du futur programme <strong>Falcon 10X</strong>." data-en="Free up essential logistics space to accommodate parts for the future <strong>Falcon 10X</strong> program.">Libérer des surfaces logistiques indispensables pour accueillir les pièces du futur programme <strong>Falcon 10X</strong>.</li>
+                        <li data-fr="Restituer des espaces sur le site de MTRS pour les confier aux activités de la Direction Générale du Soutien Militaire (DGSM)." data-en="Return space at the MTRS site to the activities of the General Directorate for Military Support (DGSM).">Restituer des espaces sur le site de MTRS pour les confier aux activités de la Direction Générale du Soutien Militaire (DGSM).</li>
+                    </ul>
+                    <p data-fr="La cible ? Les stocks dormants de la gamme &quot;Legacy&quot;, regroupant les pièces des anciens modèles Falcon 10, 20 et 50. Après une analyse de la Supply Chain, un périmètre de <strong>10 000 lignes de stock</strong> m'a été confié pour traitement et ferraillage." data-en="The target? Dormant stocks from the &quot;Legacy&quot; range, gathering parts from older Falcon 10, 20, and 50 models. After a Supply Chain analysis, a scope of <strong>10,000 stock lines</strong> was assigned to me for processing and scrapping.">La cible ? Les stocks dormants de la gamme "Legacy", regroupant les pièces des anciens modèles Falcon 10, 20 et 50. Après une analyse de la Supply Chain, un périmètre de <strong>10 000 lignes de stock</strong> m'a été confié pour traitement et ferraillage.</p>
+                </div>
+
+                <div class="content-block reveal">
+                    <h2 data-fr="2. Le Défi Technique : L'Architecture SAP & SPEED" data-en="2. The Technical Challenge: SAP & SPEED Architecture">2. Le Défi Technique : L'Architecture SAP & SPEED</h2>
+                    <p data-fr="La complexité majeure de cette mission résidait dans l'architecture informatique de Dassault Aviation. Nos processus s'appuient sur deux systèmes distincts qui doivent impérativement rester synchronisés via des messages d'interface (IDOC):" data-en="The major complexity of this mission lay in Dassault Aviation's IT architecture. Our processes rely on two distinct systems that must remain synchronized via interface messages (IDOC):">La complexité majeure de cette mission résidait dans l'architecture informatique de Dassault Aviation. Nos processus s'appuient sur deux systèmes distincts qui doivent impérativement rester synchronisés via des messages d'interface (IDOC) :</p>
+                    
+                    <div class="visual-box it-arch">
+                        <div class="sys-node">
+                            <i class="fa-solid fa-database"></i>
+                            <h4>SAP (ERP)</h4>
+                            <p data-fr="Vision comptable, financière, statuts et gestion des lots." data-en="Accounting, financial vision, statuses, and batch management.">Vision comptable, financière, statuts et gestion des lots.</p>
+                        </div>
+                        <div class="sys-link">
+                            <i class="fa-solid fa-right-left"></i>
+                            <span>Synchro IDOC</span>
+                        </div>
+                        <div class="sys-node">
+                            <i class="fa-solid fa-boxes-stacked"></i>
+                            <h4>SPEED (WMS)</h4>
+                            <p data-fr="Exécution physique, emplacements réels gérés par le prestataire." data-en="Physical execution, real locations managed by the provider.">Exécution physique, emplacements réels gérés par le prestataire.</p>
+                        </div>
+                    </div>
+
+                    <p data-fr="Pour chaque ligne de stock, il fallait croiser les données de trois fichiers massifs : le fichier cible (SCRAPP), l'extraction des stocks SAP (ZINV) et l'extraction physique SPEED. Une vérification manuelle de ces 10 000 lignes, à raison de 5 minutes par ligne, aurait nécessité <strong>833 heures de travail</strong> (soit 24 semaines à temps plein)." data-en="For each stock line, data from three massive files had to be cross-referenced: the target file (SCRAPP), the SAP stock extraction (ZINV), and the physical SPEED extraction. A manual verification of these 10,000 lines, at 5 minutes per line, would have required <strong>833 hours of work</strong> (or 24 weeks full-time).">Pour chaque ligne de stock, il fallait croiser les données de trois fichiers massifs : le fichier cible (SCRAPP), l'extraction des stocks SAP (ZINV) et l'extraction physique SPEED. Une vérification manuelle de ces 10 000 lignes, à raison de 5 minutes par ligne, aurait nécessité <strong>833 heures de travail</strong> (soit 24 semaines à temps plein).</p>
+                </div>
+
+                <div class="content-block reveal">
+                    <h2 data-fr="3. Ma Solution : L'Algorithme Python" data-en="3. My Solution: The Python Algorithm">3. Ma Solution : L'Algorithme Python</h2>
+                    <p data-fr="Pour sécuriser le projet, éviter les erreurs humaines et tenir les délais serrés, j'ai pris l'initiative de concevoir et développer un script d'automatisation en langage Python." data-en="To secure the project, avoid human errors, and meet tight deadlines, I took the initiative to design and develop an automation script in Python.">Pour sécuriser le projet, éviter les erreurs humaines et tenir les délais serrés, j'ai pris l'initiative de concevoir et développer un script d'automatisation en langage Python.</p>
+                    <p data-fr="Ce programme a permis de :" data-en="This program allowed to:">Ce programme a permis de :</p>
+                    <ul>
+                        <li data-fr="Homogénéiser les formats de données et standardiser les Part Numbers (PN)." data-en="Homogenize data formats and standardize Part Numbers (PN).">Homogénéiser les formats de données et standardiser les Part Numbers (PN).</li>
+                        <li data-fr="Prioriser géographiquement le site militaire de MTRS." data-en="Geographically prioritize the MTRS military site.">Prioriser géographiquement le site militaire de MTRS.</li>
+                        <li data-fr="Vérifier automatiquement les quantités de façon croisée : la quantité retenue était le minimum disponible entre le besoin SCRAPP, la réalité comptable SAP et la présence physique SPEED." data-en="Automatically cross-check quantities: the retained quantity was the minimum available between the SCRAPP need, SAP accounting reality, and physical SPEED presence.">Vérifier automatiquement les quantités de façon croisée : la quantité retenue était le minimum disponible entre le besoin SCRAPP, la réalité comptable SAP et la présence physique SPEED.</li>
+                        <li data-fr="Générer un fichier de synthèse prêt à être injecté par batch dans les demandes SAP." data-en="Generate a synthesis file ready to be batch-injected into SAP requests.">Générer un fichier de synthèse prêt à être injecté par batch dans les demandes SAP.</li>
+                    </ul>
+                </div>
+
+                <div class="content-block reveal">
+                    <h2 data-fr="4. Gestion de Crise : Le Piège des Rejets IDOC" data-en="4. Crisis Management: The IDOC Rejection Trap">4. Gestion de Crise : Le Piège des Rejets IDOC</h2>
+                    <div class="alert-box">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                        <div class="alert-content">
+                            <p data-fr="<strong>Anomalie Détectée :</strong> Lors des premières exécutions de ferraillage, nous avons fait face à un taux de rejet informatique (IDOC) de 35%, bloquant physiquement la destruction des pièces." data-en="<strong>Anomaly Detected:</strong> During the first scrapping executions, we faced a 35% IT rejection rate (IDOC), physically blocking the destruction of parts."><strong>Anomalie Détectée :</strong> Lors des premières exécutions de ferraillage, nous avons fait face à un taux de rejet informatique (IDOC) de 35%, bloquant physiquement la destruction des pièces.</p>
+                        </div>
+                    </div>
+                    <p data-fr="Après un audit complet des logs d'erreurs, j'ai identifié la source du conflit. Le WMS (SPEED) regroupait parfois certains lots physiques, tandis que l'ERP (SAP) les fragmentait en plusieurs sous-lots stricts. Mon script initial, qui se basait sur la logique physique (SPEED) pour déterminer les quantités, créait donc un décalage comptable dans SAP." data-en="After a full audit of error logs, I identified the source of the conflict. The WMS (SPEED) sometimes grouped certain physical batches, while the ERP (SAP) fragmented them into several strict sub-batches. My initial script, based on physical logic (SPEED) to determine quantities, thus created an accounting discrepancy in SAP.">Après un audit complet des logs d'erreurs, j'ai identifié la source du conflit. Le WMS (SPEED) regroupait parfois certains lots physiques, tandis que l'ERP (SAP) les fragmentait en plusieurs sous-lots stricts. Mon script initial, qui se basait sur la logique physique (SPEED) pour déterminer les quantités, créait donc un décalage comptable dans SAP.</p>
+                    
+                    <div class="success-box">
+                        <i class="fa-solid fa-wrench"></i>
+                        <div class="success-content">
+                            <p data-fr="<strong>La Résolution :</strong> J'ai reprogrammé la logique de l'algorithme pour inverser la hiérarchie des données. SAP est devenu le système &quot;Maître&quot; absolu pour garantir la justesse financière des lots, tandis que SPEED est devenu l'outil de confirmation physique. J'y ai ajouté un contrôle automatique des statuts de blocage SAP." data-en="<strong>Resolution:</strong> I reprogrammed the algorithm's logic to invert the data hierarchy. SAP became the absolute &quot;Master&quot; system to guarantee the financial accuracy of batches, while SPEED became the physical confirmation tool. I added an automatic check of SAP blocking statuses."><strong>La Résolution :</strong> J'ai reprogrammé la logique de l'algorithme pour inverser la hiérarchie des données. SAP est devenu le système "Maître" absolu pour garantir la justesse financière des lots, tandis que SPEED est devenu l'outil de confirmation physique. J'y ai ajouté un contrôle automatique des statuts de blocage SAP.</p>
+                        </div>
+                    </div>
+                    <p data-fr="<strong>Résultat de la correction :</strong> Le taux d'erreur informatique et de rejet IDOC est tombé instantanément sous la barre des 2%." data-en="<strong>Correction Result:</strong> The IT error and IDOC rejection rate instantly dropped below 2%."><strong>Résultat de la correction :</strong> Le taux d'erreur informatique et de rejet IDOC est tombé instantanément sous la barre des 2%.</p>
+                </div>
+
+                <div class="content-block reveal">
+                    <h2 data-fr="5. Résultats et Chiffres Clés (KPIs)" data-en="5. Results and Key Figures (KPIs)">5. Résultats et Chiffres Clés (KPIs)</h2>
+                    <p data-fr="L'approche algorithmique, couplée au suivi rigoureux des exécutions, a permis d'atteindre et de dépasser les objectifs fixés par la Direction. La ventilation des résultats met en évidence une destruction comptable de 2,7 millions d'euros. Le reliquat des pièces non détruites sur le site militaire a ensuite été transféré avec succès par mes soins vers le hub de Tremblay." data-en="The algorithmic approach, coupled with rigorous execution tracking, allowed us to meet and exceed the objectives set by Management. The breakdown of results highlights an accounting destruction of 2.7 million euros. The remaining non-destroyed parts on the military site were then successfully transferred by me to the Tremblay hub.">L'approche algorithmique, couplée au suivi rigoureux des exécutions, a permis d'atteindre et de dépasser les objectifs fixés par la Direction. La ventilation des résultats met en évidence une destruction comptable de 2,7 millions d'euros. Le reliquat des pièces non détruites sur le site militaire a ensuite été transféré avec succès par mes soins vers le hub de Tremblay.</p>
+
+                    <div class="kpi-grid">
+                        <div class="kpi-card">
+                            <i class="fa-solid fa-check-double kpi-icon" style="color: var(--success);"></i>
+                            <div class="kpi-number counter" data-target="8500">0</div>
+                            <div class="kpi-label" data-fr="Lignes de stock traitées" data-en="Processed stock lines">Lignes de stock traitées</div>
+                            <p style="font-size: 0.8rem; margin-top: 10px; color: var(--text-muted);" data-fr="6 500 à CDGS / 1 500 à MTRS" data-en="6,500 at CDGS / 1,500 at MTRS">6 500 à CDGS / 1 500 à MTRS</p>
+                        </div>
+                        <div class="kpi-card">
+                            <i class="fa-solid fa-euro-sign kpi-icon" style="color: var(--accent);"></i>
+                            <div class="kpi-number"><span class="counter" data-target="2.7">2.7</span> M</div>
+                            <div class="kpi-label" data-fr="Valeur comptable détruite" data-en="Destroyed accounting value">Valeur comptable détruite</div>
+                            <p style="font-size: 0.8rem; margin-top: 10px; color: var(--text-muted);" data-fr="Sortis des bilans dormants" data-en="Removed from dormant balances">Sortis des bilans dormants</p>
+                        </div>
+                        <div class="kpi-card">
+                            <i class="fa-solid fa-warehouse kpi-icon" style="color: var(--warning);"></i>
+                            <div class="kpi-number counter" data-target="700">0</div>
+                            <div class="kpi-label" data-fr="Emplacements libérés" data-en="Freed locations">Emplacements libérés</div>
+                            <p style="font-size: 0.8rem; margin-top: 10px; color: var(--text-muted);" data-fr="Préparation accueil Falcon 10X" data-en="Preparing Falcon 10X reception">Préparation accueil Falcon 10X</p>
+                        </div>
+                        <div class="kpi-card">
+                            <i class="fa-solid fa-stopwatch kpi-icon" style="color: var(--danger);"></i>
+                            <div class="kpi-number"><span class="counter" data-target="5800">0</span></div>
+                            <div class="kpi-label" data-fr="Euros Économisés" data-en="Euros Saved">Euros Économisés</div>
+                            <p style="font-size: 0.8rem; margin-top: 10px; color: var(--text-muted);" data-fr="Grâce à l'algorithme Python" data-en="Thanks to the Python algorithm">Grâce à l'algorithme Python</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p data-fr="© 2026 Cédric Prohet. Portfolio professionnel." data-en="© 2026 Cédric Prohet. Professional portfolio.">© 2026 Cédric Prohet. Portfolio professionnel.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // Traduction FR/EN
+            const langBtn = document.getElementById('lang-toggle');
+            let currentLang = 'fr';
+
+            langBtn.addEventListener('click', () => {
+                currentLang = currentLang === 'fr' ? 'en' : 'fr';
+                langBtn.innerText = currentLang === 'fr' ? 'EN' : 'FR';
+
+                const elements = document.querySelectorAll('[data-fr][data-en]');
+                elements.forEach(el => {
+                    el.style.opacity = 0;
+                    setTimeout(() => {
+                        el.innerHTML = currentLang === 'fr' ? el.getAttribute('data-fr') : el.getAttribute('data-en');
+                        el.style.opacity = 1;
+                    }, 200);
+                });
+            });
+
+            // Animation au scroll
+            const reveals = document.querySelectorAll('.reveal');
+            reveals.forEach(el => el.classList.add('js-hidden'));
+
+            // Animation des compteurs
+            const animateCounters = () => {
+                const counters = document.querySelectorAll('.counter');
+                const speed = 100; // Vitesse d'animation
+
+                counters.forEach(counter => {
+                    const updateCount = () => {
+                        const target = parseFloat(counter.getAttribute('data-target'));
+                        const count = parseFloat(counter.innerText);
+                        const isFloat = counter.getAttribute('data-target').includes('.');
+                        const inc = target / speed;
+
+                        if (count < target) {
+                            if(isFloat) {
+                                counter.innerText = (count + inc).toFixed(1);
+                            } else {
+                                counter.innerText = Math.ceil(count + inc);
+                            }
+                            setTimeout(updateCount, 20);
+                        } else {
+                            counter.innerText = target;
+                        }
+                    };
+                    updateCount();
+                });
+            };
+
+            let countersAnimated = false;
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.remove('js-hidden');
+                        
+                        // Déclencher les compteurs si la grille KPI est visible
+                        if(entry.target.querySelector('.kpi-grid') && !countersAnimated) {
+                            animateCounters();
+                            countersAnimated = true;
+                        }
+                        
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1, rootMargin: "0px 0px -20px 0px" });
+
+            reveals.forEach(reveal => observer.observe(reveal));
+        });
+    </script>
+</body>
+</html>
