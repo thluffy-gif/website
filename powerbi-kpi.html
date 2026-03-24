@@ -65,7 +65,7 @@
         /* --- LESS IS MORE VISUALS --- */
         .quote-block { background: linear-gradient(135deg, var(--accent), var(--ai-dark)); color: white; padding: 40px; border-radius: 12px; margin: 30px 0; position: relative; box-shadow: var(--shadow-md); text-align: center; }
         .quote-block i { font-size: 3rem; color: rgba(255,255,255,0.1); position: absolute; top: 20px; left: 30px; }
-        .quote-block p { font-size: 1.4rem; font-weight: 600; margin: 0; line-height: 1.4; position: relative; z-index: 2; color: white; font-style: italic; }
+        .quote-block p { font-size: 1.3rem; font-weight: 600; margin: 0; line-height: 1.4; position: relative; z-index: 2; color: white; font-style: italic; }
 
         .success-grid { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 20px; }
         .success-card { flex: 1; min-width: 280px; background: var(--bg-main); border: 1px solid var(--border); border-radius: 10px; padding: 25px; position: relative; overflow: hidden; }
@@ -172,7 +172,7 @@
 
     <div class="disclaimer-banner">
         <i class="fa-solid fa-lightbulb"></i> 
-        <span data-fr="Cette page expose ma philosophie Data et démontre l'intégration technique d'un Agent IA et de POC Analytiques via des données extrapolées." data-en="This page outlines my Data philosophy and demonstrates the technical integration of an AI Agent and Analytics POCs using extrapolated data.">Cette page expose ma philosophie Data et démontre l'intégration technique d'un Agent IA et de POC Analytiques via des données extrapolées.</span>
+        <span data-fr="Cette page expose mes réalisations Data et démontre l'intégration technique d'un Agent IA via des données extrapolées." data-en="This page outlines my Data achievements and demonstrates the technical integration of an AI Agent using extrapolated data.">Cette page expose mes réalisations Data et démontre l'intégration technique d'un Agent IA via des données extrapolées.</span>
     </div>
 
     <main>
@@ -197,35 +197,35 @@
                         
                         <div style="display: flex; border-bottom: 1px solid var(--border); background: #e2e8f0;">
                             <button id="tab-pbi-poc" onclick="switchPocTab('pbi')" style="flex: 1; padding: 15px; border: none; background: white; font-weight: 700; color: var(--accent); border-bottom: 3px solid #0369a1; cursor: pointer; transition: all 0.2s; font-size: 1rem;">
-                                <i class="fa-solid fa-chart-column" style="color: #f59e0b;"></i> STO Overview (Power BI)
+                                <i class="fa-solid fa-chart-column" style="color: #f59e0b;"></i> <span data-fr="STO Overview (Power BI)" data-en="STO Overview (Power BI)">STO Overview (Power BI)</span>
                             </button>
                             <button id="tab-py-poc" onclick="switchPocTab('py')" style="flex: 1; padding: 15px; border: none; background: transparent; font-weight: 600; color: var(--text-muted); border-bottom: 3px solid transparent; cursor: pointer; transition: all 0.2s; font-size: 1rem;">
-                                <i class="fa-brands fa-python" style="color: #3b82f6;"></i> Analyse Mails (Streamlit)
+                                <i class="fa-brands fa-python" style="color: #3b82f6;"></i> <span data-fr="Analyse Mails (Streamlit)" data-en="Mail Analysis (Streamlit)">Analyse Mails (Streamlit)</span>
                             </button>
                         </div>
 
                         <div id="content-pbi-poc" style="display: block; animation: fadeIn 0.4s ease-out;">
                             <div style="padding: 25px; border-bottom: 1px solid var(--border); background: white;">
-                                <h3 style="color: var(--accent); font-size: 1.2rem; margin-bottom: 10px;">Pourquoi ce Dashboard ? (Cas d'usage SAP)</h3>
-                                <p style="font-size: 0.95rem; color: var(--text-muted); margin-bottom: 15px;">Face à un manque de visibilité globale sur les commandes, l'objectif était de s'affranchir des extractions manuelles fastidieuses dans SAP. J'ai modélisé les données (Power Query / DAX) pour offrir une vue consolidée, claire et interactive des flux YIES/YIEN.</p>
+                                <h3 style="color: var(--accent); font-size: 1.2rem; margin-bottom: 10px;" data-fr="Pourquoi ce Dashboard ? (Cas d'usage SAP)" data-en="Why this Dashboard? (SAP Use Case)">Pourquoi ce Dashboard ? (Cas d'usage SAP)</h3>
+                                <p style="font-size: 0.95rem; color: var(--text-muted); margin-bottom: 15px;" data-fr="Face à un manque de visibilité globale sur les commandes, l'objectif était de s'affranchir des extractions manuelles fastidieuses dans SAP. J'ai modélisé les données (Power Query / DAX) pour offrir une vue consolidée, claire et interactive des flux YIES/YIEN." data-en="Faced with a lack of global visibility on orders, the goal was to bypass tedious manual SAP extractions. I modeled the data (Power Query / DAX) to offer a consolidated, clear, and interactive view of YIES/YIEN flows.">Face à un manque de visibilité globale sur les commandes, l'objectif était de s'affranchir des extractions manuelles fastidieuses dans SAP. J'ai modélisé les données (Power Query / DAX) pour offrir une vue consolidée, claire et interactive des flux YIES/YIEN.</p>
                                 <div style="display: inline-block; background: #e0f2fe; color: #0369a1; padding: 6px 12px; border-radius: 6px; font-size: 0.85rem; font-weight: bold; border: 1px solid #bae6fd;">
-                                    <i class="fa-solid fa-chart-line"></i> ROI : Gain de temps de 50% sur le reporting et pilotage temps réel.
+                                    <i class="fa-solid fa-chart-line"></i> <span data-fr="ROI : Gain de temps de 50% sur le reporting et pilotage temps réel." data-en="ROI: 50% time saving on reporting and real-time management.">ROI : Gain de temps de 50% sur le reporting et pilotage temps réel.</span>
                                 </div>
                             </div>
-                            <div style="width: 100%; height: 800px; background: #f1f5f9;">
+                            <div style="width: 100%; height: 800px; background: #f1f5f9; border-radius: 8px; overflow: hidden; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);">
                                 <iframe src="sim-powerbi.html" style="width: 100%; height: 100%; border: none;"></iframe>
                             </div>
                         </div>
 
                         <div id="content-py-poc" style="display: none; animation: fadeIn 0.4s ease-out;">
                             <div style="padding: 25px; border-bottom: 1px solid var(--border); background: white;">
-                                <h3 style="color: var(--accent); font-size: 1.2rem; margin-bottom: 10px;">Pourquoi cette Application ? (Initiative Intrapreneuriale)</h3>
-                                <p style="font-size: 0.95rem; color: var(--text-muted); margin-bottom: 15px;">Pour répondre à un besoin du chef de service : il n'existait aucun KPI pour mesurer l'activité sur la boîte email logistique commune. J'ai donc développé un script Python de scraping/classification, adossé à une WebApp Streamlit, afin de <strong>quantifier ce "travail invisible" et de valoriser la charge de l'équipe</strong>.</p>
+                                <h3 style="color: var(--accent); font-size: 1.2rem; margin-bottom: 10px;" data-fr="Pourquoi cette Application ? (Initiative Intrapreneuriale)" data-en="Why this Application? (Intrapreneurial Initiative)">Pourquoi cette Application ? (Initiative Intrapreneuriale)</h3>
+                                <p style="font-size: 0.95rem; color: var(--text-muted); margin-bottom: 15px;" data-fr="Pour répondre à un besoin du chef de service : il n'existait aucun KPI pour mesurer l'activité sur la boîte email logistique commune. J'ai donc développé un script Python de scraping/classification, adossé à une WebApp Streamlit, afin de <strong>quantifier ce 'travail invisible' et de valoriser la charge de l'équipe</strong>." data-en="To meet a department head's need: there were no KPIs to measure activity on the shared logistics email inbox. I developed a Python scraping/classification script, backed by a Streamlit WebApp, to <strong>quantify this 'invisible work' and highlight the team's workload</strong>.">Pour répondre à un besoin du chef de service : il n'existait aucun KPI pour mesurer l'activité sur la boîte email logistique commune. J'ai donc développé un script Python de scraping/classification, adossé à une WebApp Streamlit, afin de <strong>quantifier ce 'travail invisible' et de valoriser la charge de l'équipe</strong>.</p>
                                 <div style="display: inline-block; background: #dcfce7; color: #15803d; padding: 6px 12px; border-radius: 6px; font-size: 0.85rem; font-weight: bold; border: 1px solid #bbf7d0;">
-                                    <i class="fa-solid fa-bullseye"></i> ROI : Classification de +18 000 emails et justification par la donnée du besoin de recrutement.
+                                    <i class="fa-solid fa-bullseye"></i> <span data-fr="ROI : Classification de +18 000 emails et justification par la donnée du besoin de recrutement." data-en="ROI: Classification of +18,000 emails and data-driven justification for recruitment needs.">ROI : Classification de +18 000 emails et justification par la donnée du besoin de recrutement.</span>
                                 </div>
                             </div>
-                            <div style="width: 100%; height: 800px; background: #ffffff;">
+                            <div style="width: 100%; height: 800px; background: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);">
                                 <iframe src="sim-streamlit.html" style="width: 100%; height: 100%; border: none;"></iframe>
                             </div>
                         </div>
@@ -233,15 +233,11 @@
                 </div>
 
                 <div class="content-block reveal">
-                    <h2 data-fr="2. Le Constat : Le &quot;Cimetière des Dashboards&quot;" data-en="2. The Observation: The &quot;Dashboard Graveyard&quot;">2. Le Constat : Le "Cimetière des Dashboards"</h2>
-                    <p data-fr="En Supply Chain, la donnée est le nerf de la guerre. Pour la maîtriser, l'industrie a créé des monstres : des rapports Power BI tentaculaires avec 50 indicateurs et des dizaines de filtres croisés. Le résultat ? Une <strong>KPI Fatigue</strong> généralisée. Lors d'un changement de management, le savoir se perd, personne n'ose modifier l'outil par peur de casser une requête SQL, et l'entreprise se retrouve avec un &quot;cimetière de tableaux de bord&quot; que plus personne ne consulte." data-en="In Supply Chain, data is the sinews of war. To master it, the industry has created monsters: sprawling Power BI reports with 50 indicators and dozens of cross-filters. The result? Generalized <strong>KPI Fatigue</strong>. During a management change, knowledge is lost, no one dares modify the tool for fear of breaking a SQL query, and the company ends up with a &quot;dashboard graveyard&quot; that no one consults anymore.">En Supply Chain, la donnée est le nerf de la guerre. Pour la maîtriser, l'industrie a créé des monstres : des rapports Power BI tentaculaires avec 50 indicateurs et des dizaines de filtres croisés. Le résultat ? Une <strong>KPI Fatigue</strong> généralisée. Lors d'un changement de management, le savoir se perd, personne n'ose modifier l'outil par peur de casser une requête SQL, et l'entreprise se retrouve avec un "cimetière de tableaux de bord" que plus personne ne consulte.</p>
-                    
-                    <div class="quote-block">
-                        <i class="fa-solid fa-quote-left"></i>
-                        <p data-fr="&quot;Un tableau de bord complexe est l'aveu d'une donnée mal maîtrisée. L'avenir n'est plus à la création de vues statiques figées, mais à l'interrogation dynamique d'un Data Lake par le langage naturel.&quot;" data-en="&quot;A complex dashboard is the admission of poorly mastered data. The future is no longer about creating frozen static views, but about dynamically querying a Data Lake using natural language.&quot;">"Un tableau de bord complexe est l'aveu d'une donnée mal maîtrisée. L'avenir n'est plus à la création de vues statiques figées, mais à l'interrogation dynamique d'un Data Lake par le langage naturel."</p>
-                    </div>
+                    <h2 data-fr="2. La Philosophie : Vaincre le &quot;Cimetière des Dashboards&quot;" data-en="2. The Philosophy: Overcoming the &quot;Dashboard Graveyard&quot;">2. La Philosophie : Vaincre le "Cimetière des Dashboards"</h2>
+                    <p data-fr="En Supply Chain, la donnée est le nerf de la guerre. Après avoir conçu ces démonstrateurs, le constat est clair : l'industrie a tendance à créer des monstres. Des rapports tentaculaires avec 50 indicateurs et des dizaines de filtres croisés engendrent une <strong>KPI Fatigue</strong> généralisée." data-en="In Supply Chain, data is the sinews of war. After designing these demonstrators, the observation is clear: the industry tends to create monsters. Sprawling reports with 50 indicators and dozens of cross-filters generate generalized <strong>KPI Fatigue</strong>.">En Supply Chain, la donnée est le nerf de la guerre. Après avoir conçu ces démonstrateurs, le constat est clair : l'industrie a tendance à créer des monstres. Des rapports tentaculaires avec 50 indicateurs et des dizaines de filtres croisés engendrent une <strong>KPI Fatigue</strong> généralisée.</p>
+                    <p data-fr="Lors d'un changement de management, le savoir se perd, personne n'ose modifier l'outil par peur de casser une requête SQL, et l'entreprise se retrouve avec un &quot;cimetière de tableaux de bord&quot; que plus personne ne consulte." data-en="During a management change, knowledge is lost, no one dares modify the tool for fear of breaking a SQL query, and the company ends up with a &quot;dashboard graveyard&quot; that no one consults anymore.">Lors d'un changement de management, le savoir se perd, personne n'ose modifier l'outil par peur de casser une requête SQL, et l'entreprise se retrouve avec un "cimetière de tableaux de bord" que plus personne ne consulte.</p>
 
-                    <h3 style="margin-top:30px; margin-bottom: 15px; color:var(--accent);" data-fr="De la Théorie à l'Application (Cas d'école & Succès Personnel) :" data-en="From Theory to Application (Textbook Cases & Personal Success):">De la Théorie à l'Application (Cas d'école & Succès Personnel) :</h3>
+                    <h3 style="margin-top:30px; margin-bottom: 15px; color:var(--accent);" data-fr="L'Application de la méthode &quot;Less is More&quot; :" data-en="Applying the &quot;Less is More&quot; method:">L'Application de la méthode "Less is More" :</h3>
                     <div class="success-grid">
                         <div class="success-card">
                             <h4><i class="fa-brands fa-amazon"></i> Amazon & Apple</h4>
@@ -249,14 +245,14 @@
                         </div>
                         <div class="success-card personal">
                             <h4><i class="fa-solid fa-user-check"></i> Mon Application Concrète</h4>
-                            <p data-fr="J'ai appliqué cette philosophie &quot;Less is More&quot; sur mes projets Power BI / Pivotal. En remplaçant des dizaines de pages de rapports par un unique cockpit décisionnel de 4 KPIs vitaux, j'ai <span class='highlight'>divisé par deux les temps de réunion</span> et rendu l'adhésion des managers immédiate." data-en="I applied this &quot;Less is More&quot; philosophy on my Power BI / Pivotal projects. By replacing dozens of report pages with a single decision cockpit of 4 vital KPIs, I <span class='highlight'>halved meeting times</span> and made manager buy-in immediate.">J'ai appliqué cette philosophie "Less is More" sur mes projets Power BI / Pivotal. En remplaçant des dizaines de pages de rapports par un unique cockpit décisionnel de 4 KPIs vitaux, j'ai <span class='highlight'>divisé par deux les temps de réunion</span> et rendu l'adhésion des managers immédiate.</p>
+                            <p data-fr="J'applique systématiquement cette approche sur mes projets Data. En remplaçant des dizaines de pages de rapports par un unique cockpit décisionnel focalisé sur l'essentiel, on <span class='highlight'>divise par deux les temps de réunion</span> et on rend l'adhésion immédiate." data-en="I systematically apply this approach to my Data projects. By replacing dozens of report pages with a single decision cockpit focused on the essentials, we <span class='highlight'>halve meeting times</span> and make manager buy-in immediate.">J'applique systématiquement cette approche sur mes projets Data. En remplaçant des dizaines de pages de rapports par un unique cockpit décisionnel focalisé sur l'essentiel, on <span class='highlight'>divise par deux les temps de réunion</span> et on rend l'adhésion immédiate.</p>
                         </div>
                     </div>
                 </div>
 
                 <div class="content-block reveal">
                     <h2 data-fr="3. Architecture : IA Souveraine & Sécurité (RAG)" data-en="3. Architecture: Sovereign AI & Security (RAG)">3. Architecture : IA Souveraine & Sécurité (RAG)</h2>
-                    <p data-fr="Déléguer l'analyse de données à une IA est l'avenir. Mais dans des secteurs critiques (Défense, Aéronautique), il est impensable d'envoyer nos bases de données clients vers les serveurs cloud d'OpenAI (ChatGPT) à cause du <strong>Cloud Act américain</strong> et du secret industriel." data-en="Delegating data analysis to an AI is the future. But in critical sectors (Defense, Aeronautics), it is unthinkable to send our customer databases to OpenAI's cloud servers (ChatGPT) because of the <strong>US Cloud Act</strong> and industrial secrecy.">Déléguer l'analyse de données à une IA est l'avenir. Mais dans des secteurs critiques (Défense, Aéronautique), il est impensable d'envoyer nos bases de données clients vers les serveurs cloud d'OpenAI (ChatGPT) à cause du <strong>Cloud Act américain</strong> et du secret industriel.</p>
+                    <p data-fr="Déléguer l'analyse de données complexes à une IA est l'étape suivante logique. Mais dans des secteurs critiques (Défense, Aéronautique), il est impensable d'envoyer nos bases de données clients vers les serveurs cloud d'OpenAI (ChatGPT) à cause du <strong>Cloud Act américain</strong> et du secret industriel." data-en="Delegating complex data analysis to an AI is the logical next step. But in critical sectors (Defense, Aeronautics), it is unthinkable to send our customer databases to OpenAI's cloud servers (ChatGPT) because of the <strong>US Cloud Act</strong> and industrial secrecy.">Déléguer l'analyse de données complexes à une IA est l'étape suivante logique. Mais dans des secteurs critiques (Défense, Aéronautique), il est impensable d'envoyer nos bases de données clients vers les serveurs cloud d'OpenAI (ChatGPT) à cause du <strong>Cloud Act américain</strong> et du secret industriel.</p>
                     
                     <p data-fr="La solution technique que je préconise s'appuie sur une architecture <strong>On-Premise (Air-Gapped)</strong> utilisant la méthode <strong>RAG (Retrieval-Augmented Generation)</strong> :" data-en="The technical solution I recommend is based on an <strong>On-Premise (Air-Gapped)</strong> architecture using the <strong>RAG (Retrieval-Augmented Generation)</strong> method:">La solution technique que je préconise s'appuie sur une architecture <strong>On-Premise (Air-Gapped)</strong> utilisant la méthode <strong>RAG (Retrieval-Augmented Generation)</strong> :</p>
                     
@@ -287,7 +283,7 @@
 
                 <div class="content-block reveal">
                     <h2 data-fr="4. Démonstrateur : L'Agent IA Logistique (Copilot)" data-en="4. Demonstrator: The Logistics AI Agent (Copilot)">4. Démonstrateur : L'Agent IA Logistique (Copilot)</h2>
-                    <p data-fr="Testez l'expérience utilisateur finale. Un manager pose sa question en langage naturel. L'IA génère la requête SQL, interroge la base, et offre le choix de la visualisation (Graphique, Carte, ou Tableau de données) de façon dynamique." data-en="Test the final user experience. A manager asks their question in natural language. The AI generates the SQL query, interrogates the database, and offers the choice of visualization (Chart, Map, or Data Table) dynamically.">Testez l'expérience utilisateur finale. Un manager pose sa question en langage naturel. L'IA génère la requête SQL, interroge la base, et offre le choix de la visualisation (Graphique, Carte, ou Tableau de données) de façon dynamique.</p>
+                    <p data-fr="Testez l'expérience utilisateur finale favorisant l'adoption. Un manager pose sa question en langage naturel. L'IA génère la requête SQL, interroge la base, et offre le choix de la visualisation de façon dynamique." data-en="Test the final user experience promoting adoption. A manager asks their question in natural language. The AI generates the SQL query, interrogates the database, and offers the choice of visualization dynamically.">Testez l'expérience utilisateur finale favorisant l'adoption. Un manager pose sa question en langage naturel. L'IA génère la requête SQL, interroge la base, et offre le choix de la visualisation de façon dynamique.</p>
                     <p style="font-weight: 600; color: var(--ai-dark);" data-fr="👇 Cliquez sur les requêtes ci-dessous pour interagir avec le démonstrateur." data-en="👇 Click on the queries below to interact with the demonstrator.">👇 Cliquez sur les requêtes ci-dessous pour interagir avec le démonstrateur.</p>
                     
                     <div class="ai-simulator">
@@ -336,21 +332,21 @@
                 </div>
 
                 <div class="content-block reveal" style="margin-top: 50px;">
-                    <h2 data-fr="5. Conclusion : La Donnée est le Nerf de la Guerre" data-en="5. Conclusion: Data is the Sinews of War">5. Conclusion : La Donnée est le Nerf de la Guerre</h2>
+                    <h2 data-fr="5. Conclusion : L'Adoption par la Simplicité" data-en="5. Conclusion: Adoption through Simplicity">5. Conclusion : L'Adoption par la Simplicité</h2>
                     
                     <div class="quote-block" style="background: linear-gradient(135deg, var(--ai-dark), var(--accent));">
-                        <i class="fa-solid fa-database"></i>
-                        <p data-fr="&quot;La donnée est le nerf de la guerre. Les entreprises qui survivront demain ne sont pas celles qui créent le plus de Dashboards, mais celles qui ont structuré un Data Lake lisible et interrogeable par l'IA.&quot;" data-en="&quot;Data is the sinews of war. The companies that will survive tomorrow are not those creating the most Dashboards, but those that have structured a readable Data Lake queryable by AI.&quot;">"La donnée est le nerf de la guerre. Les entreprises qui survivront demain ne sont pas celles qui créent le plus de Dashboards, mais celles qui ont structuré un Data Lake lisible et interrogeable par l'IA."</p>
+                        <i class="fa-solid fa-lightbulb"></i>
+                        <p data-fr="&quot;La donnée est le nerf de la guerre, et celui qui la rend facilement assimilable gagne. Que ce soit par des tableaux de bord épurés ou par l'IA. L'avantage décisif de l'IA réside dans l'adoption : elle permet au personnel d'interagir avec la complexité textuellement et sans friction.&quot;" data-en="&quot;Data is the sinews of war, and whoever makes it easily digestible wins. Whether through streamlined dashboards or AI. The decisive advantage of AI lies in adoption: it allows staff to interact with complexity textually and without friction.&quot;">"La donnée est le nerf de la guerre, et celui qui la rend facilement assimilable gagne. Que ce soit par des tableaux de bord épurés ou par l'IA. L'avantage décisif de l'IA réside dans l'adoption : elle permet au personnel d'interagir avec la complexité textuellement et sans friction."</p>
                     </div>
 
-                    <p data-fr="En passant d'une logique de &quot;Créateur de Dashboards&quot; à &quot;Architecte de Données&quot;, l'impact sur l'entreprise est immédiat :" data-en="By shifting from a &quot;Dashboard Creator&quot; logic to a &quot;Data Architect&quot;, the impact on the company is immediate:">En passant d'une logique de "Créateur de Dashboards" à "Architecte de Données", l'impact sur l'entreprise est immédiat :</p>
+                    <p data-fr="En fusionnant une architecture de donnée solide et des interfaces interactives (naturelles), l'impact sur la conduite du changement est immédiat :" data-en="By merging a solid data architecture with interactive (natural) interfaces, the impact on change management is immediate:">En fusionnant une architecture de donnée solide et des interfaces interactives (naturelles), l'impact sur la conduite du changement est immédiat :</p>
                     
                     <div class="benefits-grid">
                         <div class="benefit-card">
                             <i class="fa-solid fa-users benefit-icon"></i>
                             <div class="benefit-value">+<span class="counter" data-target="300">0</span>%</div>
                             <div class="benefit-label" data-fr="Adoption des Outils" data-en="Tool Adoption">Adoption des Outils</div>
-                            <p style="font-size: 0.8rem; margin-top: 10px; color: var(--text-muted);" data-fr="L'interface de tchat brise la barrière technique pour les opérationnels." data-en="The chat interface breaks the technical barrier for operational staff.">L'interface de tchat brise la barrière technique pour les opérationnels.</p>
+                            <p style="font-size: 0.8rem; margin-top: 10px; color: var(--text-muted);" data-fr="La simplification brise la barrière technique pour les opérationnels." data-en="Simplification breaks the technical barrier for operational staff.">La simplification brise la barrière technique pour les opérationnels.</p>
                         </div>
                         <div class="benefit-card">
                             <i class="fa-solid fa-clock-rotate-left benefit-icon"></i>
@@ -362,7 +358,7 @@
                             <i class="fa-solid fa-scale-balanced benefit-icon"></i>
                             <div class="benefit-value">x<span class="counter" data-target="3">0</span></div>
                             <div class="benefit-label" data-fr="ROI Décisionnel" data-en="Decision ROI">ROI Décisionnel</div>
-                            <p style="font-size: 0.8rem; margin-top: 10px; color: var(--text-muted);" data-fr="Arguments chiffrés instantanés pour les négociations de contrats transport (SLA)." data-en="Instant quantitative arguments for transport contract negotiations (SLA).">Arguments chiffrés instantanés pour les négociations de contrats transport (SLA).</p>
+                            <p style="font-size: 0.8rem; margin-top: 10px; color: var(--text-muted);" data-fr="Arguments chiffrés instantanés pour justifier la stratégie (SLA, RH)." data-en="Instant quantitative arguments to justify strategy (SLA, HR).">Arguments chiffrés instantanés pour justifier la stratégie (SLA, RH).</p>
                         </div>
                     </div>
                 </div>
@@ -390,6 +386,16 @@
             const elements = document.querySelectorAll('[data-fr][data-en]');
             elements.forEach(el => {
                 el.innerHTML = el.getAttribute(`data-${currentLang}`);
+            });
+            
+            // Mise à jour du texte saisi par l'utilisateur si une bulle est générée
+            document.querySelectorAll('.chat-user').forEach(bubble => {
+                 bubble.innerHTML = bubble.getAttribute(`data-${currentLang}`);
+            });
+            
+            // Mise à jour du texte généré par l'IA
+            document.querySelectorAll('.ai-text').forEach(p => {
+                 p.innerHTML = p.getAttribute(`data-${currentLang}`);
             });
         });
 
@@ -526,20 +532,20 @@
                     visualHTML = `
                         <div class="ai-visual-container" style="padding: 0;">
                             <div class="chat-inner-tabs">
-                                <button id="btn-chart-${uniqueId}" class="chat-inner-btn active" onclick="toggleChatView('chart', '${uniqueId}')"><i class="fa-solid fa-chart-line"></i> Vue Graphique</button>
-                                <button id="btn-table-${uniqueId}" class="chat-inner-btn" onclick="toggleChatView('table', '${uniqueId}')"><i class="fa-solid fa-table-list"></i> Table de Données</button>
+                                <button id="btn-chart-${uniqueId}" class="chat-inner-btn active" onclick="toggleChatView('chart', '${uniqueId}')"><i class="fa-solid fa-chart-line"></i> <span data-fr="Vue Graphique" data-en="Chart View">Vue Graphique</span></button>
+                                <button id="btn-table-${uniqueId}" class="chat-inner-btn" onclick="toggleChatView('table', '${uniqueId}')"><i class="fa-solid fa-table-list"></i> <span data-fr="Table de Données" data-en="Data Table">Table de Données</span></button>
                             </div>
                             <div id="${uniqueId}-chart-view" style="display:block;">
                                 <div class="ai-chart"><canvas id="${uniqueId}"></canvas></div>
                             </div>
                             <div id="${uniqueId}-table-view" style="display:none; padding:15px;" class="ai-table-wrapper">
                                 <table class="ai-table">
-                                    <tr><th>Mois</th><th>OTD (%)</th><th>Volume (EVP)</th></tr>
-                                    <tr><td>Juin</td><td>96%</td><td>1 245</td></tr>
-                                    <tr><td>Juillet</td><td>95%</td><td>1 310</td></tr>
-                                    <tr><td>Août</td><td><span style="color:var(--danger); font-weight:bold;">82%</span></td><td>980</td></tr>
-                                    <tr><td>Septembre</td><td>94%</td><td>1 405</td></tr>
-                                    <tr><td>Octobre</td><td>97%</td><td>1 520</td></tr>
+                                    <tr><th data-fr="Mois" data-en="Month">Mois</th><th>OTD (%)</th><th data-fr="Volume (EVP)" data-en="Volume (TEU)">Volume (EVP)</th></tr>
+                                    <tr><td data-fr="Juin" data-en="June">Juin</td><td>96%</td><td>1 245</td></tr>
+                                    <tr><td data-fr="Juillet" data-en="July">Juillet</td><td>95%</td><td>1 310</td></tr>
+                                    <tr><td data-fr="Août" data-en="August">Août</td><td><span style="color:var(--danger); font-weight:bold;">82%</span></td><td>980</td></tr>
+                                    <tr><td data-fr="Septembre" data-en="September">Septembre</td><td>94%</td><td>1 405</td></tr>
+                                    <tr><td data-fr="Octobre" data-en="October">Octobre</td><td>97%</td><td>1 520</td></tr>
                                 </table>
                             </div>
                         </div>`;
@@ -551,15 +557,15 @@
                     visualHTML = `
                         <div class="ai-visual-container" style="padding: 0;">
                             <div class="chat-inner-tabs">
-                                <button id="btn-chart-${uniqueId}" class="chat-inner-btn active" onclick="toggleChatView('chart', '${uniqueId}')"><i class="fa-solid fa-chart-pie"></i> Vue Radar</button>
-                                <button id="btn-table-${uniqueId}" class="chat-inner-btn" onclick="toggleChatView('table', '${uniqueId}')"><i class="fa-solid fa-table-list"></i> Matrice de Scores</button>
+                                <button id="btn-chart-${uniqueId}" class="chat-inner-btn active" onclick="toggleChatView('chart', '${uniqueId}')"><i class="fa-solid fa-chart-pie"></i> <span data-fr="Vue Radar" data-en="Radar View">Vue Radar</span></button>
+                                <button id="btn-table-${uniqueId}" class="chat-inner-btn" onclick="toggleChatView('table', '${uniqueId}')"><i class="fa-solid fa-table-list"></i> <span data-fr="Matrice de Scores" data-en="Score Matrix">Matrice de Scores</span></button>
                             </div>
                             <div id="${uniqueId}-chart-view" style="display:block;">
                                 <div class="ai-chart"><canvas id="${uniqueId}"></canvas></div>
                             </div>
                             <div id="${uniqueId}-table-view" style="display:none; padding:15px;" class="ai-table-wrapper">
                                 <table class="ai-table">
-                                    <tr><th>Fournisseur</th><th>Coût (/100)</th><th>Rapidité (/100)</th><th>Carbone (/100)</th></tr>
+                                    <tr><th data-fr="Fournisseur" data-en="Supplier">Fournisseur</th><th data-fr="Coût (/100)" data-en="Cost (/100)">Coût (/100)</th><th data-fr="Rapidité (/100)" data-en="Speed (/100)">Rapidité (/100)</th><th data-fr="Carbone (/100)" data-en="Carbon (/100)">Carbone (/100)</th></tr>
                                     <tr><td><strong>DHL</strong></td><td>90</td><td>70</td><td>60</td></tr>
                                     <tr><td><strong>FedEx</strong></td><td>70</td><td>95</td><td>50</td></tr>
                                     <tr><td><strong>UPS</strong></td><td>75</td><td>80</td><td><span style="color:var(--success); font-weight:bold;">90</span></td></tr>
@@ -574,8 +580,8 @@
                     visualHTML = `
                         <div class="ai-visual-container" style="padding: 0;">
                             <div class="chat-inner-tabs">
-                                <button id="btn-map-${uniqueId}" class="chat-inner-btn active" onclick="toggleChatView('map', '${uniqueId}')"><i class="fa-solid fa-map-location-dot"></i> Carte des Anomalies</button>
-                                <button id="btn-table-${uniqueId}" class="chat-inner-btn" onclick="toggleChatView('table', '${uniqueId}')"><i class="fa-solid fa-table-list"></i> Table de Données</button>
+                                <button id="btn-map-${uniqueId}" class="chat-inner-btn active" onclick="toggleChatView('map', '${uniqueId}')"><i class="fa-solid fa-map-location-dot"></i> <span data-fr="Carte des Anomalies" data-en="Anomalies Map">Carte des Anomalies</span></button>
+                                <button id="btn-table-${uniqueId}" class="chat-inner-btn" onclick="toggleChatView('table', '${uniqueId}')"><i class="fa-solid fa-table-list"></i> <span data-fr="Table de Données" data-en="Data Table">Table de Données</span></button>
                             </div>
                             
                             <div id="${uniqueId}-chart-view" style="display:block;">
@@ -584,10 +590,10 @@
                             
                             <div id="${uniqueId}-table-view" style="display:none; padding:15px;" class="ai-table-wrapper">
                                 <table class="ai-table">
-                                    <tr><th>N° Conteneur</th><th>Localisation</th><th>Dwell Time</th><th>Statut</th></tr>
-                                    <tr><td><strong>CTN-4458</strong></td><td>Port de Shanghai</td><td>34 Jours</td><td><span class="ai-badge" style="background:#fef2f2; color:var(--danger);">Bloqué Douane</span></td></tr>
-                                    <tr><td><strong>CTN-1120</strong></td><td>Canal de Suez</td><td>31 Jours</td><td><span class="ai-badge" style="background:#fff7ed; color:var(--warning);">En attente (Congestion)</span></td></tr>
-                                    <tr><td><strong>CTN-9982</strong></td><td>Los Angeles (Port)</td><td>42 Jours</td><td><span class="ai-badge" style="background:#fef2f2; color:var(--danger);">Inspection</span></td></tr>
+                                    <tr><th data-fr="N° Conteneur" data-en="Container N°">N° Conteneur</th><th data-fr="Localisation" data-en="Location">Localisation</th><th>Dwell Time</th><th data-fr="Statut" data-en="Status">Statut</th></tr>
+                                    <tr><td><strong>CTN-4458</strong></td><td data-fr="Port de Shanghai" data-en="Port of Shanghai">Port de Shanghai</td><td data-fr="34 Jours" data-en="34 Days">34 Jours</td><td><span class="ai-badge" style="background:#fef2f2; color:var(--danger);" data-fr="Bloqué Douane" data-en="Customs Blocked">Bloqué Douane</span></td></tr>
+                                    <tr><td><strong>CTN-1120</strong></td><td data-fr="Canal de Suez" data-en="Suez Canal">Canal de Suez</td><td data-fr="31 Jours" data-en="31 Days">31 Jours</td><td><span class="ai-badge" style="background:#fff7ed; color:var(--warning);" data-fr="En attente" data-en="Waiting">En attente</span></td></tr>
+                                    <tr><td><strong>CTN-9982</strong></td><td data-fr="Los Angeles" data-en="Los Angeles">Los Angeles</td><td data-fr="42 Jours" data-en="42 Days">42 Jours</td><td><span class="ai-badge" style="background:#fef2f2; color:var(--danger);" data-fr="Inspection" data-en="Inspection">Inspection</span></td></tr>
                                 </table>
                             </div>
                         </div>`;
@@ -599,20 +605,20 @@
                     visualHTML = `
                         <div class="ai-visual-container" style="padding: 0;">
                             <div class="chat-inner-tabs">
-                                <button id="btn-chart-${uniqueId}" class="chat-inner-btn active" onclick="toggleChatView('chart', '${uniqueId}')"><i class="fa-solid fa-chart-pie"></i> Vue Graphique</button>
-                                <button id="btn-table-${uniqueId}" class="chat-inner-btn" onclick="toggleChatView('table', '${uniqueId}')"><i class="fa-solid fa-table-list"></i> Table de Données</button>
+                                <button id="btn-chart-${uniqueId}" class="chat-inner-btn active" onclick="toggleChatView('chart', '${uniqueId}')"><i class="fa-solid fa-chart-pie"></i> <span data-fr="Vue Graphique" data-en="Chart View">Vue Graphique</span></button>
+                                <button id="btn-table-${uniqueId}" class="chat-inner-btn" onclick="toggleChatView('table', '${uniqueId}')"><i class="fa-solid fa-table-list"></i> <span data-fr="Table de Données" data-en="Data Table">Table de Données</span></button>
                             </div>
                             <div id="${uniqueId}-chart-view" style="display:block;">
                                 <div class="ai-chart"><canvas id="${uniqueId}"></canvas></div>
                             </div>
                             <div id="${uniqueId}-table-view" style="display:none; padding:15px;" class="ai-table-wrapper">
                                 <table class="ai-table">
-                                    <tr><th>Client / Marché</th><th>CA Généré (M€)</th><th>% du Total Asie</th></tr>
-                                    <tr><td><strong>Chine</strong></td><td>45 M€</td><td>45%</td></tr>
-                                    <tr><td><strong>Japon</strong></td><td>25 M€</td><td>25%</td></tr>
-                                    <tr><td><strong>Corée du Sud</strong></td><td>15 M€</td><td>15%</td></tr>
-                                    <tr><td><strong>Singapour</strong></td><td>10 M€</td><td>10%</td></tr>
-                                    <tr><td><strong>Inde</strong></td><td>5 M€</td><td>5%</td></tr>
+                                    <tr><th data-fr="Client / Marché" data-en="Client / Market">Client / Marché</th><th data-fr="CA Généré (M€)" data-en="Revenue (M€)">CA Généré (M€)</th><th data-fr="% du Total Asie" data-en="% of Total Asia">% du Total Asie</th></tr>
+                                    <tr><td data-fr="Chine" data-en="China"><strong>Chine</strong></td><td>45 M€</td><td>45%</td></tr>
+                                    <tr><td data-fr="Japon" data-en="Japan"><strong>Japon</strong></td><td>25 M€</td><td>25%</td></tr>
+                                    <tr><td data-fr="Corée du Sud" data-en="South Korea"><strong>Corée du Sud</strong></td><td>15 M€</td><td>15%</td></tr>
+                                    <tr><td data-fr="Singapour" data-en="Singapore"><strong>Singapour</strong></td><td>10 M€</td><td>10%</td></tr>
+                                    <tr><td data-fr="Inde" data-en="India"><strong>Inde</strong></td><td>5 M€</td><td>5%</td></tr>
                                 </table>
                             </div>
                         </div>`;
@@ -626,11 +632,12 @@
 
                 // 5. Instancier le JS (Chart ou Map)
                 setTimeout(() => {
+                    const isEnglish = getLang() === 'en';
                     if(scenarioId === 1) {
                         new Chart(document.getElementById(uniqueId).getContext('2d'), {
                             type: 'line',
                             data: {
-                                labels: ['Juin', 'Juil', 'Août', 'Sept', 'Oct'],
+                                labels: isEnglish ? ['Jun', 'Jul', 'Aug', 'Sep', 'Oct'] : ['Juin', 'Juil', 'Août', 'Sept', 'Oct'],
                                 datasets: [{
                                     label: 'OTD (%)', data: [96, 95, 82, 94, 97],
                                     borderColor: '#0f172a', backgroundColor: 'rgba(15, 23, 42, 0.1)', tension: 0.3, fill: true, borderWidth: 3
@@ -643,7 +650,7 @@
                         new Chart(document.getElementById(uniqueId).getContext('2d'), {
                             type: 'radar',
                             data: {
-                                labels: ['Coût', 'Rapidité', 'Empreinte Carbone', 'Fiabilité', 'Couverture'],
+                                labels: isEnglish ? ['Cost', 'Speed', 'Carbon Footprint', 'Reliability', 'Coverage'] : ['Coût', 'Rapidité', 'Empreinte Carbone', 'Fiabilité', 'Couverture'],
                                 datasets: [
                                     { label: 'DHL', data: [90, 70, 60, 85, 95], backgroundColor: 'rgba(245, 158, 11, 0.2)', borderColor: 'rgba(245, 158, 11, 1)', borderWidth: 2 },
                                     { label: 'FedEx', data: [70, 95, 50, 90, 85], backgroundColor: 'rgba(59, 130, 246, 0.2)', borderColor: 'rgba(59, 130, 246, 1)', borderWidth: 2 },
@@ -660,9 +667,9 @@
                         
                         const alertIcon = L.divIcon({ className: 'custom-icon', html: '<div style="background:#ef4444; width:12px; height:12px; border-radius:50%; border:2px solid white; box-shadow: 0 0 10px rgba(239, 68, 68, 0.8); animation: pulse 1.5s infinite;"></div>', iconSize: [16,16] });
                         
-                        L.marker([31.2, 121.5], {icon: alertIcon}).addTo(anomalyMap).bindTooltip("Shanghai (CTN-4458) - 34 Jours");
-                        L.marker([30.5, 32.3], {icon: alertIcon}).addTo(anomalyMap).bindTooltip("Suez (CTN-1120) - 31 Jours");
-                        L.marker([34.0, -118.2], {icon: alertIcon}).addTo(anomalyMap).bindTooltip("Los Angeles (CTN-9982) - 42 Jours");
+                        L.marker([31.2, 121.5], {icon: alertIcon}).addTo(anomalyMap).bindTooltip(isEnglish ? "Shanghai (CTN-4458) - 34 Days" : "Shanghai (CTN-4458) - 34 Jours");
+                        L.marker([30.5, 32.3], {icon: alertIcon}).addTo(anomalyMap).bindTooltip(isEnglish ? "Suez (CTN-1120) - 31 Days" : "Suez (CTN-1120) - 31 Jours");
+                        L.marker([34.0, -118.2], {icon: alertIcon}).addTo(anomalyMap).bindTooltip(isEnglish ? "Los Angeles (CTN-9982) - 42 Days" : "Los Angeles (CTN-9982) - 42 Jours");
 
                         window[`map_instance_${uniqueId}`] = anomalyMap; 
                     } 
@@ -670,7 +677,7 @@
                         new Chart(document.getElementById(uniqueId).getContext('2d'), {
                             type: 'doughnut',
                             data: {
-                                labels: ['Chine', 'Japon', 'Corée du Sud', 'Singapour', 'Inde'],
+                                labels: isEnglish ? ['China', 'Japan', 'South Korea', 'Singapore', 'India'] : ['Chine', 'Japon', 'Corée du Sud', 'Singapour', 'Inde'],
                                 datasets: [{ data: [45, 25, 15, 10, 5], backgroundColor: ['#5b21b6', '#8b5cf6', '#a78bfa', '#ddd6fe', '#f1f5f9'], borderWidth: 0 }]
                             },
                             options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right' } } }
