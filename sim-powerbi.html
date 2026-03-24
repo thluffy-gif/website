@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,10 +13,10 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         
-        /* Corps de la page : on bloque le scroll global pour le gérer dans la zone principale */
+        /* Page body: block global scroll to manage it in the main area */
         body { display: flex; flex-direction: column; height: 100vh; overflow: hidden; background-color: #f1f5f9; color: #1e293b; }
         
-        /* BANNIERE AVERTISSEMENT */
+        /* WARNING BANNER */
         .warning-banner { background-color: #ef4444; color: white; text-align: center; padding: 8px; font-size: 0.85rem; font-weight: bold; flex-shrink: 0; z-index: 5000; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
 
         /* HEADER */
@@ -40,19 +40,19 @@
         .filter-label { color: #cbd5e1; font-size: 0.7rem; font-weight: bold; text-transform: uppercase; }
         .filter-select { background-color: #1e293b; color: white; border: 1px solid #475569; padding: 6px 10px; font-size: 0.85rem; border-radius: 4px; min-width: 120px; outline: none; }
 
-        /* MAIN CONTENT - C'est ici que la magie du SCROLL opère */
+        /* MAIN CONTENT - This is where the SCROLL magic happens */
         .pbi-main { flex: 1; overflow-y: auto; overflow-x: hidden; padding: 20px; }
         
         .view-container { display: none; flex-direction: column; gap: 20px; animation: fadeIn 0.3s ease; }
         .view-container.active { display: flex; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* GRILLES ET PANNEAUX */
+        /* GRIDS AND PANELS */
         .grid-row { display: flex; flex-wrap: wrap; gap: 20px; }
         .panel { background: white; border-radius: 8px; border: 1px solid #cbd5e1; padding: 20px; flex: 1; min-width: 300px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
         .panel-title { font-size: 1rem; font-weight: 700; color: #0f172a; margin-bottom: 15px; border-bottom: 2px solid #f1f5f9; padding-bottom: 10px; }
         
-        /* HAUTEUR FIXE POUR RESPONSIVITÉ CHART.JS */
+        /* FIXED HEIGHT FOR CHART.JS RESPONSIVENESS */
         .chart-box { position: relative; height: 350px; width: 100%; }
 
         /* TABLES */
@@ -71,7 +71,7 @@
 <body>
 
     <div class="warning-banner">
-        <i class="fa-solid fa-triangle-exclamation"></i> DONNÉES RANDOMISÉES ET INTERFACE RECRÉÉE (DÉMONSTRATION PORTFOLIO)
+        <i class="fa-solid fa-triangle-exclamation"></i> RANDOMIZED DATA AND RECREATED INTERFACE (PORTFOLIO DEMONSTRATION)
     </div>
 
     <header class="pbi-header">
@@ -79,7 +79,7 @@
         <div class="pbi-title" id="main-title">STO Overview</div>
         <div class="pbi-header-right">
             <div class="pbi-kpi-box">
-                <div class="pbi-kpi-val" id="main-kpi-val">112 467</div>
+                <div class="pbi-kpi-val" id="main-kpi-val">112,467</div>
                 <div class="pbi-kpi-label">Number of STO</div>
             </div>
         </div>
@@ -94,9 +94,9 @@
     </nav>
 
     <div class="pbi-filters">
-        <div class="filter-group"><span class="filter-label">Starter Plant</span><select class="filter-select"><option>Tout</option></select></div>
-        <div class="filter-group"><span class="filter-label">Destination Plant</span><select class="filter-select"><option>Tout</option></select></div>
-        <div class="filter-group"><span class="filter-label">Document Type</span><select class="filter-select"><option>Tout</option></select></div>
+        <div class="filter-group"><span class="filter-label">Starter Plant</span><select class="filter-select"><option>All</option></select></div>
+        <div class="filter-group"><span class="filter-label">Destination Plant</span><select class="filter-select"><option>All</option></select></div>
+        <div class="filter-group"><span class="filter-label">Document Type</span><select class="filter-select"><option>All</option></select></div>
     </div>
 
     <main class="pbi-main">
@@ -104,7 +104,7 @@
         <div id="view-overview" class="view-container active">
             <div class="grid-row">
                 <div class="panel" style="flex: 1; min-width: 300px;">
-                    <div class="panel-title">Valorisation YIES / YIEN ($)</div>
+                    <div class="panel-title">YIES / YIEN Valuation ($)</div>
                     <div class="table-wrap">
                         <table>
                             <thead><tr><th>Year-Month</th><th>YIEN-YIAN ($)</th><th>YIES ($)</th></tr></thead>
@@ -166,7 +166,7 @@
         <div id="view-focus" class="view-container">
             <div class="grid-row">
                 <div class="kpi-card"><div class="kpi-title">Total YIES DMR2->TEB1</div><div class="kpi-val">249</div></div>
-                <div class="kpi-card"><div class="kpi-title">Total YIES TEB1->DMR2</div><div class="kpi-val">9941</div></div>
+                <div class="kpi-card"><div class="kpi-title">Total YIES TEB1->DMR2</div><div class="kpi-val">9,941</div></div>
                 <div class="kpi-card"><div class="kpi-title">Mean Days (Creation)</div><div class="kpi-val">6</div></div>
             </div>
             <div class="panel">
@@ -184,36 +184,36 @@
     </main>
 
     <script>
-        // === MOTEUR JAVASCRIPT ROBUSTE ===
+        // === ROBUST JAVASCRIPT ENGINE ===
         let charts = {};
         let mapInstance = null;
 
-        // 1. Gestionnaire d'onglets (Event Listeners purs)
+        // 1. Tab Manager (Pure Event Listeners)
         document.querySelectorAll('.pbi-tab').forEach(button => {
             button.addEventListener('click', (e) => {
                 const targetId = e.currentTarget.getAttribute('data-target');
                 const title = e.currentTarget.getAttribute('data-title');
 
-                // UI Boutons
+                // UI Buttons
                 document.querySelectorAll('.pbi-tab').forEach(b => b.classList.remove('active'));
                 e.currentTarget.classList.add('active');
 
-                // Changement de Titre et KPI
+                // Title and KPI Change
                 document.getElementById('main-title').innerText = title;
-                if(targetId === 'focus') document.getElementById('main-kpi-val').innerText = "10 190";
-                else if(targetId === 'followup') document.getElementById('main-kpi-val').innerText = "2 037";
-                else document.getElementById('main-kpi-val').innerText = "112 467";
+                if(targetId === 'focus') document.getElementById('main-kpi-val').innerText = "10,190";
+                else if(targetId === 'followup') document.getElementById('main-kpi-val').innerText = "2,037";
+                else document.getElementById('main-kpi-val').innerText = "112,467";
 
-                // UI Vues
+                // UI Views
                 document.querySelectorAll('.view-container').forEach(v => v.classList.remove('active'));
                 document.getElementById('view-' + targetId).classList.add('active');
 
-                // Lancement différé des graphiques (le temps que le display:flex s'applique)
+                // Delayed chart launch (time for display:flex to apply)
                 setTimeout(() => { initOrResizeCharts(targetId); }, 100);
             });
         });
 
-        // 2. Gestionnaire de Graphiques
+        // 2. Chart Manager
         function initOrResizeCharts(viewId) {
             Chart.defaults.font.size = 11;
             Chart.defaults.color = '#64748b';
@@ -223,7 +223,7 @@
                     charts.overview = new Chart(document.getElementById('chartOverview'), {
                         type: 'bar',
                         data: {
-                            labels: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc'],
+                            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
                             datasets: [
                                 { type: 'line', label: 'Avg YIEN+YIAN', data: [2180, 2313, 2211, 2170, 1992, 2241, 2461, 2449, 2511, 2412, 2467, 2735], borderColor: '#84cc16', borderDash: [5, 5], tension: 0.3 },
                                 { type: 'bar', label: 'YIEN-YIAN Qty', data: [1552, 3850, 2250, 2100, 1900, 2700, 2616, 2461, 2449, 2511, 2412, 10500], backgroundColor: '#1e293b' },
@@ -240,7 +240,7 @@
                     charts.followup = new Chart(document.getElementById('chartFollowup'), {
                         type: 'bar',
                         data: {
-                            labels: ['Mar', 'Mai', 'Juin', 'Août', 'Oct', 'Déc', 'Fév', 'Avr'],
+                            labels: ['Mar', 'May', 'Jun', 'Aug', 'Oct', 'Dec', 'Feb', 'Apr'],
                             datasets: [
                                 { label: 'Open', data: [2, 10, 3, 292, 68, 32, 9, 3], backgroundColor: '#94a3b8' },
                                 { label: 'Closed', data: [1, 5, 2, 40, 14, 8, 2, 1], backgroundColor: '#1e293b' },
@@ -257,7 +257,7 @@
                     charts.focus = new Chart(document.getElementById('chartFocus'), {
                         type: 'bar',
                         data: {
-                            labels: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct'],
+                            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
                             datasets: [
                                 { label: 'DMR2 -> TEB1', data: [11, 10, 11, 12, 10, 3, 10, 7, 14, 1], backgroundColor: '#94a3b8' },
                                 { label: 'TEB1 -> DMR2', data: [208, 173, 241, 197, 163, 229, 177, 250, 236, 244], backgroundColor: '#1e293b' }
@@ -274,9 +274,9 @@
                     L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', { maxZoom: 10 }).addTo(mapInstance);
                     
                     const markers = [
-                        { loc: [46.22, 2.21], rad: 15, color: '#718096', label: "DMR [164 538]" },
-                        { loc: [38.25, -85.75], rad: 25, color: '#ef4444', label: "LOU [2 312 789]" },
-                        { loc: [40.85, -74.05], rad: 20, color: '#3b82f6', label: "TEB [136 951]" }
+                        { loc: [46.22, 2.21], rad: 15, color: '#718096', label: "DMR [164,538]" },
+                        { loc: [38.25, -85.75], rad: 25, color: '#ef4444', label: "LOU [2,312,789]" },
+                        { loc: [40.85, -74.05], rad: 20, color: '#3b82f6', label: "TEB [136,951]" }
                     ];
 
                     markers.forEach(m => {
@@ -284,11 +284,11 @@
                          .bindTooltip(m.label, { permanent: true, direction: 'bottom', offset: [0, 10] }).addTo(mapInstance);
                     });
                 }
-                mapInstance.invalidateSize(); // Force le recalcul de la carte
+                mapInstance.invalidateSize(); // Force map recalculation
             }
         }
 
-        // 3. Remplissage des tables simulées
+        // 3. Populate simulated tables
         function fillTable(id, rows) {
             const tbody = document.getElementById(id);
             if(!tbody) return;
@@ -299,15 +299,15 @@
             });
         }
 
-        // 4. Initialisation au lancement
+        // 4. Initialization on launch
         document.addEventListener("DOMContentLoaded", () => {
-            initOrResizeCharts('overview'); // Lance le premier graphique
+            initOrResizeCharts('overview'); // Launches the first chart
 
             fillTable('tb-overview', [
-                ['2026-03', '4 562 824,79', '1 633 285,14'], ['2026-02', '5 321 482,82', '1 162 247,61'],
-                ['2026-01', '3 758 772,77', '1 463 966,46'], ['2025-12', '2 509 821,97', '1 417 530,00'],
-                ['2025-11', '3 915 013,44', '1 876 143,35'], ['2025-10', '4 264 437,23', '1 524 107,58'],
-                ['2025-09', '2 304 437,23', '1 100 107,58'], ['2025-08', '4 104 437,23', '1 224 107,58']
+                ['2026-03', '4,562,824.79', '1,633,285.14'], ['2026-02', '5,321,482.82', '1,162,247.61'],
+                ['2026-01', '3,758,772.77', '1,463,966.46'], ['2025-12', '2,509,821.97', '1,417,530.00'],
+                ['2025-11', '3,915,013.44', '1,876,143.35'], ['2025-10', '4,264,437.23', '1,524,107.58'],
+                ['2025-09', '2,304,437.23', '1,100,107.58'], ['2025-08', '4,104,437.23', '1,224,107.58']
             ]);
 
             fillTable('tb-followup', [
