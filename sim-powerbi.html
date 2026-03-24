@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Power BI Simulation</title>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        
+        /* Corps de la page : on bloque le scroll global pour le gérer dans la zone principale */
+        body { display: flex; flex-direction: column; height: 100vh; overflow: hidden; background-color: #f1f5f9; color: #1e293b; }
+        
+        /* BANNIERE AVERTISSEMENT */
+        .warning-banner { background-color: #ef4444; color: white; text-align: center; padding: 8px; font-size: 0.85rem; font-weight: bold; flex-shrink: 0; z-index: 5000; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+
+        /* HEADER */
+        .pbi-header { background-color: #1e293b; color: white; padding: 15px 25px; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
+        .pbi-logo { font-size: 1.2rem; font-weight: 800; letter-spacing: 1px; color: #94a3b8; display: flex; align-items: center; gap: 10px; }
+        .pbi-logo i { color: #38bdf8; font-size: 1.5rem; }
+        .pbi-title { font-size: 1.8rem; font-weight: bold; }
+        .pbi-kpi-box { border: 1px solid #475569; padding: 5px 20px; border-radius: 4px; text-align: center; background: rgba(255,255,255,0.05); }
+        .pbi-kpi-val { font-size: 1.6rem; font-weight: bold; color: white; }
+        .pbi-kpi-label { font-size: 0.7rem; color: #cbd5e1; text-transform: uppercase; }
+
+        /* TABS */
+        .pbi-tabs { background-color: #ffffff; border-bottom: 1px solid #cbd5e1; display: flex; flex-shrink: 0; overflow-x: auto; }
+        .pbi-tab { padding: 12px 25px; font-size: 0.9rem; font-weight: 600; color: #64748b; cursor: pointer; border: none; background: transparent; border-bottom: 3px solid transparent; white-space: nowrap; transition: all 0.2s; }
+        .pbi-tab:hover { color: #0f172a; background-color: #f8fafc; }
+        .pbi-tab.active { color: #0f172a; border-bottom: 3px solid #f59e0b; background-color: #f8fafc; }
+
+        /* FILTERS */
+        .pbi-filters { background-color: #334155; padding: 15px 25px; display: flex; gap: 20px; flex-wrap: wrap; flex-shrink: 0; align-items: center; }
+        .filter-group { display: flex; flex-direction: column; gap: 5px; }
+        .filter-label { color: #cbd5e1; font-size: 0.7rem; font-weight: bold; text-transform: uppercase; }
+        .filter-select { background-color: #1e293b; color: white; border: 1px solid #475569; padding: 6px 10px; font-size: 0.85rem; border-radius: 4px; min-width: 120px; outline: none; }
+
+        /* MAIN CONTENT - C'est ici que la magie du SCROLL opère */
+        .pbi-main { flex: 1; overflow-y: auto; overflow-x: hidden; padding: 20px; }
+        
+        .view-container { display: none; flex-direction: column; gap: 20px; animation: fadeIn 0.3s ease; }
+        .view-container.active { display: flex; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* GRILLES ET PANNEAUX */
+        .grid-row { display: flex; flex-wrap: wrap; gap: 20px; }
+        .panel { background: white; border-radius: 8px; border: 1px solid #cbd5e1; padding: 20px; flex: 1; min-width: 300px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+        .panel-title { font-size: 1rem; font-weight: 700; color: #0f172a; margin-bottom: 15px; border-bottom: 2px solid #f1f5f9; padding-bottom: 10px; }
+        
+        /* HAUTEUR FIXE POUR RESPONSIVITÉ CHART.JS */
+        .chart-box { position: relative; height: 350px; width: 100%; }
+
+        /* TABLES */
+        .table-wrap { overflow-x: auto; max-height: 350px; overflow-y: auto; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+        th { position: sticky; top: 0; background: #f8fafc; padding: 10px; text-align: left; color: #475569; border-bottom: 2px solid #cbd5e1; }
+        td { padding: 10px; border-bottom: 1px solid #e2e8f0; color: #1e293b; }
+        tr:hover td { background-color: #f1f5f9; }
+
+        /* KPI CARDS */
+        .kpi-card { background: white; border: 1px solid #cbd5e1; border-radius: 8px; padding: 20px; text-align: center; flex: 1; min-width: 200px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .kpi-title { font-size: 0.8rem; font-weight: bold; color: #64748b; margin-bottom: 10px; text-transform: uppercase; }
+        .kpi-val { font-size: 2.2rem; font-weight: 800; color: #0f172a; }
+    </style>
+</head>
+<body>
+
+    <div class="warning-banner">
+        <i class="fa-solid fa-triangle-exclamation"></i> DONNÉES RANDOMISÉES ET INTERFACE RECRÉÉE (DÉMONSTRATION PORTFOLIO)
+    </div>
+
+    <header class="pbi-header">
+        <div class="pbi-logo"><i class="fa-solid fa-globe"></i> AEROSPACE LOGISTICS</div>
+        <div class="pbi-title" id="main-title">STO Overview</div>
+        <div class="pbi-header-right">
+            <div class="pbi-kpi-box">
+                <div class="pbi-kpi-val" id="main-kpi-val">112 467</div>
+                <div class="pbi-kpi-label">Number of STO</div>
+            </div>
+        </div>
+    </header>
+
+    <nav class="pbi-tabs">
+        <button class="pbi-tab active" data-target="overview" data-title="STO Overview">STO OVERVIEW</button>
+        <button class="pbi-tab" data-target="followup" data-title="STO Follow-up">STO FOLLOW-UP</button>
+        <button class="pbi-tab" data-target="details" data-title="STO Details">STO DETAILS</button>
+        <button class="pbi-tab" data-target="focus" data-title="Focus on YIES">FOCUS YIES</button>
+        <button class="pbi-tab" data-target="mapview" data-title="Map View">MAP VIEW</button>
+    </nav>
+
+    <div class="pbi-filters">
+        <div class="filter-group"><span class="filter-label">Starter Plant</span><select class="filter-select"><option>Tout</option></select></div>
+        <div class="filter-group"><span class="filter-label">Destination Plant</span><select class="filter-select"><option>Tout</option></select></div>
+        <div class="filter-group"><span class="filter-label">Document Type</span><select class="filter-select"><option>Tout</option></select></div>
+    </div>
+
+    <main class="pbi-main">
+        
+        <div id="view-overview" class="view-container active">
+            <div class="grid-row">
+                <div class="panel" style="flex: 1; min-width: 300px;">
+                    <div class="panel-title">Valorisation YIES / YIEN ($)</div>
+                    <div class="table-wrap">
+                        <table>
+                            <thead><tr><th>Year-Month</th><th>YIEN-YIAN ($)</th><th>YIES ($)</th></tr></thead>
+                            <tbody id="tb-overview"></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="panel" style="flex: 2; min-width: 500px;">
+                    <div class="panel-title">Evolution of YIES and YIEN-YIAN orders</div>
+                    <div class="chart-box"><canvas id="chartOverview"></canvas></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="view-followup" class="view-container">
+            <div class="grid-row">
+                <div class="panel" style="flex: 2; min-width: 500px;">
+                    <div class="panel-title">STO by Status</div>
+                    <div class="chart-box"><canvas id="chartFollowup"></canvas></div>
+                </div>
+                <div class="panel" style="flex: 1; min-width: 300px;">
+                    <div class="panel-title">Tracking Data</div>
+                    <div class="table-wrap">
+                        <table>
+                            <thead><tr><th>Doc N°</th><th>Item</th><th>Type</th><th>Status</th></tr></thead>
+                            <tbody id="tb-followup"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="view-details" class="view-container">
+            <div class="grid-row">
+                <div class="kpi-card">
+                    <div class="kpi-title">Mean days (Creation to Reception)</div>
+                    <div class="kpi-val">26</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-title">Mean days (Shipping to Reception)</div>
+                    <div class="kpi-val">17</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-title">Total Value Processed</div>
+                    <div class="kpi-val">34.2M $</div>
+                </div>
+            </div>
+            <div class="panel">
+                <div class="panel-title">Detailed STO Registry</div>
+                <div class="table-wrap">
+                    <table>
+                        <thead><tr><th>Purchasing Doc</th><th>Doc Type</th><th>Status</th><th>Supplying Plant</th><th>Creation Date</th><th>PN</th></tr></thead>
+                        <tbody id="tb-details"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div id="view-focus" class="view-container">
+            <div class="grid-row">
+                <div class="kpi-card"><div class="kpi-title">Total YIES DMR2->TEB1</div><div class="kpi-val">249</div></div>
+                <div class="kpi-card"><div class="kpi-title">Total YIES TEB1->DMR2</div><div class="kpi-val">9941</div></div>
+                <div class="kpi-card"><div class="kpi-title">Mean Days (Creation)</div><div class="kpi-val">6</div></div>
+            </div>
+            <div class="panel">
+                <div class="panel-title">YIES Orders Distribution</div>
+                <div class="chart-box"><canvas id="chartFocus"></canvas></div>
+            </div>
+        </div>
+
+        <div id="view-mapview" class="view-container">
+            <div class="panel" style="padding: 0; border: none;">
+                <div id="map" style="height: 550px; width: 100%; border-radius: 8px; z-index: 1;"></div>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        // === MOTEUR JAVASCRIPT ROBUSTE ===
+        let charts = {};
+        let mapInstance = null;
+
+        // 1. Gestionnaire d'onglets (Event Listeners purs)
+        document.querySelectorAll('.pbi-tab').forEach(button => {
+            button.addEventListener('click', (e) => {
+                const targetId = e.currentTarget.getAttribute('data-target');
+                const title = e.currentTarget.getAttribute('data-title');
+
+                // UI Boutons
+                document.querySelectorAll('.pbi-tab').forEach(b => b.classList.remove('active'));
+                e.currentTarget.classList.add('active');
+
+                // Changement de Titre et KPI
+                document.getElementById('main-title').innerText = title;
+                if(targetId === 'focus') document.getElementById('main-kpi-val').innerText = "10 190";
+                else if(targetId === 'followup') document.getElementById('main-kpi-val').innerText = "2 037";
+                else document.getElementById('main-kpi-val').innerText = "112 467";
+
+                // UI Vues
+                document.querySelectorAll('.view-container').forEach(v => v.classList.remove('active'));
+                document.getElementById('view-' + targetId).classList.add('active');
+
+                // Lancement différé des graphiques (le temps que le display:flex s'applique)
+                setTimeout(() => { initOrResizeCharts(targetId); }, 100);
+            });
+        });
+
+        // 2. Gestionnaire de Graphiques
+        function initOrResizeCharts(viewId) {
+            Chart.defaults.font.size = 11;
+            Chart.defaults.color = '#64748b';
+
+            if (viewId === 'overview') {
+                if (!charts.overview) {
+                    charts.overview = new Chart(document.getElementById('chartOverview'), {
+                        type: 'bar',
+                        data: {
+                            labels: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc'],
+                            datasets: [
+                                { type: 'line', label: 'Avg YIEN+YIAN', data: [2180, 2313, 2211, 2170, 1992, 2241, 2461, 2449, 2511, 2412, 2467, 2735], borderColor: '#84cc16', borderDash: [5, 5], tension: 0.3 },
+                                { type: 'bar', label: 'YIEN-YIAN Qty', data: [1552, 3850, 2250, 2100, 1900, 2700, 2616, 2461, 2449, 2511, 2412, 10500], backgroundColor: '#1e293b' },
+                                { type: 'bar', label: 'YIES Qty', data: [234, 221, 214, 213, 219, 240, 261, 250, 260, 271, 261, 269], backgroundColor: '#ef4444' }
+                            ]
+                        },
+                        options: { responsive: true, maintainAspectRatio: false }
+                    });
+                } else { charts.overview.resize(); }
+            }
+
+            if (viewId === 'followup') {
+                if (!charts.followup) {
+                    charts.followup = new Chart(document.getElementById('chartFollowup'), {
+                        type: 'bar',
+                        data: {
+                            labels: ['Mar', 'Mai', 'Juin', 'Août', 'Oct', 'Déc', 'Fév', 'Avr'],
+                            datasets: [
+                                { label: 'Open', data: [2, 10, 3, 292, 68, 32, 9, 3], backgroundColor: '#94a3b8' },
+                                { label: 'Closed', data: [1, 5, 2, 40, 14, 8, 2, 1], backgroundColor: '#1e293b' },
+                                { label: 'Not Shipped', data: [0, 2, 1, 10, 4, 2, 1, 0], backgroundColor: '#10b981' }
+                            ]
+                        },
+                        options: { responsive: true, maintainAspectRatio: false }
+                    });
+                } else { charts.followup.resize(); }
+            }
+
+            if (viewId === 'focus') {
+                if (!charts.focus) {
+                    charts.focus = new Chart(document.getElementById('chartFocus'), {
+                        type: 'bar',
+                        data: {
+                            labels: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct'],
+                            datasets: [
+                                { label: 'DMR2 -> TEB1', data: [11, 10, 11, 12, 10, 3, 10, 7, 14, 1], backgroundColor: '#94a3b8' },
+                                { label: 'TEB1 -> DMR2', data: [208, 173, 241, 197, 163, 229, 177, 250, 236, 244], backgroundColor: '#1e293b' }
+                            ]
+                        },
+                        options: { responsive: true, maintainAspectRatio: false }
+                    });
+                } else { charts.focus.resize(); }
+            }
+
+            if (viewId === 'mapview') {
+                if (!mapInstance) {
+                    mapInstance = L.map('map', { zoomControl: true, attributionControl: false }).setView([35, -10], 2);
+                    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', { maxZoom: 10 }).addTo(mapInstance);
+                    
+                    const markers = [
+                        { loc: [46.22, 2.21], rad: 15, color: '#718096', label: "DMR [164 538]" },
+                        { loc: [38.25, -85.75], rad: 25, color: '#ef4444', label: "LOU [2 312 789]" },
+                        { loc: [40.85, -74.05], rad: 20, color: '#3b82f6', label: "TEB [136 951]" }
+                    ];
+
+                    markers.forEach(m => {
+                        L.circleMarker(m.loc, { radius: m.rad, fillColor: m.color, color: m.color, weight: 1, fillOpacity: 0.8 })
+                         .bindTooltip(m.label, { permanent: true, direction: 'bottom', offset: [0, 10] }).addTo(mapInstance);
+                    });
+                }
+                mapInstance.invalidateSize(); // Force le recalcul de la carte
+            }
+        }
+
+        // 3. Remplissage des tables simulées
+        function fillTable(id, rows) {
+            const tbody = document.getElementById(id);
+            if(!tbody) return;
+            rows.forEach(r => {
+                const tr = document.createElement('tr');
+                r.forEach(c => { const td = document.createElement('td'); td.innerText = c; tr.appendChild(td); });
+                tbody.appendChild(tr);
+            });
+        }
+
+        // 4. Initialisation au lancement
+        document.addEventListener("DOMContentLoaded", () => {
+            initOrResizeCharts('overview'); // Lance le premier graphique
+
+            fillTable('tb-overview', [
+                ['2026-03', '4 562 824,79', '1 633 285,14'], ['2026-02', '5 321 482,82', '1 162 247,61'],
+                ['2026-01', '3 758 772,77', '1 463 966,46'], ['2025-12', '2 509 821,97', '1 417 530,00'],
+                ['2025-11', '3 915 013,44', '1 876 143,35'], ['2025-10', '4 264 437,23', '1 524 107,58'],
+                ['2025-09', '2 304 437,23', '1 100 107,58'], ['2025-08', '4 104 437,23', '1 224 107,58']
+            ]);
+
+            fillTable('tb-followup', [
+                ['86B18142', '1', 'YIEN', 'Open'], ['86B18890', '10', 'YIEN', 'Open'],
+                ['7500002255', '13', 'YIAN', 'Closed'], ['7500008749', '2', 'YIEN', 'Open'],
+                ['7500002401', '8', 'YIAN', 'Closed'], ['86B20793', '2', 'YIEN', 'Not Shipped'],
+                ['7500002402', '1', 'YIAN', 'Open'], ['86B20794', '5', 'YIEN', 'Open']
+            ]);
+
+            fillTable('tb-details', [
+                ['7000005443', 'YIEN', 'Closed', 'TEB2', '02/01/2023', '5T45LP50'],
+                ['7500001385', 'YIAN', 'Closed', 'TEB2', '02/01/2023', 'SBF7X0332AR1'],
+                ['86B16077', 'YIES', 'Closed', 'TEB1', '02/01/2023', '80-001-5-9'],
+                ['86B16084', 'YIES', 'Open', 'TEB1', '02/01/2023', 'EN3289-10E-500'],
+                ['86B16131', 'YIES', 'Closed', 'TEB1', '02/01/2023', '15H0092PH'],
+                ['86B16140', 'YIES', 'Not Shipped', 'TEB1', '02/01/2023', 'NAS1153E3']
+            ]);
+        });
+    </script>
+</body>
+</html>
