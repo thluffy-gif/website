@@ -47,9 +47,14 @@
         .hero .title { font-size: 3rem; font-weight: 800; color: var(--accent); line-height: 1.1; margin-bottom: 10px; }
         .hero .subtitle { font-size: 1.4rem; color: var(--text-muted); font-weight: 500; margin-bottom: 25px; }
         .hero .description { font-size: 1.05rem; margin-bottom: 30px; max-width: 600px; }
-        .contact-info { display: flex; gap: 15px; flex-wrap: wrap; }
-        .contact-info span, .contact-info a { background: var(--bg-white); border: 1px solid var(--border); color: var(--text-main); padding: 8px 15px; border-radius: 20px; font-size: 0.9rem; font-weight: 500; text-decoration: none; box-shadow: var(--shadow-sm); display: flex; align-items: center; gap: 8px; transition: var(--transition); }
-        .contact-info a:hover { border-color: var(--accent); color: var(--bg-white); background-color: var(--accent); }
+        
+        /* Boutons de contact & CV */
+        .contact-info { display: flex; gap: 15px; flex-wrap: wrap; align-items: center; }
+        .contact-info span, .contact-info a, .contact-info button { background: var(--bg-white); border: 1px solid var(--border); color: var(--text-main); padding: 10px 18px; border-radius: 25px; font-size: 0.9rem; font-weight: 600; text-decoration: none; box-shadow: var(--shadow-sm); display: flex; align-items: center; gap: 8px; transition: var(--transition); cursor: pointer; }
+        .contact-info a:hover, .contact-info button.btn-outline:hover { border-color: var(--accent); color: var(--bg-white); background-color: var(--accent); }
+        
+        .btn-cv { background-color: var(--accent) !important; color: var(--bg-white) !important; border-color: var(--accent) !important; }
+        .btn-cv:hover { background-color: #1e293b !important; transform: translateY(-2px); box-shadow: var(--shadow-md) !important; }
 
         .hero-photo-container { flex-shrink: 0; width: 280px; height: 280px; border-radius: 20px; background: var(--border); overflow: hidden; border: 4px solid var(--bg-white); box-shadow: var(--shadow-md); display: flex; align-items: center; justify-content: center; }
         .profile-photo { width: 100%; height: 100%; object-fit: cover; }
@@ -178,12 +183,14 @@
                 <div class="hero-text">
                     <h1 class="title" data-fr="Cédric Prohet" data-en="Cédric Prohet">Cédric Prohet</h1>
                     <h2 class="subtitle" data-fr="Ingénieur Logistique & Supply Chain" data-en="Logistics & Supply Chain Engineer">Ingénieur Logistique & Supply Chain</h2>
-                    <p class="description" data-fr="Ingénieur Supply Chain spécialisé dans la convergence Data / Opérations. Fort d'une expérience en pilotage de projets complexes et en management d'équipe, je recherche un contrat d'alternance pour ma dernière année d'ingénierie (Cycle CTI) afin d'accompagner une direction dans ses défis de transformation (S&OP, Digitalisation, Résilience)." data-en="Supply Chain Engineer specialized in Data / Operations convergence. With experience in managing complex projects and team leadership, I am seeking a work-study contract for my final year of engineering (CTI cycle) to support management in its transformation challenges (S&OP, Digitalization, Resilience).">Ingénieur Supply Chain spécialisé dans la convergence Data / Opérations. Fort d'une expérience en pilotage de projets complexes et en management d'équipe, je recherche un contrat d'alternance pour ma dernière année d'ingénierie (Cycle CTI) afin d'accompagner une direction dans ses défis de transformation (S&OP, Digitalisation, Résilience).</p>
+                    <p class="description" data-fr="Ingénieur Supply Chain spécialisé dans la convergence Data / Opérations. Fort d'une expérience en pilotage de projets complexes et en management d'équipe, je recherche actuellement un stage de fin d'études (Cycle CTI) afin d'accompagner une direction dans ses défis de transformation (S&OP, Digitalisation, Résilience)." data-en="Supply Chain Engineer specialized in Data / Operations convergence. With experience in managing complex projects and team leadership, I am currently seeking a final-year internship (CTI cycle) to support management in its transformation challenges (S&OP, Digitalization, Resilience).">Ingénieur Supply Chain spécialisé dans la convergence Data / Opérations. Fort d'une expérience en pilotage de projets complexes et en management d'équipe, je recherche actuellement un stage de fin d'études (Cycle CTI) afin d'accompagner une direction dans ses défis de transformation (S&OP, Digitalisation, Résilience).</p>
                     
                     <div class="contact-info">
-                        <a href="#contact"><i class="fa-solid fa-paper-plane"></i> <span data-fr="Me contacter" data-en="Contact me">Me contacter</span></a>
-                        <a href="https://bit.ly/42gSw0G" target="_blank"><i class="fa-brands fa-linkedin"></i> LinkedIn</a>
-                        <span><i class="fa-solid fa-car"></i> Permis B</span>
+                        <button id="cv-download-btn" class="btn-cv">
+                            <i class="fa-solid fa-file-pdf"></i> <span data-fr="Télécharger CV" data-en="Download Resume">Télécharger CV</span>
+                        </button>
+                        <a href="#contact" class="btn-outline"><i class="fa-solid fa-paper-plane"></i> <span data-fr="Me contacter" data-en="Contact me">Me contacter</span></a>
+                        <a href="https://bit.ly/42gSw0G" target="_blank" class="btn-outline"><i class="fa-brands fa-linkedin"></i> LinkedIn</a>
                     </div>
                 </div>
                 <div class="hero-photo-container">
@@ -471,23 +478,54 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             
-            // 1. Traduction FR/EN
+            // 1. Traduction FR/EN & Persistance
             const langBtn = document.getElementById('lang-toggle');
-            let currentLang = 'fr';
+            let currentLang = localStorage.getItem('portfolio_lang') || 'fr';
+
+            const applyLanguage = (lang) => {
+                langBtn.innerText = lang === 'fr' ? 'EN' : 'FR';
+                const elements = document.querySelectorAll('[data-fr][data-en]');
+                elements.forEach(el => {
+                    el.innerHTML = el.getAttribute(`data-${lang}`);
+                });
+            };
+
+            if (currentLang === 'en') {
+                applyLanguage('en');
+            }
 
             langBtn.addEventListener('click', () => {
                 currentLang = currentLang === 'fr' ? 'en' : 'fr';
+                localStorage.setItem('portfolio_lang', currentLang);
                 langBtn.innerText = currentLang === 'fr' ? 'EN' : 'FR';
 
                 const elements = document.querySelectorAll('[data-fr][data-en]');
                 elements.forEach(el => {
                     el.style.opacity = 0;
                     setTimeout(() => {
-                        el.innerHTML = currentLang === 'fr' ? el.getAttribute('data-fr') : el.getAttribute('data-en');
+                        el.innerHTML = el.getAttribute(`data-${currentLang}`);
                         el.style.opacity = 1;
                     }, 200);
                 });
             });
+
+            // --- GESTION ANTI-SCRAPING DU BOUTON CV ---
+            // L'URL n'est pas dans le HTML, elle est appelée par le script
+            const cvBtn = document.getElementById('cv-download-btn');
+            if (cvBtn) {
+                cvBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    
+                    // Remplacer ces URLs par les liens publics de ton Nextcloud ou S3
+                    const linkFR = "https://ton-domaine-nextcloud.fr/partage/cv_cedric_prohet_fr.pdf";
+                    const linkEN = "https://ton-domaine-nextcloud.fr/partage/cv_cedric_prohet_en.pdf";
+                    
+                    const activeLang = localStorage.getItem('portfolio_lang') || 'fr';
+                    const finalLink = activeLang === 'fr' ? linkFR : linkEN;
+                    
+                    window.open(finalLink, '_blank');
+                });
+            }
 
             // 2. Gestion de l'affichage des projets ("Voir plus")
             const projects = document.querySelectorAll('.project-card');
