@@ -56,8 +56,27 @@
         .btn-cv { background-color: var(--accent) !important; color: var(--bg-white) !important; border-color: var(--accent) !important; }
         .btn-cv:hover { background-color: #1e293b !important; transform: translateY(-2px); box-shadow: var(--shadow-md) !important; }
 
-        .hero-photo-container { flex-shrink: 0; width: 280px; height: 280px; border-radius: 20px; background: var(--border); overflow: hidden; border: 4px solid var(--bg-white); box-shadow: var(--shadow-md); display: flex; align-items: center; justify-content: center; }
-        .profile-photo { width: 100%; height: 100%; object-fit: cover; }
+        /* --- STYLE DE L'ANIMATION (NEXUS) --- */
+        .hero-photo-container { flex-shrink: 0; width: 280px; height: 280px; border-radius: 20px; background: var(--accent); overflow: hidden; border: 4px solid var(--bg-white); box-shadow: var(--shadow-md); display: flex; align-items: center; justify-content: center; position: relative; }
+        
+        .nexus-wrapper { position: relative; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
+        .nexus-ring { position: absolute; border-radius: 50%; border: 1px solid rgba(255,255,255,0.08); }
+        .nexus-ring::before { content: ''; position: absolute; border-radius: 50%; background: #94a3b8; box-shadow: 0 0 10px rgba(148, 163, 184, 0.8); }
+        
+        .outer-ring { width: 220px; height: 220px; animation: spin-right 12s linear infinite; border-top: 1px solid rgba(255,255,255,0.2); }
+        .outer-ring::before { width: 6px; height: 6px; top: 20px; left: 20px; }
+        
+        .middle-ring { width: 150px; height: 150px; animation: spin-left 8s linear infinite; border: 1px dashed rgba(255,255,255,0.15); }
+        .middle-ring::before { width: 8px; height: 8px; top: 50%; left: -4px; transform: translateY(-50%); background: #3b82f6; box-shadow: 0 0 12px rgba(59, 130, 246, 0.8); }
+        
+        .inner-ring { width: 80px; height: 80px; animation: spin-right 5s linear infinite; border-bottom: 1px solid rgba(255,255,255,0.3); }
+        .inner-ring::before { width: 5px; height: 5px; bottom: 10px; right: 10px; }
+        
+        .nexus-core { position: absolute; width: 20px; height: 20px; background: #ffffff; border-radius: 50%; box-shadow: 0 0 25px 8px rgba(255,255,255,0.3); animation: core-pulse 2s ease-in-out infinite; }
+
+        @keyframes spin-right { 100% { transform: rotate(360deg); } }
+        @keyframes spin-left { 100% { transform: rotate(-360deg); } }
+        @keyframes core-pulse { 0%, 100% { transform: scale(1); opacity: 0.9; } 50% { transform: scale(1.2); opacity: 1; } }
 
         /* --- BOUTON FLOTTANT (SCROLL) --- */
         .floating-btn {
@@ -217,7 +236,7 @@
                 <div class="hero-text">
                     <h1 class="title" data-fr="Cédric Prohet" data-en="Cédric Prohet">Cédric Prohet</h1>
                     <h2 class="subtitle" data-fr="Ingénieur Logistique & Supply Chain" data-en="Logistics & Supply Chain Engineer">Ingénieur Logistique & Supply Chain</h2>
-                    <p class="description" data-fr="Ingénieur Supply Chain spécialisé dans la convergence Data / Opérations. Fort d'une expérience en pilotage de projets complexes et en management d'équipe, je recherche actuellement un stage de fin d'études (Cycle CTI)." data-en="Supply Chain Engineer specialized in Data / Operations convergence. With experience in managing complex projects and team leadership, I am currently seeking a final-year internship (CTI cycle).">Ingénieur Supply Chain spécialisé dans la convergence Data / Opérations. Fort d'une expérience en pilotage de projets complexes et en management d'équipe, je recherche actuellement un stage de fin d'études (Cycle CTI)</p>
+                    <p class="description" data-fr="Ingénieur Supply Chain spécialisé dans la convergence Data / Opérations. Fort d'une expérience en pilotage de projets complexes et en management d'équipe, je recherche actuellement un stage de fin d'études (Cycle CTI) afin d'accompagner une direction dans ses défis de transformation (S&OP, Digitalisation, Résilience)." data-en="Supply Chain Engineer specialized in Data / Operations convergence. With experience in managing complex projects and team leadership, I am currently seeking a final-year internship (CTI cycle) to support management in its transformation challenges (S&OP, Digitalization, Resilience).">Ingénieur Supply Chain spécialisé dans la convergence Data / Opérations. Fort d'une expérience en pilotage de projets complexes et en management d'équipe, je recherche actuellement un stage de fin d'études (Cycle CTI) afin d'accompagner une direction dans ses défis de transformation (S&OP, Digitalisation, Résilience).</p>
                     
                     <div class="contact-info">
                         <button id="cv-download-btn" class="btn-cv">
@@ -228,7 +247,12 @@
                     </div>
                 </div>
                 <div class="hero-photo-container">
-                    <img src="photo.jpg" alt="Cédric Prohet" class="profile-photo">
+                    <div class="nexus-wrapper">
+                        <div class="nexus-ring outer-ring"></div>
+                        <div class="nexus-ring middle-ring"></div>
+                        <div class="nexus-ring inner-ring"></div>
+                        <div class="nexus-core"></div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -325,7 +349,7 @@
                         <div class="project-body">
                             <span class="project-company cat-transverse">Transverse</span>
                             <h3 data-fr="Analyse KPI & Power BI" data-en="KPI Analysis & Power BI">Analyse KPI & Power BI</h3>
-                            <p data-fr="Création de tableaux de bord Power BI et d'outils d'analyse (Python) pour automatiser le suivi des performances." data-en="Creation of Power BI dashboards and analysis tools (Python) to automate performance tracking.">Création de tableaux de bord Power BI et d'outils d'analyse (Python) pour automatiser le suivi des performances.</p>
+                            <p data-fr="Création de tableaux de bord Power BI et d'outils d'analyse (Python) pour automatisé le suivi des performances." data-en="Creation of Power BI dashboards and analysis tools (Python) to automate performance tracking.">Création de tableaux de bord Power BI et d'outils d'analyse (Python) pour automater le suivi des performances.</p>
                             <span class="btn-link" data-fr="Voir le projet <i class='fa-solid fa-arrow-right'></i>" data-en="View project <i class='fa-solid fa-arrow-right'></i>">Voir le projet <i class="fa-solid fa-arrow-right"></i></span>
                         </div>
                     </a>
@@ -353,7 +377,7 @@
                 
                 <a href="projet-alumni.html" class="leadership-wrapper reveal">
                     <i class="fa-solid fa-arrow-up-right-from-square lead-link-icon"></i>
-                    <h3 data-fr="Fondation du Réseau Alumni EIJV" data-en="Foundation of the [School Name] Alumni Network">Fondation du Réseau Alumni EIJV</h3>
+                    <h3 data-fr="Fondation du Réseau Alumni [Nom École]" data-en="Foundation of the [School Name] Alumni Network">Fondation du Réseau Alumni [Nom École]</h3>
                     <p data-fr="Le management stratégique ne se limite pas à des tableaux de bord, c'est avant tout la création d'écosystèmes. J'ai fondé et présidé l'association des anciens élèves de mon école d'ingénieurs pour structurer un capital social durable. De la rédaction des statuts à l'organisation d'événements professionnels, cette expérience entrepreneuriale valide ma capacité à fédérer des parties prenantes complexes (étudiants, direction, entreprises)." data-en="Strategic management is not limited to dashboards; it is above all the creation of ecosystems. I founded and chaired the alumni association of my engineering school to structure sustainable social capital. From drafting the statutes to organizing professional events, this entrepreneurial experience validates my ability to unite complex stakeholders (students, management, companies).">Le management stratégique ne se limite pas à des tableaux de bord, c'est avant tout la création d'écosystèmes. J'ai fondé et présidé l'association des anciens élèves de mon école d'ingénieurs pour structurer un capital social durable. De la rédaction des statuts à l'organisation d'événements professionnels, cette expérience entrepreneuriale valide ma capacité à fédérer des parties prenantes complexes (étudiants, direction, entreprises).</p>
                     <div class="leadership-tags">
                         <span class="lead-tag"><i class="fa-solid fa-users"></i> <span data-fr="Fédérateur" data-en="Community Builder">Fédérateur</span></span>
@@ -516,7 +540,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             
-            // 1. Traduction FR/EN & Persistance (Sécurisée)
+            // 1. Traduction FR/EN & Persistance - SÉCURISÉ CONTRE LES CRASHS LOCAUX
             const langBtn = document.getElementById('lang-toggle');
             let currentLang = 'fr';
             
@@ -524,18 +548,23 @@
 
             const applyLanguage = (lang) => {
                 langBtn.innerText = lang === 'fr' ? 'EN' : 'FR';
-                document.querySelectorAll('[data-fr][data-en]').forEach(el => {
+                const elements = document.querySelectorAll('[data-fr][data-en]');
+                elements.forEach(el => {
                     el.innerHTML = el.getAttribute(`data-${lang}`);
                 });
             };
 
-            if (currentLang === 'en') applyLanguage('en');
+            if (currentLang === 'en') {
+                applyLanguage('en');
+            }
 
             langBtn.addEventListener('click', () => {
                 currentLang = currentLang === 'fr' ? 'en' : 'fr';
                 try { localStorage.setItem('portfolio_lang', currentLang); } catch (e) {}
                 langBtn.innerText = currentLang === 'fr' ? 'EN' : 'FR';
-                document.querySelectorAll('[data-fr][data-en]').forEach(el => {
+
+                const elements = document.querySelectorAll('[data-fr][data-en]');
+                elements.forEach(el => {
                     el.style.opacity = 0;
                     setTimeout(() => {
                         el.innerHTML = el.getAttribute(`data-${currentLang}`);
@@ -596,7 +625,8 @@
 
             if (loadMoreBtn) {
                 loadMoreBtn.addEventListener('click', () => {
-                    document.querySelectorAll('.hidden-project').forEach(p => {
+                    const hiddenProjects = document.querySelectorAll('.hidden-project');
+                    hiddenProjects.forEach(p => {
                         p.classList.remove('hidden-project');
                         setTimeout(() => p.classList.remove('js-hidden'), 50); // Anime l'apparition
                     });
