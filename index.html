@@ -59,6 +59,40 @@
         .hero-photo-container { flex-shrink: 0; width: 280px; height: 280px; border-radius: 20px; background: var(--border); overflow: hidden; border: 4px solid var(--bg-white); box-shadow: var(--shadow-md); display: flex; align-items: center; justify-content: center; }
         .profile-photo { width: 100%; height: 100%; object-fit: cover; }
 
+        /* --- BOUTON FLOTTANT (SCROLL) --- */
+        .floating-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(15, 23, 42, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 999;
+            opacity: 0;
+            transform: translateY(20px);
+            visibility: hidden;
+            transition: opacity 0.3s, transform 0.3s, background-color 0.2s;
+        }
+        .floating-btn.visible {
+            opacity: 1;
+            transform: translateY(0);
+            visibility: visible;
+        }
+        .floating-btn:hover {
+            background-color: #1e293b;
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 20px rgba(15, 23, 42, 0.4);
+        }
+
         /* --- BANNIERE KPI --- */
         .kpi-banner { background: var(--accent); color: var(--bg-white); padding: 40px 0; margin-top: 40px; }
         .kpi-grid { display: flex; justify-content: space-around; text-align: center; flex-wrap: wrap; gap: 30px; }
@@ -183,14 +217,14 @@
                 <div class="hero-text">
                     <h1 class="title" data-fr="Cédric Prohet" data-en="Cédric Prohet">Cédric Prohet</h1>
                     <h2 class="subtitle" data-fr="Ingénieur Logistique & Supply Chain" data-en="Logistics & Supply Chain Engineer">Ingénieur Logistique & Supply Chain</h2>
-                    <p class="description" data-fr="Ingénieur Supply Chain spécialisé dans la convergence Data / Opérations. Fort d'une expérience en pilotage de projets complexes et en management d'équipe, je recherche actuellement un stage de fin d'études (Cycle CTI) afin d'accompagner une direction dans ses défis de transformation (S&OP, Digitalisation, Résilience)." data-en="Supply Chain Engineer specialized in Data / Operations convergence. With experience in managing complex projects and team leadership, I am currently seeking a final-year internship (CTI cycle) to support management in its transformation challenges (S&OP, Digitalization, Resilience).">Ingénieur Supply Chain spécialisé dans la convergence Data / Opérations. Fort d'une expérience en pilotage de projets complexes et en management d'équipe, je recherche actuellement un stage de fin d'études (Cycle CTI) afin d'accompagner une direction dans ses défis de transformation (S&OP, Digitalisation, Résilience).</p>
+                    <p class="description" data-fr="Ingénieur Supply Chain spécialisé dans la convergence Data / Opérations. Fort d'une expérience en pilotage de projets complexes et en management d'équipe, je recherche actuellement un stage de fin d'études (Cycle CTI)." data-en="Supply Chain Engineer specialized in Data / Operations convergence. With experience in managing complex projects and team leadership, I am currently seeking a final-year internship (CTI cycle).">Ingénieur Supply Chain spécialisé dans la convergence Data / Opérations. Fort d'une expérience en pilotage de projets complexes et en management d'équipe, je recherche actuellement un stage de fin d'études (Cycle CTI)</p>
                     
                     <div class="contact-info">
                         <button id="cv-download-btn" class="btn-cv">
                             <i class="fa-solid fa-file-pdf"></i> <span data-fr="Télécharger CV" data-en="Download Resume">Télécharger CV</span>
                         </button>
                         <a href="#contact" class="btn-outline"><i class="fa-solid fa-paper-plane"></i> <span data-fr="Me contacter" data-en="Contact me">Me contacter</span></a>
-                        <a href="https://bit.ly/42gSw0G" target="_blank" class="btn-outline"><i class="fa-brands fa-linkedin"></i> LinkedIn</a>
+                        <a href="https://www.linkedin.com/in/c%C3%A9dric-prohet-371b48183/" target="_blank" class="btn-outline"><i class="fa-brands fa-linkedin"></i> LinkedIn</a>
                     </div>
                 </div>
                 <div class="hero-photo-container">
@@ -319,7 +353,7 @@
                 
                 <a href="projet-alumni.html" class="leadership-wrapper reveal">
                     <i class="fa-solid fa-arrow-up-right-from-square lead-link-icon"></i>
-                    <h3 data-fr="Fondation du Réseau Alumni EIJV" data-en="Foundation of the EIJV Alumni Network">Fondation du Réseau Alumni [Nom École]</h3>
+                    <h3 data-fr="Fondation du Réseau Alumni EIJV" data-en="Foundation of the [School Name] Alumni Network">Fondation du Réseau Alumni EIJV</h3>
                     <p data-fr="Le management stratégique ne se limite pas à des tableaux de bord, c'est avant tout la création d'écosystèmes. J'ai fondé et présidé l'association des anciens élèves de mon école d'ingénieurs pour structurer un capital social durable. De la rédaction des statuts à l'organisation d'événements professionnels, cette expérience entrepreneuriale valide ma capacité à fédérer des parties prenantes complexes (étudiants, direction, entreprises)." data-en="Strategic management is not limited to dashboards; it is above all the creation of ecosystems. I founded and chaired the alumni association of my engineering school to structure sustainable social capital. From drafting the statutes to organizing professional events, this entrepreneurial experience validates my ability to unite complex stakeholders (students, management, companies).">Le management stratégique ne se limite pas à des tableaux de bord, c'est avant tout la création d'écosystèmes. J'ai fondé et présidé l'association des anciens élèves de mon école d'ingénieurs pour structurer un capital social durable. De la rédaction des statuts à l'organisation d'événements professionnels, cette expérience entrepreneuriale valide ma capacité à fédérer des parties prenantes complexes (étudiants, direction, entreprises).</p>
                     <div class="leadership-tags">
                         <span class="lead-tag"><i class="fa-solid fa-users"></i> <span data-fr="Fédérateur" data-en="Community Builder">Fédérateur</span></span>
@@ -475,32 +509,33 @@
         </div>
     </footer>
 
+    <button id="floating-btn" class="floating-btn">
+        <i class="fa-solid fa-arrow-down"></i> <span data-fr="Voir mon parcours" data-en="View my timeline">Voir mon parcours</span>
+    </button>
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             
-            // 1. Traduction FR/EN & Persistance
+            // 1. Traduction FR/EN & Persistance (Sécurisée)
             const langBtn = document.getElementById('lang-toggle');
-            let currentLang = localStorage.getItem('portfolio_lang') || 'fr';
+            let currentLang = 'fr';
+            
+            try { currentLang = localStorage.getItem('portfolio_lang') || 'fr'; } catch (e) {}
 
             const applyLanguage = (lang) => {
                 langBtn.innerText = lang === 'fr' ? 'EN' : 'FR';
-                const elements = document.querySelectorAll('[data-fr][data-en]');
-                elements.forEach(el => {
+                document.querySelectorAll('[data-fr][data-en]').forEach(el => {
                     el.innerHTML = el.getAttribute(`data-${lang}`);
                 });
             };
 
-            if (currentLang === 'en') {
-                applyLanguage('en');
-            }
+            if (currentLang === 'en') applyLanguage('en');
 
             langBtn.addEventListener('click', () => {
                 currentLang = currentLang === 'fr' ? 'en' : 'fr';
-                localStorage.setItem('portfolio_lang', currentLang);
+                try { localStorage.setItem('portfolio_lang', currentLang); } catch (e) {}
                 langBtn.innerText = currentLang === 'fr' ? 'EN' : 'FR';
-
-                const elements = document.querySelectorAll('[data-fr][data-en]');
-                elements.forEach(el => {
+                document.querySelectorAll('[data-fr][data-en]').forEach(el => {
                     el.style.opacity = 0;
                     setTimeout(() => {
                         el.innerHTML = el.getAttribute(`data-${currentLang}`);
@@ -509,21 +544,41 @@
                 });
             });
 
-            // --- GESTION ANTI-SCRAPING DU BOUTON CV ---
-            // L'URL n'est pas dans le HTML, elle est appelée par le script
+            // --- GESTION ANTI-SCRAPING DU BOUTON CV (Base64) ---
             const cvBtn = document.getElementById('cv-download-btn');
             if (cvBtn) {
                 cvBtn.addEventListener('click', (e) => {
                     e.preventDefault();
+                    // Liens relatifs GitHub Pages (fichiers à la racine)
+                    const linkFR_b64 = "Y3ZfZnIucGRm"; // cv_fr.pdf
+                    const linkEN_b64 = "Y3ZfZW4ucGRm"; // cv_en.pdf
                     
-                    // Remplacer ces URLs par les liens publics de ton Nextcloud ou S3
-                    const linkFR = "https://ton-domaine-nextcloud.fr/partage/cv_cedric_prohet_fr.pdf";
-                    const linkEN = "https://ton-domaine-nextcloud.fr/partage/cv_cedric_prohet_en.pdf";
+                    let activeLang = 'fr';
+                    try { activeLang = localStorage.getItem('portfolio_lang') || 'fr'; } catch(e) {}
                     
-                    const activeLang = localStorage.getItem('portfolio_lang') || 'fr';
-                    const finalLink = activeLang === 'fr' ? linkFR : linkEN;
-                    
-                    window.open(finalLink, '_blank');
+                    const finalLink_b64 = activeLang === 'fr' ? linkFR_b64 : linkEN_b64;
+                    window.open(atob(finalLink_b64), '_blank');
+                });
+            }
+
+            // --- BOUTON FLOTTANT (SCROLL VERS EXPÉRIENCE) ---
+            const floatingBtn = document.getElementById('floating-btn');
+            const expSection = document.getElementById('experience');
+
+            if (floatingBtn && expSection) {
+                floatingBtn.addEventListener('click', () => {
+                    const y = expSection.getBoundingClientRect().top + window.scrollY - 80;
+                    window.scrollTo({top: y, behavior: 'smooth'});
+                });
+
+                window.addEventListener('scroll', () => {
+                    const expTop = expSection.offsetTop;
+                    // Le bouton apparaît après 400px de scroll, et disparait en arrivant sur la section Expérience
+                    if (window.scrollY > 400 && window.scrollY < (expTop - 300)) {
+                        floatingBtn.classList.add('visible');
+                    } else {
+                        floatingBtn.classList.remove('visible');
+                    }
                 });
             }
 
@@ -541,8 +596,7 @@
 
             if (loadMoreBtn) {
                 loadMoreBtn.addEventListener('click', () => {
-                    const hiddenProjects = document.querySelectorAll('.hidden-project');
-                    hiddenProjects.forEach(p => {
+                    document.querySelectorAll('.hidden-project').forEach(p => {
                         p.classList.remove('hidden-project');
                         setTimeout(() => p.classList.remove('js-hidden'), 50); // Anime l'apparition
                     });
@@ -554,7 +608,7 @@
             const reveals = document.querySelectorAll('.reveal');
             reveals.forEach(el => el.classList.add('js-hidden'));
 
-            // Animation des compteurs basés sur le temps (pour synchroniser l'arrivée)
+            // Animation des compteurs basés sur le temps (pour synchroniser l'arrivée) - INTACT D'ORIGINE
             const animateCounters = () => {
                 const counters = document.querySelectorAll('.counter');
                 const animationDuration = 2000; // 2 secondes pour tous les compteurs
@@ -583,7 +637,7 @@
                 });
             };
 
-            // 4. Animation au scroll
+            // 4. Animation au scroll - INTACT D'ORIGINE
             let countersAnimated = false; 
 
             const observer = new IntersectionObserver((entries, observer) => {
