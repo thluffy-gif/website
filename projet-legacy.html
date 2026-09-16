@@ -4,63 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Projet Legacy - Dassault Aviation | Cédric Prohet</title>
+    <meta name="description" content="Projet Falcon Legacy chez Dassault Aviation : automatisation Python pour le croisement de 10 000 lignes de stock SAP/SPEED.">
+    <meta property="og:title" content="Projet Legacy - Dassault Aviation | Cédric Prohet">
+    <meta property="og:description" content="Projet Falcon Legacy chez Dassault Aviation : automatisation Python pour le croisement de 10 000 lignes de stock SAP/SPEED.">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="fr_FR">
+    <meta property="og:url" content="https://cedric.prohet.fr/projet-legacy.html">
+    <meta name="theme-color" content="#0f172a">
+    <link rel="canonical" href="https://cedric.prohet.fr/projet-legacy.html">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+
     <style>
         /* === THEME GRIS PRO & ÉLÉGANT === */
-        :root {
-            --bg-main: #f8fafc; 
-            --bg-white: #ffffff;
-            --text-main: #1e293b; 
-            --text-muted: #64748b;
-            --accent: #0f172a; 
-            --accent-light: #e2e8f0;
-            --border: #e2e8f0;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --danger: #ef4444;
-            --shadow-sm: 0 4px 6px -1px rgba(0,0,0,0.05);
-            --shadow-md: 0 10px 15px -3px rgba(0,0,0,0.05);
-            --transition: all 0.3s ease;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; scroll-behavior: smooth; }
-        body { background-color: var(--bg-main); color: var(--text-main); line-height: 1.7; }
         .container { max-width: 1000px; margin: 0 auto; padding: 0 20px; }
-        .section { padding: 60px 0; }
-        .bg-white { background-color: var(--bg-white); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
 
         /* --- NAVBAR --- */
-        .navbar { position: fixed; top: 0; width: 100%; background: rgba(255,255,255,0.95); backdrop-filter: blur(5px); border-bottom: 1px solid var(--border); z-index: 1000; padding: 15px 0; box-shadow: var(--shadow-sm); }
-        .nav-container { display: flex; justify-content: space-between; align-items: center; max-width: 1100px; margin: 0 auto; padding: 0 20px; }
-        .logo { font-size: 1.2rem; font-weight: 700; letter-spacing: 1px; color: var(--accent); text-decoration: none; }
-        .nav-group { display: flex; align-items: center; gap: 20px; }
-        .back-btn { color: var(--text-muted); text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 8px; transition: var(--transition); }
-        .back-btn:hover { color: var(--accent); }
-        .btn-lang { background: transparent; border: 1px solid var(--text-muted); color: var(--text-muted); padding: 4px 10px; border-radius: 4px; cursor: pointer; font-weight: bold; transition: var(--transition); }
-        .btn-lang:hover { border-color: var(--accent); color: var(--accent); }
+        .logo { text-decoration: none; }
 
         /* --- HERO PROJECT --- */
         .project-hero { padding-top: 140px; padding-bottom: 50px; text-align: center; }
         .project-company { display: inline-block; background: var(--accent-light); color: var(--accent); padding: 6px 15px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; margin-bottom: 20px; letter-spacing: 1px; }
-        .project-title { font-size: 3.5rem; font-weight: 800; color: var(--accent); line-height: 1.1; margin-bottom: 20px; }
+        .project-title { font-size: 3.5rem; }
         .project-subtitle { font-size: 1.2rem; color: var(--text-muted); max-width: 700px; margin: 0 auto 30px; }
-        
-        .project-meta { display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; margin-top: 40px; padding-top: 40px; border-top: 1px solid var(--border); }
-        .meta-item { text-align: left; }
-        .meta-label { display: block; font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600; margin-bottom: 5px; }
-        .meta-value { font-size: 1.1rem; font-weight: 700; color: var(--text-main); }
 
         /* --- CONTENU TYPOGRAPHIE --- */
         .content-block { margin-bottom: 40px; }
         .content-block h2 { font-size: 1.8rem; color: var(--accent); margin-bottom: 20px; border-left: 4px solid var(--accent); padding-left: 15px; }
         .content-block p { margin-bottom: 15px; color: var(--text-muted); font-size: 1.05rem; }
-        .content-block ul { margin-bottom: 20px; padding-left: 20px; color: var(--text-muted); }
         .content-block li { margin-bottom: 8px; }
 
-        /* --- GRAPHIQUES & SCHEMAS CSS --- */
-        .visual-box { background: var(--bg-main); border: 1px solid var(--border); border-radius: 12px; padding: 30px; margin: 30px 0; box-shadow: inset 0 2px 4px rgba(0,0,0,0.02); }
-        
         /* Architecture IT */
         .it-arch { display: flex; justify-content: space-around; align-items: center; flex-wrap: wrap; gap: 20px; text-align: center; }
         .sys-node { background: var(--bg-white); padding: 20px; border-radius: 8px; border: 2px solid var(--accent-light); width: 200px; box-shadow: var(--shadow-sm); }
@@ -70,28 +44,8 @@
         .sys-link { font-size: 1.5rem; color: var(--warning); display: flex; flex-direction: column; align-items: center; }
         .sys-link span { font-size: 0.8rem; font-weight: bold; margin-top: 5px; }
 
-        /* KPI Dashboard */
-        .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 30px; }
-        .kpi-card { background: var(--bg-white); padding: 25px; border-radius: 10px; border: 1px solid var(--border); box-shadow: var(--shadow-sm); text-align: center; transition: var(--transition); }
-        .kpi-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); border-color: var(--accent); }
-        .kpi-icon { font-size: 2rem; margin-bottom: 15px; }
-        .kpi-number { font-size: 2.5rem; font-weight: 800; color: var(--accent); line-height: 1; margin-bottom: 5px; }
-        .kpi-label { font-size: 0.9rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; }
-
-        /* Alert Box */
-        .alert-box { display: flex; gap: 15px; background: #fef2f2; border-left: 4px solid var(--danger); padding: 20px; border-radius: 0 8px 8px 0; margin: 20px 0; }
-        .alert-box i { color: var(--danger); font-size: 1.5rem; }
-        .alert-content p { color: #991b1b; margin: 0; font-size: 0.95rem; }
-
-        .success-box { display: flex; gap: 15px; background: #f0fdf4; border-left: 4px solid var(--success); padding: 20px; border-radius: 0 8px 8px 0; margin: 20px 0; }
-        .success-box i { color: var(--success); font-size: 1.5rem; }
-        .success-content p { color: #166534; margin: 0; font-size: 0.95rem; }
-
         /* Footer */
-        .footer { text-align: center; padding: 30px; border-top: 1px solid var(--border); color: var(--text-muted); margin-top: 40px; }
-
-        .reveal { opacity: 1; transform: translateY(0); transition: all 0.6s ease-out; }
-        .js-hidden { opacity: 0; transform: translateY(20px); }
+        .footer { margin-top: 40px; }
 
         @media (max-width: 768px) {
             .project-title { font-size: 2.5rem; }
