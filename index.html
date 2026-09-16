@@ -9,7 +9,9 @@
     <meta property="og:description" content="Ingénieur Supply Chain spécialisé dans la convergence Data / Opérations. Portfolio, expériences et projets.">
     <meta property="og:type" content="website">
     <meta property="og:locale" content="fr_FR">
+    <meta property="og:url" content="https://cedric.prohet.fr/">
     <meta name="theme-color" content="#0f172a">
+    <link rel="canonical" href="https://cedric.prohet.fr/">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -499,6 +501,7 @@
             try { currentLang = localStorage.getItem('portfolio_lang') || 'fr'; } catch (e) {}
 
             const applyLanguage = (lang) => {
+                document.documentElement.lang = lang;
                 langBtn.innerText = lang === 'fr' ? 'EN' : 'FR';
                 const elements = document.querySelectorAll('[data-fr][data-en]');
                 elements.forEach(el => {
@@ -513,6 +516,7 @@
             langBtn.addEventListener('click', () => {
                 currentLang = currentLang === 'fr' ? 'en' : 'fr';
                 try { localStorage.setItem('portfolio_lang', currentLang); } catch (e) {}
+                document.documentElement.lang = currentLang;
                 langBtn.innerText = currentLang === 'fr' ? 'EN' : 'FR';
 
                 const elements = document.querySelectorAll('[data-fr][data-en]');
