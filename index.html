@@ -4,41 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cédric Prohet - Ingénieur Logistique & Supply Chain</title>
+    <meta name="description" content="Cédric Prohet, ingénieur Logistique & Supply Chain spécialisé en pilotage de projets, data et digitalisation. Portfolio, expériences et projets.">
+    <meta property="og:title" content="Cédric Prohet - Ingénieur Logistique & Supply Chain">
+    <meta property="og:description" content="Ingénieur Supply Chain spécialisé dans la convergence Data / Opérations. Portfolio, expériences et projets.">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="fr_FR">
+    <meta name="theme-color" content="#0f172a">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+
     <style>
         /* === THEME GRIS PRO & ÉLÉGANT === */
-        :root {
-            --bg-main: #f8fafc; 
-            --bg-white: #ffffff;
-            --text-main: #1e293b; 
-            --text-muted: #64748b;
-            --accent: #0f172a; 
-            --accent-light: #e2e8f0;
-            --border: #e2e8f0;
-            --shadow-sm: 0 4px 6px -1px rgba(0,0,0,0.05);
-            --shadow-md: 0 10px 15px -3px rgba(0,0,0,0.05);
-            --transition: all 0.3s ease;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; scroll-behavior: smooth; }
-        body { background-color: var(--bg-main); color: var(--text-main); line-height: 1.6; }
+        body { line-height: 1.6; }
         .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
         .section { padding: 80px 0; }
-        .bg-white { background-color: var(--bg-white); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
 
         /* --- TYPOGRAPHIE --- */
         .section-title { font-size: 2rem; font-weight: 700; color: var(--accent); margin-bottom: 40px; border-left: 4px solid var(--accent); padding-left: 15px; }
 
         /* --- NAVBAR --- */
-        .navbar { position: fixed; top: 0; width: 100%; background: rgba(255,255,255,0.95); backdrop-filter: blur(5px); border-bottom: 1px solid var(--border); z-index: 1000; padding: 15px 0; box-shadow: var(--shadow-sm); }
-        .nav-container { display: flex; justify-content: space-between; align-items: center; max-width: 1100px; margin: 0 auto; padding: 0 20px; }
-        .logo { font-size: 1.2rem; font-weight: 700; letter-spacing: 1px; color: var(--accent); }
         .nav-links { display: flex; gap: 20px; align-items: center; }
         .nav-links a { color: var(--text-muted); text-decoration: none; font-weight: 500; transition: var(--transition); }
         .nav-links a:hover { color: var(--accent); }
-        .btn-lang { background: transparent; border: 1px solid var(--text-muted); color: var(--text-muted); padding: 4px 10px; border-radius: 4px; cursor: pointer; font-weight: bold; transition: var(--transition); }
-        .btn-lang:hover { border-color: var(--accent); color: var(--accent); }
 
         /* --- HERO & PHOTO --- */
         .hero { padding-top: 130px; padding-bottom: 60px; }
@@ -53,9 +41,6 @@
         .contact-info span, .contact-info a, .contact-info button { background: var(--bg-white); border: 1px solid var(--border); color: var(--text-main); padding: 10px 18px; border-radius: 25px; font-size: 0.9rem; font-weight: 600; text-decoration: none; box-shadow: var(--shadow-sm); display: flex; align-items: center; gap: 8px; transition: var(--transition); cursor: pointer; }
         .contact-info a:hover, .contact-info button.btn-outline:hover { border-color: var(--accent); color: var(--bg-white); background-color: var(--accent); }
         
-        .btn-cv { background-color: var(--accent) !important; color: var(--bg-white) !important; border-color: var(--accent) !important; }
-        .btn-cv:hover { background-color: #1e293b !important; transform: translateY(-2px); box-shadow: var(--shadow-md) !important; }
-
         /* --- STYLE DE L'ANIMATION (NEXUS) --- */
         .hero-photo-container { flex-shrink: 0; width: 280px; height: 280px; border-radius: 20px; background: var(--accent); overflow: hidden; border: 4px solid var(--bg-white); box-shadow: var(--shadow-md); display: flex; align-items: center; justify-content: center; position: relative; }
         
@@ -114,7 +99,7 @@
 
         /* --- BANNIERE KPI --- */
         .kpi-banner { background: var(--accent); color: var(--bg-white); padding: 40px 0; margin-top: 40px; }
-        .kpi-grid { display: flex; justify-content: space-around; text-align: center; flex-wrap: wrap; gap: 30px; }
+        .kpi-stats-grid { display: flex; justify-content: space-around; text-align: center; flex-wrap: wrap; gap: 30px; }
         .kpi-item { flex: 1; min-width: 200px; }
         .kpi-value { font-size: 2.5rem; font-weight: 800; margin-bottom: 5px; color: #cbd5e1; }
         .kpi-item p { font-size: 0.95rem; font-weight: 500; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; }
@@ -190,9 +175,7 @@
         .vision-card p { font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; }
 
         /* --- FOOTER & MISC --- */
-        .footer { text-align: center; padding: 30px; background: var(--bg-white); color: var(--text-muted); border-top: 1px solid var(--border); }
-        .reveal { opacity: 1; transform: translateY(0); transition: all 0.6s ease-out; }
-        .js-hidden { opacity: 0; transform: translateY(20px); }
+        .footer { background: var(--bg-white); }
 
         /* --- RESPONSIVE --- */
         @media (max-width: 850px) {
@@ -228,9 +211,6 @@
                     <p class="description" data-fr="Ingénieur Supply Chain spécialisé dans la convergence Data / Opérations. Fort d'une expérience en pilotage de projets complexes et en management d'équipe, je recherche actuellement un stage de fin d'études (Cycle CTI) afin d'accompagner une direction dans ses défis de transformation (S&OP, Digitalisation, Résilience)." data-en="Supply Chain Engineer specialized in Data / Operations convergence. With experience in managing complex projects and team leadership, I am currently seeking a final-year internship (CTI cycle) to support management in its transformation challenges (S&OP, Digitalization, Resilience).">Ingénieur Supply Chain spécialisé dans la convergence Data / Opérations. Fort d'une expérience en pilotage de projets complexes et en management d'équipe, je recherche actuellement un stage de fin d'études (Cycle CTI) afin d'accompagner une direction dans ses défis de transformation (S&OP, Digitalisation, Résilience).</p>
                     
                     <div class="contact-info">
-                        <button id="cv-download-btn" class="btn-cv">
-                            <i class="fa-solid fa-file-pdf"></i> <span data-fr="Télécharger CV" data-en="Download Resume">Télécharger CV</span>
-                        </button>
                         <a href="#contact" class="btn-outline"><i class="fa-solid fa-paper-plane"></i> <span data-fr="Me contacter" data-en="Contact me">Me contacter</span></a>
                         <a href="https://www.linkedin.com/in/c%C3%A9dric-prohet-371b48183/" target="_blank" rel="noopener noreferrer" class="btn-outline"><i class="fa-brands fa-linkedin"></i> LinkedIn</a>
                     </div>
@@ -247,7 +227,7 @@
         </section>
 
         <section class="kpi-banner">
-            <div class="container kpi-grid">
+            <div class="container kpi-stats-grid">
                 <div class="kpi-item reveal">
                     <div class="kpi-value"><span class="counter" data-target="5">0</span> M€</div>
                     <p data-fr="Budget Projet Géré" data-en="Project Budget Managed">Budget Projet Géré</p>
@@ -544,23 +524,6 @@
                     }, 200);
                 });
             });
-
-            // --- GESTION ANTI-SCRAPING DU BOUTON CV (Base64) ---
-            const cvBtn = document.getElementById('cv-download-btn');
-            if (cvBtn) {
-                cvBtn.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    // Liens relatifs GitHub Pages (fichiers à la racine)
-                    const linkFR_b64 = "Y3ZfZnIucGRm"; // cv_fr.pdf
-                    const linkEN_b64 = "Y3ZfZW4ucGRm"; // cv_en.pdf
-                    
-                    let activeLang = 'fr';
-                    try { activeLang = localStorage.getItem('portfolio_lang') || 'fr'; } catch(e) {}
-                    
-                    const finalLink_b64 = activeLang === 'fr' ? linkFR_b64 : linkEN_b64;
-                    window.open(atob(finalLink_b64), '_blank');
-                });
-            }
 
             // --- BOUTON FLOTTANT (SCROLL VERS EXPÉRIENCE) ---
             const floatingBtn = document.getElementById('floating-btn');
